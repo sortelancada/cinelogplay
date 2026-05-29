@@ -1,0 +1,45 @@
+{
+  "name": "cinelogplay",
+  "version": "1.0.0",
+  "description": "CinelogPlay - Catálogo Informativo de Produções Cinematográficas",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.12.4",
+  "engines": {
+    "node": "24.16.0"
+  },
+  "scripts": {
+    "dev": "pnpm -C frontend run dev",
+    "build": "pnpm -C frontend run build",
+    "preview": "pnpm -C frontend run preview",
+    "test:ci": "pnpm -C frontend run test:ci",
+    "cypress:open": "pnpm -C frontend run cypress:open",
+    "backend:dev": "pnpm -C backend run dev",
+    "backend:start": "pnpm -C backend run start",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f"
+  },
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "keywords": [
+    "cinema",
+    "catalogo",
+    "filmes"
+  ],
+  "author": "CinelogPlay Team",
+  "license": "MIT",
+  "devDependencies": {
+    "depcheck": "^1.4.7",
+    "eslint": "^10.4.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-cypress": "^6.4.0",
+    "eslint-plugin-import": "^2.32.0",
+    "jscpd": "^4.2.4",
+    "madge": "^8.0.0",
+    "prettier": "^3.8.3",
+    "typescript": "^6.0.3"
+  }
+}

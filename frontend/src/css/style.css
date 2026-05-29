@@ -1,0 +1,628 @@
+/* ========================================
+    VARIÁVEIS GLOBAIS
+   ======================================== */
+
+:root {
+  --color-primary: #0a0e27;
+  --color-secondary: #ff6b6b;
+  --color-text: #ffffff;
+  --color-text-dark: #333;
+  --color-text-light: #777;
+  --color-bg-light: #f8f9fa;
+  --color-bg-gradient: #f5f5f5;
+}
+
+/* ========================================
+    RESET E ESTILOS GLOBAIS
+   ======================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-bg-light);
+  color: var(--color-text);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+}
+
+/* ========================================
+    NAVBAR/HEADER
+   ======================================== */
+
+.navbar-custom {
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 200;
+  min-height: 80px;
+}
+
+/* Menu Hambúrguer */
+.menu-toggle {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-toggle:hover {
+  transform: scale(1.1);
+}
+
+.menu-toggle:focus {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+/* Logo - Centralizada */
+.navbar-brand {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-brand img {
+  max-height: 50px;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover img {
+  transform: scale(1.05);
+}
+
+/* Perfil do Usuário */
+.user-profile-wrapper {
+  position: relative;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-size: 1rem;
+}
+
+.user-profile:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.user-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.user-email {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Dropdown Menu */
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  min-width: 200px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 300;
+}
+
+.user-dropdown.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.user-dropdown a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  transition: all 0.3s ease;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.user-dropdown a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text);
+}
+
+.user-dropdown a.logout {
+  color: var(--color-secondary);
+}
+
+.user-dropdown a.logout:hover {
+  background: rgba(255, 107, 107, 0.2);
+}
+
+/* ========================================
+    SIDEBAR/MENU LATERAL
+   ======================================== */
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 99;
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sidebar {
+  position: fixed;
+  left: -280px;
+  top: 80px;
+  width: 280px;
+  height: calc(100vh - 80px);
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+  padding: 2rem 1rem;
+  z-index: 100;
+  transition: left 0.3s ease;
+  overflow-y: auto;
+}
+
+.sidebar.active {
+  left: 0;
+}
+
+.sidebar-nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-nav li {
+  margin-bottom: 1rem;
+}
+
+.sidebar-nav a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.sidebar-nav a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text);
+}
+
+.sidebar-nav a.active {
+  background: var(--color-secondary);
+  color: white;
+  font-weight: 600;
+}
+
+.sidebar-nav i {
+  font-size: 1.2rem;
+  width: 1.5rem;
+  text-align: center;
+}
+
+/* ========================================
+    CONTAINER PRINCIPAL
+   ======================================== */
+
+#app {
+  min-height: calc(100vh - 80px);
+  padding: 2rem 1rem;
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    var(--color-bg-gradient) 100%
+  );
+}
+
+#app .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ========================================
+    HERO SECTION (HOME)
+   ======================================== */
+
+.hero-section {
+  animation: fadeInDown 0.6s ease-out;
+}
+
+.hero-logo {
+  max-width: 150px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 300;
+  color: var(--color-text-dark);
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: #999;
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+}
+
+.hero-text {
+  font-size: 1.1rem;
+  color: var(--color-text-light);
+  font-weight: 400;
+}
+
+/* ========================================
+    GRID DE FILMES
+   ======================================== */
+
+.filmes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 4rem;
+}
+
+.filme-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.filme-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.filme-card h2 {
+  color: var(--color-text-dark);
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.filme-card p {
+  color: var(--color-text-light);
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.filme-card p strong {
+  color: var(--color-text-dark);
+}
+
+/* ========================================
+    FORMULÁRIO DE CONTATO
+   ======================================== */
+
+.contact-form {
+  max-width: 500px;
+  margin: 2rem auto;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+}
+
+.contact-form button {
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--color-secondary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-size: 1rem;
+}
+
+.contact-form button:hover {
+  background: #ff5555;
+}
+
+/* ========================================
+    UTILITIES
+   ======================================== */
+
+.min-vh-100 {
+  min-height: 100vh;
+}
+
+/* ========================================
+    RESPONSIVIDADE TABLET
+   ======================================== */
+
+@media (max-width: 768px) {
+  .navbar-custom {
+    padding: 0.75rem 0.5rem;
+    min-height: 70px;
+  }
+
+  .navbar-brand img {
+    max-height: 40px;
+  }
+
+  #app {
+    padding: 1.5rem 0.5rem;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .filmes-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .user-info {
+    display: none;
+  }
+
+  .sidebar {
+    width: 250px;
+    left: -250px;
+  }
+}
+
+/* ========================================
+    RESPONSIVIDADE MOBILE
+   ======================================== */
+
+@media (max-width: 576px) {
+  .navbar-custom {
+    padding: 0.5rem 0.5rem;
+    min-height: 65px;
+  }
+
+  .menu-toggle {
+    padding: 0.5rem 0.5rem;
+  }
+
+  .hero-logo {
+    max-width: 120px;
+  }
+
+  .hero-title {
+    font-size: 1.75rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .hero-text {
+    font-size: 0.9rem;
+  }
+
+  #app {
+    padding: 1rem 0.5rem;
+  }
+
+  .filmes-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .filme-card {
+    padding: 1rem;
+  }
+
+  .filme-card h2 {
+    font-size: 1.1rem;
+  }
+
+  .navbar-brand img {
+    max-height: 35px;
+  }
+
+  .user-avatar {
+    width: 35px;
+    height: 35px;
+    font-size: 0.85rem;
+  }
+
+  .sidebar {
+    width: 220px;
+    left: -220px;
+    top: 65px;
+  }
+
+  .sidebar-nav a {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  .user-dropdown {
+    min-width: 180px;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* ========================================
+    RESPONSIVIDADE MUITO PEQUENA
+   ======================================== */
+
+@media (max-width: 320px) {
+  .hero-logo {
+    max-width: 100px;
+  }
+
+  .hero-title {
+    font-size: 1.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .navbar-custom {
+    padding: 0.5rem 0.25rem;
+  }
+
+  .menu-toggle {
+    padding: 0.25rem 0.25rem;
+    font-size: 1.25rem;
+  }
+
+  .user-avatar {
+    width: 30px;
+    height: 30px;
+  }
+
+  .navbar-brand img {
+    max-height: 30px;
+  }
+}
+
+/* ========================================
+    ACESSIBILIDADE
+   ======================================== */
+
+button:focus,
+a:focus {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+/* ========================================
+    ANIMAÇÕES
+   ======================================== */
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

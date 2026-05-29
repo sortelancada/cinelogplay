@@ -1,0 +1,27 @@
+# Define que este é o arquivo raiz de configuração
+root = true
+
+# Configurações padrão para todos os arquivos
+[*]
+# Usar espaços em vez de tabulação
+indent_style = space
+# Tamanho da indentação: 2 espaços
+indent_size = 2
+# Fim de linha no formato LF (Unix)
+end_of_line = lf
+# Codificação de caracteres UTF-8
+charset = utf-8
+# Remove espaços em branco no final das linhas
+trim_trailing_whitespace = true
+# Garante que o arquivo termine com uma nova linha
+insert_final_newline = true
+
+# Configurações específicas para arquivos Markdown
+[*.md]
+# Não remover espaços em branco no final das linhas
+trim_trailing_whitespace = false
+
+# Configurações específicas para arquivos JSON
+[*.json]
+# Indentação de 2 espaços
+indent_size = 2

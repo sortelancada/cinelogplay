@@ -1,0 +1,34 @@
+# ATENÇÃO
+
+### Este arquivo define os responsáveis por revisão de código
+
+- PRs nessas áreas exigem aprovação dessas pessoas
+
+---
+
+## Global
+
+> @lucasitdias | @IronVisuals | @Mbolsanello
+
+---
+
+## Frontend
+> /frontend: @lucasitdias
+
+---
+
+## Backend
+
+> /backend: @lucasitdias  | @IronVisuals
+
+---
+
+## DevOps
+
+> /devops: @IronVisuals
+
+---
+
+# Testes
+
+> /tests: @Mbolsanello

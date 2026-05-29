@@ -1,0 +1,133 @@
+// ========================================
+// MODELO DE AVALIAÇÕES
+// ========================================
+
+import db from "../config/db.js";
+
+const Avaliacao = {
+  // Obter todas as avaliações
+  async getAll() {
+    try {
+      const query = `
+        SELECT av.*, f.titulo as filme_titulo
+        FROM avaliacoes av
+        JOIN filmes f ON av.filme_id = f.id
+        ORDER BY av.data_criacao DESC
+      `;
+      const [avaliacoes] = await db.query(query);
+      return avaliacoes;
+    } catch (error) {
+      console.error("Erro ao obter avaliações:", error);
+      throw error;
+    }
+  },
+
+  // Obter avaliações de um filme
+  async getByFilmeId(filmeId) {
+    try {
+      const query = `
+        SELECT * FROM avaliacoes
+        WHERE filme_id = ?
+        ORDER BY data_criacao DESC
+      `;
+      const [avaliacoes] = await db.query(query, [filmeId]);
+      return avaliacoes;
+    } catch (error) {
+      console.error("Erro ao obter avaliações do filme:", error);
+      throw error;
+    }
+  },
+
+  // Obter avaliação média de um filme
+  async getMediaFilme(filmeId) {
+    try {
+      const query = `
+        SELECT
+          AVG(estrelas) as media,
+          COUNT(*) as total,
+          MIN(estrelas) as minima,
+          MAX(estrelas) as maxima
+        FROM avaliacoes
+        WHERE filme_id = ?
+      `;
+      const [resultado] = await db.query(query, [filmeId]);
+      return resultado[0];
+    } catch (error) {
+      console.error("Erro ao obter média de avaliação:", error);
+      throw error;
+    }
+  },
+
+  // Criar nova avaliação
+  async create(avaliacaoData) {
+    try {
+      const { filme_id, usuario_id, estrelas, comentario } = avaliacaoData;
+
+      const query = `
+        INSERT INTO avaliacoes (filme_id, usuario_id, estrelas, comentario)
+        VALUES (?, ?, ?, ?)
+      `;
+
+      const result = await db.query(query, [
+        filme_id,
+        usuario_id,
+        estrelas,
+        comentario || null,
+      ]);
+
+      return { id: result.insertId, ...avaliacaoData };
+    } catch (error) {
+      console.error("Erro ao criar avaliação:", error);
+      throw error;
+    }
+  },
+
+  // Atualizar avaliação
+  async update(id, avaliacaoData) {
+    try {
+      const { estrelas, comentario } = avaliacaoData;
+
+      const query = `
+        UPDATE avaliacoes
+        SET estrelas = ?, comentario = ?
+        WHERE id = $13
+      `;
+
+      await db.query(query, [estrelas, comentario || null, id]);
+
+      return { id, ...avaliacaoData };
+    } catch (error) {
+      console.error("Erro ao atualizar avaliação:", error);
+      throw error;
+    }
+  },
+
+  // Deletar avaliação
+  async delete(id) {
+    try {
+      const query = "DELETE FROM avaliacoes WHERE id = $1";
+      await db.query(query, [id]);
+      return { message: "Avaliação deletada com sucesso" };
+    } catch (error) {
+      console.error("Erro ao deletar avaliação:", error);
+      throw error;
+    }
+  },
+
+  // Obter avaliação por usuário e filme
+  async getByUsuarioEFilme(usuarioId, filmeId) {
+    try {
+      const query = `
+        SELECT * FROM avaliacoes
+        WHERE usuario_id = ? AND filme_id = ?
+      `;
+      const [avaliacoes] = await db.query(query, [usuarioId, filmeId]);
+      return avaliacoes[0];
+    } catch (error) {
+      console.error("Erro ao obter avaliação do usuário:", error);
+      throw error;
+    }
+  },
+};
+
+export default Avaliacao;

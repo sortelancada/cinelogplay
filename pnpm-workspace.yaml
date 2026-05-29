@@ -1,0 +1,8 @@
+packages:
+  - frontend
+  - backend
+
+onlyBuiltDependencies:
+  - cypress
+  - esbuild
+  - unrs-resolver

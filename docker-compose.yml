@@ -1,0 +1,60 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+
+    container_name: cinelogplay-frontend
+
+    ports:
+      - "5173:5173"
+
+    volumes:
+      - ./frontend:/app/frontend
+      - /app/frontend/node_modules
+
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - CI=true
+
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+
+    container_name: cinelogplay-backend
+
+    ports:
+      - "3001:3001"
+
+    volumes:
+      - ./backend:/app/backend
+      - /app/backend/node_modules
+
+    environment:
+      - CI=true
+
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16-alpine
+
+    container_name: cinelogplay-postgres
+
+    ports:
+      - "5432:5432"
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cinelogplay
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
