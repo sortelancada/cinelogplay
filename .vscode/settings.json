@@ -24,5 +24,10 @@
   "cypress.projectId": null,
   "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "sonarlint.connectedMode.project": {
+    "connectionId": "lucasitdias",
+    "projectKey": "lucasitdias_cinelogplay-web"
+  },
+  "sonarlint.pathToNodeExecutable": "/home/lucasitdevelop/.local/share/fnm/node-versions/v24.16.0/installation/bin/node"
 }

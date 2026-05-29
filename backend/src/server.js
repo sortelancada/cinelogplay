@@ -4,6 +4,11 @@ import dotenv from "dotenv";
 import filmesRoutes from "./routes/filmes.routes.js";
 import diretoresRoutes from "./routes/diretores.routes.js";
 import contatoRoutes from "./routes/contato.routes.js";
+import { initializeDatabase } from "./config/db.js";
+import {
+  errorHandler,
+  notFoundHandler,
+} from "./middleware/errorHandler.middleware.js";
 
 dotenv.config();
 
@@ -34,24 +39,26 @@ app.use("/api/filmes", filmesRoutes);
 app.use("/api/diretores", diretoresRoutes);
 app.use("/api/contato", contatoRoutes);
 
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    error: "Rota não encontrada",
-    path: req.path,
-  });
-});
+// 404 handler
+app.use(notFoundHandler);
 
-app.use((err, req, res, next) => {
-  console.error("Error:", err);
-  res.status(err.status || 500).json({
-    success: false,
-    error: err.message || "Erro interno do servidor",
-  });
-});
+// error handler global
+app.use(errorHandler);
 
-app.listen(PORT, HOST, () => {
-  console.log(` CinelogPlay API rodando em http://${HOST}:${PORT}`);
-});
+// BOOTSTRAP DO SERVIDOR
+async function startServer() {
+  try {
+    await initializeDatabase();
+
+    app.listen(PORT, HOST, () => {
+      console.log(`CinelogPlay API rodando em http://${HOST}:${PORT}`);
+    });
+  } catch (error) {
+    console.error("Erro ao inicializar servidor:", error);
+    process.exit(1);
+  }
+}
+
+startServer();
 
 export default app;

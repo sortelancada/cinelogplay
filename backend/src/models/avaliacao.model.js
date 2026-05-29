@@ -27,11 +27,11 @@ const Avaliacao = {
     try {
       const query = `
         SELECT * FROM avaliacoes
-        WHERE filme_id = ?
+        WHERE filme_id = $1
         ORDER BY data_criacao DESC
       `;
-      const [avaliacoes] = await db.query(query, [filmeId]);
-      return avaliacoes;
+      const result = await db.query(query, [filmeId]);
+      return result.rows;
     } catch (error) {
       console.error("Erro ao obter avaliações do filme:", error);
       throw error;
@@ -50,8 +50,8 @@ const Avaliacao = {
         FROM avaliacoes
         WHERE filme_id = ?
       `;
-      const [resultado] = await db.query(query, [filmeId]);
-      return resultado[0];
+      const result = await db.query(query, [filmeId]);
+      return result.rows[0];
     } catch (error) {
       console.error("Erro ao obter média de avaliação:", error);
       throw error;
@@ -65,7 +65,7 @@ const Avaliacao = {
 
       const query = `
         INSERT INTO avaliacoes (filme_id, usuario_id, estrelas, comentario)
-        VALUES (?, ?, ?, ?)
+        VALUES ($1, $2, $3, $4)
       `;
 
       const result = await db.query(query, [
@@ -89,8 +89,8 @@ const Avaliacao = {
 
       const query = `
         UPDATE avaliacoes
-        SET estrelas = ?, comentario = ?
-        WHERE id = $13
+        SET estrelas = $1, comentario = $2
+        WHERE id = $3
       `;
 
       await db.query(query, [estrelas, comentario || null, id]);
@@ -119,7 +119,7 @@ const Avaliacao = {
     try {
       const query = `
         SELECT * FROM avaliacoes
-        WHERE usuario_id = ? AND filme_id = ?
+        WHERE usuario_id = $1 AND filme_id = $2
       `;
       const [avaliacoes] = await db.query(query, [usuarioId, filmeId]);
       return avaliacoes[0];

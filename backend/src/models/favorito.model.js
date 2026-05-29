@@ -27,7 +27,7 @@ const Favorito = {
     try {
       const query = `
         SELECT * FROM favoritos
-        WHERE usuario_id = ? AND filme_id = ?
+        WHERE usuario_id = $1 AND filme_id = $2
       `;
       const [resultado] = await db.query(query, [usuarioId, filmeId]);
       return resultado.length > 0;
@@ -59,7 +59,7 @@ const Favorito = {
     try {
       const query = `
         DELETE FROM favoritos
-        WHERE usuario_id = ? AND filme_id = ?
+        WHERE usuario_id = $1 AND filme_id = $2
       `;
 
       await db.query(query, [usuarioId, filmeId]);

@@ -20,7 +20,7 @@ const Filmes = {
   // Obter filme por ID
   async getById(id) {
     try {
-      const query = "SELECT * FROM filmes WHERE id = $13";
+      const query = "SELECT * FROM filmes WHERE id = $1";
       const result = await db.query(query, [id]);
       return result.rows[0];
     } catch (error) {
@@ -76,7 +76,6 @@ RETURNING *
     }
   },
 
-  // Atualizar filme
   async update(id, filmData) {
     try {
       const {
@@ -95,14 +94,15 @@ RETURNING *
       } = filmData;
 
       const query = `
-        UPDATE filmes
-        SET titulo = $1, ano = $2, genero = ?, duracao = ?, classificacao = ?,
-            imagem = ?, descricao_curta = ?, sinopse = ?, diretor_id = ?,
-            diretor_nome = ?, diretor_foto = ?, trailer_youtube = ?
-        WHERE id = $13
-      `;
+      UPDATE filmes
+      SET titulo = $1, ano = $2, genero = $3, duracao = $4, classificacao = $5,
+          imagem = $6, descricao_curta = $7, sinopse = $8, diretor_id = $9,
+          diretor_nome = $10, diretor_foto = $11, trailer_youtube = $12
+      WHERE id = $13
+      RETURNING *;
+    `;
 
-      await db.query(query, [
+      const result = await db.query(query, [
         titulo,
         ano,
         genero,
@@ -118,13 +118,12 @@ RETURNING *
         id,
       ]);
 
-      return result.rows[0];
+      return result.rows[0]; // ✅ agora 'result' existe
     } catch (error) {
       console.error("Erro ao atualizar filme:", error);
       throw error;
     }
   },
-
   // Deletar filme
   async delete(id) {
     try {

@@ -9,8 +9,8 @@ const Diretor = {
   async getAll() {
     try {
       const query = "SELECT * FROM diretores ORDER BY nome ASC";
-      const [diretores] = await db.query(query);
-      return diretores;
+      const result = await db.query(query);
+      return result.rows;
     } catch (error) {
       console.error("Erro ao obter diretores:", error);
       throw error;
@@ -20,9 +20,9 @@ const Diretor = {
   // Obter diretor por ID
   async getById(id) {
     try {
-      const query = "SELECT * FROM diretores WHERE id = $13";
-      const [diretores] = await db.query(query, [id]);
-      return diretores[0];
+      const query = "SELECT * FROM diretores WHERE id = $1";
+      const result = await db.query(query, [id]);
+      return result.rows[0];
     } catch (error) {
       console.error("Erro ao obter diretor:", error);
       throw error;
@@ -43,7 +43,8 @@ const Diretor = {
 
       const query = `
         INSERT INTO diretores (nome, foto, nacionalidade, data_nascimento, biografia, principais_obras)
-        VALUES (?, ?, ?, ?, ?, ?)
+        VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING *;
       `;
 
       const result = await db.query(query, [
@@ -55,7 +56,7 @@ const Diretor = {
         principais_obras,
       ]);
 
-      return { id: result.insertId, ...diretorData };
+      return result.rows[0];
     } catch (error) {
       console.error("Erro ao criar diretor:", error);
       throw error;
@@ -67,7 +68,7 @@ const Diretor = {
     try {
       const query = `
         SELECT * FROM filmes
-        WHERE diretor_id = ?
+        WHERE diretor_id = $1
         ORDER BY ano DESC
       `;
       const result = await db.query(query, [diretorId]);
@@ -92,8 +93,14 @@ const Diretor = {
 
       const query = `
         UPDATE diretores
-        SET nome = ?, foto = ?, nacionalidade = ?, data_nascimento = ?, biografia = ?, principais_obras = ?
-        WHERE id = $13
+        SET nome = $1,
+            foto = $2,
+            nacionalidade = $3,
+            data_nascimento = $4,
+            biografia = $5,
+            principais_obras = $6
+        WHERE id = $1 $7
+        RETURNING *;
       `;
 
       await db.query(query, [

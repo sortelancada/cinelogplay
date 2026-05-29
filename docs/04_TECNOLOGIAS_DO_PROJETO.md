@@ -20,7 +20,7 @@
 
 - HTML5 → Documentação (https://www.w3schools.com/html/)
 - CSS3 → Documentação (https://www.w3schools.com/css/)
-- Bootstrap 5.3.x → [Download](https://getbootstrap.com/) | Documentação (https://getbootstrap.com/docs/5.3/getting-started/introduction/)
+- Bootstrap 5.3.8.x → [Download](https://getbootstrap.com/) | Documentação (https://getbootstrap.com/docs/5.3/getting-started/introduction/)
 - JavaScript ES6+ → Documentação (https://www.w3schools.com/js/)
 
 ---
@@ -32,20 +32,20 @@
   - Execução:
     - Linux: terminal padrão
     - Windows: Git Bash (obrigatório)
-- pnpm v9.x (`corepack enable pnpm`) → [Documentação](https://pnpm.io/)
-- Express.js v4.19.x → [Documentação](https://expressjs.com/)
+- pnpm v10.12.4.x (`corepack enable pnpm`) → [Documentação](https://pnpm.io/)
+- Express.js v4.22.2.x → [Documentação](https://expressjs.com/)
 - Docker
-  - Linux: Docker Engine 29.4.0 → [Download](https://docs.docker.com/engine/install/) | [Documentação](https://docs.docker.com/engine/)
+  - Linux: Docker Engine 29.5.2 → [Download](https://docs.docker.com/engine/install/) | [Documentação](https://docs.docker.com/engine/)
   - Windows: Docker Desktop 4.69.0 → [Download](https://www.docker.com/products/docker-desktop) | [Documentação](https://docs.docker.com/desktop/)
-- PostgreSQL v16.x (homologação) → [Download](https://www.postgresql.org/download/) | [Documentação](https://www.postgresql.org/docs/16/)
+- PostgreSQL v16-alpine (homologação) → [Download](https://www.postgresql.org/download/) | [Documentação](https://www.postgresql.org/docs/16/)
 - Supabase v16.x (produção) → [Site Oficial](https://supabase.com/) | [Documentação](https://supabase.com/docs)
 
 ---
 
 ## Testes
 
-- Cypress v13.x → [Documentação](https://docs.cypress.io/)
-- Jest v29.x (opcional) → Documentação (https://jestjs.io/docs/getting-started)
+- Cypress v14.5.4.x → [Documentação](https://docs.cypress.io/)
+- Jest v30.4.2.x (opcional) → Documentação (https://jestjs.io/docs/getting-started)
 - Supertest v6.x (opcional) → [Documentação](https://github.com/ladjs/supertest)
 
 ---
@@ -60,7 +60,7 @@
 
 ## Ferramentas de Desenvolvimento
 
-- **Git v2.53 (recomendado)** → [Download](https://git-scm.com/downloads) | [Documentação](https://git-scm.com/doc)
+- **Git v2.54 (recomendado)** → [Download](https://git-scm.com/downloads) | [Documentação](https://git-scm.com/doc)
 - **Visual Studio Code (VS Code)** → [Download](https://code.visualstudio.com/) | [Documentação](https://code.visualstudio.com/docs)
 
 ### Extensões recomendadas para VS Code
@@ -158,7 +158,7 @@ Exemplos:
 ### CI
 
 - Cypress
-- Jest + Supertest
+- Jest + Supertest (opcional)
 
 ### CD
 

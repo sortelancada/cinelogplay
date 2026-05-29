@@ -278,7 +278,7 @@ export async function updateFilme(id, filmeData) {
     ];
 
     for (const field of allowedFields) {
-      if (filmeData.hasOwnProperty(field)) {
+      if (Object.prototype.hasOwnProperty.call(filmeData, field)) {
         updates.push(`${field} = $${paramIndex}`);
         values.push(filmeData[field]);
         paramIndex++;
@@ -291,7 +291,12 @@ export async function updateFilme(id, filmeData) {
 
     values.push(id);
 
-    const query = `UPDATE filmes SET ${updates.join(", ")}, atualizado_em = NOW() WHERE id = $${paramIndex} RETURNING *`;
+    const query = `
+    UPDATE filmes
+    SET ${updates.join(", ")}, atualizado_em = NOW()
+    WHERE id = $${paramIndex}
+    RETURNING *
+    `;
     const result = await pool.query(query, values);
 
     return result.rows[0] || null;
@@ -325,5 +330,28 @@ export async function deleteFilme(id) {
       error: error.message,
     });
     throw error;
+  }
+}
+
+// ============================================
+// WRAPPER COMPATIBILITY LAYER (ROUTES LEGACY)
+// ============================================
+
+export async function getFilmesComAvaliacao() {
+  try {
+    const result = await pool.query(`
+      SELECT f.*,
+             COALESCE(AVG(av.estrelas), 0) as media_avaliacao,
+             COUNT(av.id) as total_avaliacoes
+      FROM filmes f
+      LEFT JOIN avaliacoes av ON f.id = av.filme_id
+      GROUP BY f.id
+      ORDER BY f.id ASC
+    `);
+
+    return result.rows;
+  } catch (error) {
+    console.error(error);
+    return [];
   }
 }

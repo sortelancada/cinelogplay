@@ -5,12 +5,12 @@ Ambiente Linux — Instalação e Configuração
 
 Este passo a passo detalha o processo completo para configurar o ambiente de desenvolvimento no Linux, garantindo que todos os integrantes utilizem a mesma base para desenvolvimento do projeto CinelogPlay.
 
-- Git v2.53 (recomendado)
+- Git v2.54 (recomendado)
 - fnm
 - Node.js v24.16.0
-- pnpm (via corepack)
-- Docker Engine 29.4.0
-- PostgreSQL (via Docker)
+- pnpm v10.12.4 (via corepack)
+- Docker Engine 29.5.2
+- PostgreSQL v16-alpine (via Docker)
 ```
 
 ---
@@ -108,7 +108,7 @@ git --version
 sudo apt install git -y
 ```
 
-Caso a versão não seja a v2.53, recomenda-se instalar via repositório oficial ou compilar.
+Caso a versão não seja a v2.54, recomenda-se instalar via repositório oficial ou compilar.
 
 ---
 
@@ -146,9 +146,9 @@ source ~/.bashrc
 ### Instalar Node.js v24.16.0LTS
 
 ```bash
-fnm install 20.20.2
-fnm use 20.20.2
-fnm default 20.20.2
+fnm install 24.16.0 (v1.39.0x)
+fnm use 24.16.0
+fnm default 24.16.0
 ```
 
 ---
@@ -156,7 +156,7 @@ fnm default 20.20.2
 ### Verificação
 
 ```bash
-node -v   # Deve mostrar v20.20.2
+node -v   # Deve mostrar v24.16.0
 ```
 
 ---
@@ -178,7 +178,7 @@ RUN corepack enable && corepack prepare pnpm@10.12.4. --activate
 ### Verificação
 
 ```bash
-pnpm -v   # Deve mostrar versão 9.x
+pnpm -v   # Deve mostrar versão 10.12.4.x
 ```
 
 ---
@@ -254,7 +254,7 @@ newgrp docker
 ### Verificação
 
 ```bash
-docker --version   # Deve mostrar versão 29.4.0
+docker --version   # Deve mostrar versão 29.5.2
 ```
 
 ---
@@ -264,17 +264,61 @@ docker --version   # Deve mostrar versão 29.4.0
 #### Criar arquivo `docker-compose.yml`
 
 ```yaml
-version: "3.9"
-
 services:
-  postgres:
-    image: postgres:16
-    container_name: postgres-CinelogPlay
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+
+    container_name: cinelogplay-frontend
+
+    ports:
+      - "5173:5173"
+
+    volumes:
+      - ./frontend:/app/frontend
+      - /app/frontend/node_modules
+
     environment:
-      POSTGRES_PASSWORD: senha_segura
-      POSTGRES_DB: CinelogPlay
+      - CHOKIDAR_USEPOLLING=true
+      - CI=true
+
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+
+    container_name: cinelogplay-backend
+
+    ports:
+      - "3001:3001"
+
+    volumes:
+      - ./backend:/app/backend
+      - /app/backend/node_modules
+
+    environment:
+      - CI=true
+
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16-alpine
+
+    container_name: cinelogplay-postgres
+
     ports:
       - "5432:5432"
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cinelogplay
+
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -309,7 +353,7 @@ docker compose down
 #### Baixar imagem
 
 ```bash
-docker pull postgres:16
+docker pull postgres:16-alpine
 ```
 
 ---
@@ -318,12 +362,12 @@ docker pull postgres:16
 
 ```bash
 docker run -d \
-  --name postgres-CinelogPlay \
-  -e POSTGRES_PASSWORD=senha_segura \
-  -e POSTGRES_DB=cinelogplay \
+  --name postgres-cinelogplay \
+  -e POSTGRES_PASSWORD: postgres \
+  -e POSTGRES_DB: cinelogplay \
   -p 5432:5432 \
   -v postgres_data:/var/lib/postgresql/data \
-  postgres:16
+  postgres:16-alpine
 ```
 
 ---

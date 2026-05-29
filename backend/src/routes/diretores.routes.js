@@ -3,27 +3,42 @@
 // ========================================
 
 import express from "express";
-import Diretor from "../models/diretores.model.js";
+import {
+  getDiretores,
+  salvarDiretor,
+  getDiretorById,
+  getFilmesPorDiretor,
+  updateDiretor,
+  deleteDiretor,
+} from "../services/diretores.service.js";
+import { sendSuccess, sendError } from "../utils/response.js";
 
 const router = express.Router();
 
 // GET - Obter todos os diretores
 router.get("/", async (req, res) => {
   try {
-    const diretores = await Diretor.getAll();
+    const resultado = await getDiretores();
+    if (!resultado.success) {
+      return sendError(
+        res,
+        resultado.error,
+        resultado.code,
+        500,
+        resultado.details
+      );
+    }
 
-    res.json({
-      success: true,
-      data: diretores,
-      total: diretores.length,
-    });
+    return sendSuccess(res, resultado.data, resultado.message, 200);
   } catch (error) {
     console.error("Erro ao obter diretores:", error);
-    res.status(500).json({
-      success: false,
-      message: "Erro ao obter diretores",
-      error: error.message,
-    });
+    return sendError(
+      res,
+      "Erro ao obter diretores",
+      "INTERNAL_ERROR",
+      500,
+      error.message
+    );
   }
 });
 
@@ -31,32 +46,29 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const diretor = await Diretor.getById(id);
 
+    const diretor = await getDiretorById(Number(id));
     if (!diretor) {
-      return res.status(404).json({
-        success: false,
-        message: "Diretor não encontrado",
-      });
+      return sendError(res, "Diretor não encontrado", "NOT_FOUND", 404);
     }
 
-    // Obter filmes do diretor
-    const filmes = await Diretor.getFilmes(id);
+    const filmes = await getFilmesPorDiretor(Number(id));
 
-    res.json({
-      success: true,
-      data: {
-        ...diretor,
-        filmes,
-      },
-    });
+    return sendSuccess(
+      res,
+      { ...diretor, filmes },
+      "Diretor obtido com sucesso",
+      200
+    );
   } catch (error) {
     console.error("Erro ao obter diretor:", error);
-    res.status(500).json({
-      success: false,
-      message: "Erro ao obter diretor",
-      error: error.message,
-    });
+    return sendError(
+      res,
+      "Erro ao obter diretor",
+      "INTERNAL_ERROR",
+      500,
+      error.message
+    );
   }
 });
 
@@ -66,26 +78,30 @@ router.post("/", async (req, res) => {
     const diretorData = req.body;
 
     if (!diretorData.nome) {
-      return res.status(400).json({
-        success: false,
-        message: "Nome é obrigatório",
-      });
+      return sendError(res, "Nome é obrigatório", "VALIDATION_ERROR", 400);
     }
 
-    const novoDiretor = await Diretor.create(diretorData);
+    const resultado = await salvarDiretor(diretorData);
+    if (!resultado.success) {
+      return sendError(
+        res,
+        resultado.error,
+        resultado.code,
+        500,
+        resultado.details
+      );
+    }
 
-    res.status(201).json({
-      success: true,
-      message: "Diretor criado com sucesso",
-      data: novoDiretor,
-    });
+    return sendSuccess(res, resultado.data, resultado.message, 201);
   } catch (error) {
     console.error("Erro ao criar diretor:", error);
-    res.status(500).json({
-      success: false,
-      message: "Erro ao criar diretor",
-      error: error.message,
-    });
+    return sendError(
+      res,
+      "Erro ao criar diretor",
+      "INTERNAL_ERROR",
+      500,
+      error.message
+    );
   }
 });
 
@@ -95,28 +111,28 @@ router.put("/:id", async (req, res) => {
     const { id } = req.params;
     const diretorData = req.body;
 
-    const diretor = await Diretor.getById(id);
+    const diretor = await getDiretorById(Number(id));
     if (!diretor) {
-      return res.status(404).json({
-        success: false,
-        message: "Diretor não encontrado",
-      });
+      return sendError(res, "Diretor não encontrado", "NOT_FOUND", 404);
     }
 
-    const diretorAtualizado = await Diretor.update(id, diretorData);
+    const diretorAtualizado = await updateDiretor(Number(id), diretorData);
 
-    res.json({
-      success: true,
-      message: "Diretor atualizado com sucesso",
-      data: diretorAtualizado,
-    });
+    return sendSuccess(
+      res,
+      diretorAtualizado,
+      "Diretor atualizado com sucesso",
+      200
+    );
   } catch (error) {
     console.error("Erro ao atualizar diretor:", error);
-    res.status(500).json({
-      success: false,
-      message: "Erro ao atualizar diretor",
-      error: error.message,
-    });
+    return sendError(
+      res,
+      "Erro ao atualizar diretor",
+      "INTERNAL_ERROR",
+      500,
+      error.message
+    );
   }
 });
 
@@ -125,27 +141,23 @@ router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    const diretor = await Diretor.getById(id);
+    const diretor = await getDiretorById(Number(id));
     if (!diretor) {
-      return res.status(404).json({
-        success: false,
-        message: "Diretor não encontrado",
-      });
+      return sendError(res, "Diretor não encontrado", "NOT_FOUND", 404);
     }
 
-    await Diretor.delete(id);
+    await deleteDiretor(Number(id));
 
-    res.json({
-      success: true,
-      message: "Diretor deletado com sucesso",
-    });
+    return sendSuccess(res, null, "Diretor deletado com sucesso", 200);
   } catch (error) {
     console.error("Erro ao deletar diretor:", error);
-    res.status(500).json({
-      success: false,
-      message: "Erro ao deletar diretor",
-      error: error.message,
-    });
+    return sendError(
+      res,
+      "Erro ao deletar diretor",
+      "INTERNAL_ERROR",
+      500,
+      error.message
+    );
   }
 });
 

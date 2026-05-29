@@ -188,7 +188,7 @@ export async function obterContatosPorEmail(email) {
 export async function marcarComoLido(id) {
   try {
     const result = await pool.query(
-      "UPDATE contatos SET lido = true, atualizado_em = NOW() WHERE id = $1 RETURNING id",
+      "UPDATE contatos SET lido = true, atualizado_em = NOW() WHERE id = $3 RETURNING id",
       [id]
     );
 
@@ -220,7 +220,7 @@ export async function marcarComoLido(id) {
 export async function responderContato(id, resposta) {
   try {
     const result = await pool.query(
-      "UPDATE contatos SET resposta = $1, respondido = true, respondido_em = NOW(), atualizado_em = NOW() WHERE id = $2 RETURNING id",
+      "UPDATE contatos SET resposta = $1, respondido = true, respondido_em = NOW(), atualizado_em = NOW() WHERE id = $1 $2 RETURNING id",
       [resposta, id]
     );
 

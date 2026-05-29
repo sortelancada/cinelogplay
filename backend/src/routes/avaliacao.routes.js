@@ -3,7 +3,21 @@
 // ========================================
 
 import express from "express";
-import Avaliacao from "../models/avaliacao.model.js";
+import {
+  listarAvaliacoesFilme,
+  mediaFilme,
+  avaliacaoUsuario,
+  criarOuAtualizarAvaliacao,
+  deletarAvaliacaoController,
+} from "../controllers/avaliacao.controller.js";
+
+router.get("/filme/:filmeId", listarAvaliacoesFilme);
+router.get("/filme/:filmeId/media", mediaFilme);
+router.get("/usuario/:usuarioId/filme/:filmeId", avaliacaoUsuario);
+router.post("/", criarOuAtualizarAvaliacao);
+router.delete("/:id", deletarAvaliacaoController);
+
+export default router;
 
 const router = express.Router();
 

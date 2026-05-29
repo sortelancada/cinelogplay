@@ -88,9 +88,10 @@ Este é o fluxo de execução do projeto:
 3. Implementação do frontend (modo mock)
 4. Integração frontend + backend
 5. Implementação dos testes (Cypress)
-6. Configuração de CI/CD
-7. Deploy (backend → frontend)
-8. Validação final (modo offline incluso)
+6. SonarQuebe
+7. Configuração de CI/CD
+8. Deploy (backend → frontend)
+9. Validação final (modo offline incluso)
 
 Este fluxo deve ser seguido por toda a equipe.
 
@@ -195,7 +196,7 @@ git checkout -b feature/docs-nome-do-ajuste
 
 - HTML5 → Documentação (https://www.w3schools.com/html/)
 - CSS3 → Documentação (https://www.w3schools.com/css/)
-- Bootstrap 5.3.x (framework CSS) → [Download](https://getbootstrap.com/) | Documentação (https://getbootstrap.com/docs/5.3/getting-started/introduction/)
+- Bootstrap 5.3.8 (framework CSS) → [Download](https://getbootstrap.com/) | Documentação (https://getbootstrap.com/docs/5.3/getting-started/introduction/)
 - JavaScript ES6+ ( para filtros, carrossel e validação de formulários ) → Documentação (https://www.w3schools.com/js/)
 
 ### Backend
@@ -204,13 +205,13 @@ git checkout -b feature/docs-nome-do-ajuste
   - Gerenciamento de versão: fnm ( Linux e Windows ) → [Instalação](https://github.com/Schniz/fnm)
   - Execução:
     - Linux: terminal padrão
-    - Windows: Git Bash ( obrigatório )
-- Express.js v4.19.x → [Documentação](https://expressjs.com/)
-- pnpm v9.x → [Documentação](https://pnpm.io/)
+    - Windows: Git Bash v2.54.0 ( obrigatório )
+- Express.js v4.22.2 → [Documentação](https://expressjs.com/)
+- pnpm v10.12.4 → [Documentação](https://pnpm.io/)
 - Docker
-  - Linux: Docker Engine 29.4.0 → [Download](https://docs.docker.com/engine/install/) | [Documentação](https://docs.docker.com/engine/)
-  - Windows: Docker Desktop 4.69.0 → [Download](https://www.docker.com/products/docker-desktop) | [Documentação](https://docs.docker.com/desktop/)
-- PostgreSQL v16.x ( homologação via Docker ) → [Download](https://www.postgresql.org/download/) | [Documentação](https://www.postgresql.org/docs/16/)
+  - Linux: Docker Engine 29.5.2 → [Download](https://docs.docker.com/engine/install/) | [Documentação](https://docs.docker.com/engine/)
+  - Windows: Docker Desktop 4.69.0 x → [Download](https://www.docker.com/products/docker-desktop) | [Documentação](https://docs.docker.com/desktop/)
+- PostgreSQL v16-alpine.x ( homologação via Docker ) → [Download](https://www.postgresql.org/download/) | [Documentação](https://www.postgresql.org/docs/16/)
 - Supabase v16.x ( produção ) → [Site Oficial](https://supabase.com/) | [Documentação](https://supabase.com/docs)
 
 ---
@@ -236,7 +237,7 @@ O sistema segue uma arquitetura em 3 camadas:
 
 O backend deve continuar funcionando mesmo se o banco estiver indisponível.
 
-### Implementação obrigatória:
+### Implementação obrigatória (Exemplo):
 
 ```js
 let dbConnected = true;
@@ -311,7 +312,7 @@ app.get("/api/filmes", async (req, res) => {
 
 O frontend deve funcionar de forma independente do backend.
 
-### Estrutura obrigatória:
+### Estrutura obrigatória (exemplo):
 
 ```
 /frontend/data/filmes.json
@@ -516,7 +517,7 @@ async function enviarFormulario(dados) {
 
 ## Estrutura do Backend
 
-### Estrutura de pastas:
+### Estrutura de pastas inicial:
 
 ```
 /backend
@@ -548,6 +549,8 @@ O backend deve suportar dois modos de execução:
 
 #### Requisitos obrigatórios:
 
+- Docker Compose | v5.1.4
+
 - `docker-compose.yml` para subida do PostgreSQL
 - Variáveis de ambiente configuradas (`.env`)
 
@@ -557,7 +560,7 @@ Garantir que o ambiente de desenvolvimento seja padronizado e reproduzível por 
 
 ---
 
-### Endpoints obrigatórios:
+### Endpoints obrigatórios (exemplos):
 
 - `/api/filmes`
 - `/api/diretores`
@@ -598,7 +601,7 @@ Estrutura obrigatória:
 Referência:
 
 - [https://expressjs.com/](https://expressjs.com/)
-- [https://nodejs.org/docs/latest-v20.x/api/](https://nodejs.org/docs/latest-v20.x/api/)
+- [https://nodejs.org/docs/latest-v24.16.0.x/api/](https://nodejs.org/docs/latest-v24.16.0.x/api/)
 
 ---
 
@@ -657,8 +660,8 @@ O projeto deve garantir qualidade e estabilidade através de testes automatizado
 
 ### Ferramentas
 
-- Cypress v13.x (E2E) → [Documentação](https://docs.cypress.io/)
-- Jest v29.x → Documentação (https://jestjs.io/docs/getting-started)
+- Cypress v14.5.4.x (E2E) → [Documentação](https://docs.cypress.io/)
+- Jest v30.4.2.x → Documentação (https://jestjs.io/docs/getting-started)
 - Supertest v6.x (opcional) → [Documentação](https://github.com/ladjs/supertest)
 
 ---
@@ -679,7 +682,7 @@ Validar o comportamento completo da aplicação do ponto de vista do usuário.
 
 ### Configuração
 
-Arquivo obrigatório:
+Arquivo obrigatório (exemplo):
 
 - Criar arquivo do `cypress.config.js`:
 
@@ -940,8 +943,8 @@ Antes da entrega, o sistema deve atender aos seguintes critérios:
 
 - HTML, CSS, Bootstrap implementados
 - JavaScript funcional (ES6+)
-- Backend em Node.js v24.16.0LTS + Express v4.19.x
-- Banco PostgreSQL v16.x (Docker + Supabase)
+- Backend em Node.js v24.16.0LTS + Express v4.22.2x
+- Banco PostgreSQL v16-alpine (Docker + Supabase)
 - Testes Cypress implementados
 - GitHub privado
 - CI/CD configurado

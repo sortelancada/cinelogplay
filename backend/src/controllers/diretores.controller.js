@@ -6,7 +6,7 @@ export async function listarDiretoresController(req, res) {
   try {
     const resultado = await getDiretores();
 
-    if (!resultado.success && resultado.error) {
+    if (resultado.success === false) {
       return sendError(
         res,
         resultado.error,
@@ -24,13 +24,7 @@ export async function listarDiretoresController(req, res) {
     );
   } catch (error) {
     console.error("Erro ao buscar diretores:", error);
-    return sendError(
-      res,
-      "Erro ao buscar diretores",
-      "INTERNAL_ERROR",
-      500,
-      error.message
-    );
+    return sendError(res, "Erro ao buscar diretores", "INTERNAL_ERROR", 500);
   }
 }
 
@@ -63,13 +57,7 @@ export async function criarDiretorController(req, res) {
     return sendSuccess(res, resultado.data, resultado.message, 201);
   } catch (error) {
     console.error("Erro ao criar diretor:", error);
-    return sendError(
-      res,
-      "Erro ao criar diretor",
-      "INTERNAL_ERROR",
-      500,
-      error.message
-    );
+    return sendError(res, "Erro ao criar diretor", "INTERNAL_ERROR", 500);
   }
 }
 

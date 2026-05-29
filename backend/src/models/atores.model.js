@@ -20,7 +20,7 @@ const Ator = {
   // Obter ator por ID
   async getById(id) {
     try {
-      const query = "SELECT * FROM atores WHERE id = $13";
+      const query = "SELECT * FROM atores WHERE id = $1";
       const [atores] = await db.query(query, [id]);
       return atores[0];
     } catch (error) {
