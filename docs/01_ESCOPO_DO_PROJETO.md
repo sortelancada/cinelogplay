@@ -83,12 +83,12 @@ Este documento atua como **visão central do projeto**, conectando todos os dema
 
 Este é o fluxo de execução do projeto:
 
-1. Definição da arquitetura
-2. Implementação do backend (com fallback)
-3. Implementação do frontend (modo mock)
+1. Definição da `arquitetura`
+2. Implementação do `backend` (com fallback)
+3. Implementação do `frontend` (modo mock)
 4. Integração frontend + backend
-5. Implementação dos testes (Cypress)
-6. SonarQuebe
+5. Implementação dos testes usando (`Cypress`) para o frontend e (`Jest`) para o backend
+6. SonarQube
 7. Configuração de CI/CD
 8. Deploy (backend → frontend)
 9. Validação final (modo offline incluso)
@@ -194,25 +194,75 @@ git checkout -b feature/docs-nome-do-ajuste
 
 ### Frontend
 
-- HTML5 → Documentação (https://www.w3schools.com/html/)
-- CSS3 → Documentação (https://www.w3schools.com/css/)
-- Bootstrap 5.3.8 (framework CSS) → [Download](https://getbootstrap.com/) | Documentação (https://getbootstrap.com/docs/5.3/getting-started/introduction/)
-- JavaScript ES6+ ( para filtros, carrossel e validação de formulários ) → Documentação (https://www.w3schools.com/js/)
+- HTML5 → [Site Oficial](https://html.spec.whatwg.org/) | [Referência](https://developer.mozilla.org/pt-BR/docs/Web/HTML)
+  - Estrutura das páginas
+  - Semântica da aplicação
+  - Base da interface do usuário
+
+- CSS3 → [Referência](https://developer.mozilla.org/pt-BR/docs/Web/CSS)
+  - Estilização da interface
+  - Layout responsivo
+  - Customização visual
+
+- Bootstrap v5.3.8 → [Site Oficial](https://getbootstrap.com/) | [Documentação](https://getbootstrap.com/docs/5.3/)
+  - Sistema de grid responsivo
+  - Componentes visuais
+  - Padronização da interface
+
+- JavaScript ES6+ → [Referência](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
+  - Regras de negócio do frontend
+  - Manipulação do DOM
+  - Consumo da API
+
+- Vite v7.3.3 → [Site Oficial](https://vite.dev/) | [Documentação](https://vite.dev/guide/)
+  - Empacotamento do frontend
+  - Gerenciamento de variáveis de ambiente (.env)
+  - Servidor local de desenvolvimento
+  - Build de produção
+
+Arquivos de gerenciamento:
+
+- package.json
+- pnpm-lock.yaml
+
+---
 
 ### Backend
 
-- Node.js v24.16.0LTS → [Download](https://nodejs.org/en/download) | [Documentação](https://nodejs.org/docs/latest-v20.x/api/)
-  - Gerenciamento de versão: fnm ( Linux e Windows ) → [Instalação](https://github.com/Schniz/fnm)
-  - Execução:
-    - Linux: terminal padrão
-    - Windows: Git Bash v2.54.0 ( obrigatório )
-- Express.js v4.22.2 → [Documentação](https://expressjs.com/)
-- pnpm v10.12.4 → [Documentação](https://pnpm.io/)
-- Docker
-  - Linux: Docker Engine 29.5.2 → [Download](https://docs.docker.com/engine/install/) | [Documentação](https://docs.docker.com/engine/)
-  - Windows: Docker Desktop 4.69.0 x → [Download](https://www.docker.com/products/docker-desktop) | [Documentação](https://docs.docker.com/desktop/)
-- PostgreSQL v16-alpine.x ( homologação via Docker ) → [Download](https://www.postgresql.org/download/) | [Documentação](https://www.postgresql.org/docs/16/)
-- Supabase v16.x ( produção ) → [Site Oficial](https://supabase.com/) | [Documentação](https://supabase.com/docs)
+- Node.js v24.16.0 → [Site Oficial](https://nodejs.org/) | [Documentação](https://nodejs.org/docs/latest/api/)
+  - Runtime da aplicação
+  - Execução do servidor backend
+  - Gerenciamento do ambiente JavaScript
+
+- Express.js v4.22.2 → [Site Oficial](https://expressjs.com/) | [Documentação](https://expressjs.com/)
+  - Criação da API REST
+  - Gerenciamento de rotas
+  - Middleware da aplicação
+
+- pnpm v10.12.4 → [Site Oficial](https://pnpm.io/) | [Documentação](https://pnpm.io/)
+  - Gerenciamento de dependências
+  - Workspace do monorepo
+  - Execução de scripts
+
+- PostgreSQL v16-alpine.x → [Site Oficial](https://www.postgresql.org/) | [Documentação](https://www.postgresql.org/docs/16/)
+  - Banco de dados relacional
+  - Persistência de dados
+  - Ambiente de homologação
+
+- Supabase v16.x → [Site Oficial](https://supabase.com/) | [Documentação](https://supabase.com/docs)
+  - Banco de dados em produção
+  - Serviços gerenciados
+  - Autenticação e integração
+
+- Docker Engine v29.5.2 → [Site Oficial](https://www.docker.com/) | [Documentação](https://docs.docker.com/engine/)
+  - Containerização da aplicação
+  - Padronização do ambiente
+  - Homologação local
+
+Arquivos de gerenciamento:
+
+- package.json
+- pnpm-lock.yaml
 
 ---
 
@@ -315,7 +365,7 @@ O frontend deve funcionar de forma independente do backend.
 ### Estrutura obrigatória (exemplo):
 
 ```
-/frontend/data/filmes.json
+/frontend/src/data/filmes.json
 ```
 
 ```json
@@ -341,7 +391,7 @@ O frontend deve funcionar de forma independente do backend.
 ```
 
 ```
-/frontend/data/diretores.json
+/frontend/src/data/diretores.json
 ```
 
 ```json
@@ -393,14 +443,31 @@ const USE_MOCK = !API_URL;
 const API_URL = import.meta.env.VITE_API_URL || "";
 const USE_MOCK = !API_URL;
 
+import filmes from "../data/filmes.json";
+
 async function getFilmes() {
   if (USE_MOCK || !API_URL) {
-    return fetch("/data/filmes.json")
-      .then((res) => res.json())
-      .then((json) => json.data);
+    return filmes.data;
   }
 
   return fetch(`${API_URL}/api/filmes`)
+    .then((res) => res.json())
+    .then((json) => json.data);
+}
+```
+
+```js
+const API_URL = import.meta.env.VITE_API_URL || "";
+const USE_MOCK = !API_URL;
+
+import diretores from "../data/diretores.json";
+
+async function getDiretores() {
+  if (USE_MOCK || !API_URL) {
+    return diretores.data;
+  }
+
+  return fetch(`${API_URL}/api/diretores`)
     .then((res) => res.json())
     .then((json) => json.data);
 }
@@ -520,12 +587,18 @@ async function enviarFormulario(dados) {
 ### Estrutura de pastas inicial:
 
 ```
-/backend
+/backend/src
+ ├── auth/
+ ├── config/
  ├── controllers/
+ ├── database/seeders
+ ├── middleware/
+ ├── mock/
+ ├── models/
  ├── routes/
  ├── services/
- ├── config/
- ├── mock/
+ ├── tests/
+ ├── utils/
  └── server.js
 ```
 
@@ -549,12 +622,22 @@ O backend deve suportar dois modos de execução:
 
 #### Requisitos obrigatórios:
 
-- Docker Compose | v5.1.4
+- Docker Engine
+- Docker Compose (plugin oficial integrado ao Docker)
 
+Comando oficial:
+
+```bash
+docker compose
+```
+
+### Objetivo:
+
+- Orquestração do PostgreSQL
+- Ambiente padronizado para desenvolvimento
+- Execução local da aplicação
 - `docker-compose.yml` para subida do PostgreSQL
 - Variáveis de ambiente configuradas (`.env`)
-
-#### Objetivo:
 
 Garantir que o ambiente de desenvolvimento seja padronizado e reproduzível por todos os membros da equipe.
 
@@ -562,9 +645,13 @@ Garantir que o ambiente de desenvolvimento seja padronizado e reproduzível por 
 
 ### Endpoints obrigatórios (exemplos):
 
-- `/api/filmes`
-- `/api/diretores`
-- `/api/contato`
+- /api/filmes
+- /api/diretores
+- /api/contato
+- /api/auth
+- /api/atores
+- /api/avaliacoes
+- /api/favoritos
 
 ### Padrão de resposta da API
 
@@ -662,7 +749,6 @@ O projeto deve garantir qualidade e estabilidade através de testes automatizado
 
 - Cypress v14.5.4.x (E2E) → [Documentação](https://docs.cypress.io/)
 - Jest v30.4.2.x → Documentação (https://jestjs.io/docs/getting-started)
-- Supertest v6.x (opcional) → [Documentação](https://github.com/ladjs/supertest)
 
 ---
 
@@ -739,6 +825,30 @@ O projeto utiliza práticas de integração e entrega contínua para garantir qu
 - GitHub Actions (CI/CD) → [Documentação](https://docs.github.com/actions)
 - Render (backend) → [Site Oficial](https://render.com/) | [Documentação](https://render.com/docs)
 - Vercel ou GitHub Pages (frontend) → [Vercel](https://vercel.com/) | [GitHub Pages](https://pages.github.com/)
+- SonarQube → [Site Oficial](https://www.sonarsource.com/products/sonarqube/) | [Documentação](https://docs.sonarsource.com/sonarqube-server/)
+
+---
+
+### Qualidade de Código (SonarQube)
+
+O projeto deverá realizar análise estática de código utilizando SonarQube.
+
+Objetivos:
+
+- Identificar bugs
+- Detectar vulnerabilidades
+- Avaliar cobertura de testes
+- Garantir qualidade mínima do código
+
+Execução:
+
+- Pipeline GitHub Actions
+- Execução automática em Pull Requests
+- Execução automática na branch dev
+
+Falha no Quality Gate:
+
+- Bloqueia aprovação do Pull Request
 
 ---
 
@@ -749,7 +859,7 @@ O pipeline de CI deve executar automaticamente em todos os Pull Requests.
 ### Execuções obrigatórias:
 
 - Testes E2E (Cypress) em cada PR
-- Testes de backend (Jest + Supertest)
+- Testes de backend (Jest)
 
 ---
 
@@ -917,12 +1027,22 @@ O projeto deve conter os seguintes documentos:
 - `24_CHECKLIST_MATHEUS.md` → Checklist operacional
 - `25_CHECKLIST_LUCAS.md` → Checklist operacional
 - `26_CHECKLIST_HENRIQUE.md` → Checklist operacional
+- `27_CHECKLIST_WINLEY.md` → Checklist operacional
 
 ---
 
 ### Documento final
 
-- `27_APRESENTACAO.md` → Material de apresentação
+- `28_APRESENTACAO.md` → Material de apresentação
+
+---
+
+### Documentação complementar
+
+- `29_POLITICA_PRIVACIDADE.md` → Política de Privacidade do sistema
+- `30_LGPD_COMPLIANCE.md` → Diretrizes de conformidade com a LGPD
+- `31_API_DOCS.md` → Documentação dos endpoints da API
+- `SECURITY.md` → Política e práticas de segurança do projeto
 
 ---
 
@@ -943,7 +1063,7 @@ Antes da entrega, o sistema deve atender aos seguintes critérios:
 
 - HTML, CSS, Bootstrap implementados
 - JavaScript funcional (ES6+)
-- Backend em Node.js v24.16.0LTS + Express v4.22.2x
+- Backend em Node.js v24.16.0 + Express v4.22.2x
 - Banco PostgreSQL v16-alpine (Docker + Supabase)
 - Testes Cypress implementados
 - GitHub privado

@@ -2,7 +2,7 @@
 // GERENCIAMENTO DE CONTATO
 // ========================================
 
-import { config } from "./config.js";
+import { config } from "./configuracao.js";
 const API_URL = config.apiUrl;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -64,7 +64,7 @@ function handleContactSubmit() {
       }
     })
     .catch((err) => {
-      console.error("❌ Erro ao enviar contato:", err);
+      console.error("Erro ao enviar contato:", err);
       alert("Erro ao enviar mensagem. Tente novamente mais tarde.");
     });
 }

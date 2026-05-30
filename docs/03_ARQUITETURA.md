@@ -8,6 +8,10 @@
   - [Visão Geral da Arquitetura](#visão-geral-da-arquitetura)
   - [Modelo Arquitetural](#modelo-arquitetural)
   - [Estrutura do Projeto](#estrutura-do-projeto)
+    - [Estrutura de Testes](#estrutura-de-testes)
+    - [Arquivos obrigatórios de gerenciamento](#arquivos-obrigatórios-de-gerenciamento)
+    - [Objetivo](#objetivo)
+    - [Modelo de Repositório](#modelo-de-repositório)
   - [Camadas do Sistema](#camadas-do-sistema)
     - [Frontend](#frontend)
       - [Tecnologias:](#tecnologias)
@@ -80,32 +84,122 @@ Banco de Dados (PostgreSQL)
 ## Estrutura do Projeto
 
 ```
-CinelogPlay/
+CINELOGPLAY-WEB/
 │
 ├── frontend/
-│   ├── index.html
+│   ├── src/
+│   ├── public/
 │   ├── pages/
-│   ├── css/
-│   ├── js/
-│   ├── data/ (mock)
-│   └── .env
+│   ├── cypress/
+│   ├── package.json
+│   ├── vite.config.js
+│   └── Dockerfile
 │
 ├── backend/
-│   ├── server.js
-│   ├── routes/
-│   ├── controllers/
-│   ├── services/
-│   ├── config/
-│   └── mock/
-│
-├── cypress/
+│   ├── src/
+│   │   ├── auth/
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── database/
+│   │   │   └── seeders/
+│   │   ├── middleware/
+│   │   ├── mock/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   ├── tests/
+│   │   ├── utils/
+│   │   └── server.js
+│   │
+│   ├── package.json
+│   └── Dockerfile
 │
 ├── docs/
 │
-└── .github/workflows/
+├── .github/
+│
+├── package.json
+├── pnpm-workspace.yaml
+├── pnpm-lock.yaml
+└── docker-compose.yml
 ```
 
+---
+
+### Estrutura de Testes
+
+Frontend:
+
+- Cypress
+- frontend/cypress
+
+Backend:
+
+- Jest
+- backend/src/tests
+
+```
 O uso de `.env` no frontend é destinado à configuração de URLs da API e variáveis de ambiente em contexto de deploy.
+```
+
+---
+
+### Arquivos obrigatórios de gerenciamento
+
+Raiz do projeto:
+
+- package.json
+- pnpm-workspace.yaml
+- pnpm-lock.yaml
+
+Frontend:
+
+- package.json
+- vite.config.js
+- .env.example
+
+Backend:
+
+- package.json
+- Dockerfile
+- .env.example
+
+```
+Os arquivos `.env` não são versionados.
+
+Cada módulo utiliza seu respectivo `.env.example`
+como referência para configuração do ambiente.
+```
+
+### Objetivo
+
+- Controle de dependências
+- Execução da pipeline CI/CD
+- Padronização do ambiente
+- Reprodutibilidade do projeto
+
+---
+
+### Modelo de Repositório
+
+O projeto utiliza a estratégia Monorepo.
+
+O gerenciamento do workspace é realizado através do arquivo:
+
+- pnpm-workspace.yaml
+
+Esse arquivo define os pacotes participantes do workspace:
+
+- frontend
+- backend
+
+Benefícios:
+
+- instalação centralizada de dependências
+- execução unificada de scripts
+- compartilhamento de configurações
+- integração simplificada com CI/CD
+- gerenciamento consistente de versões
 
 ---
 
@@ -137,6 +231,7 @@ Responsável por:
 - API REST
 - Integração com banco
 - Fallback (modo offline)
+- Autenticação e autorização (JWT)
 
 #### Tecnologias:
 
@@ -171,9 +266,20 @@ fetch(`${config.apiUrl}/api/filmes`)
 
 ```js
 // fallback automático (modo offline)
-fetch("/frontend/data/filmes.json")
-  .then((res) => res.json())
-  .then((json) => json.data);
+import filmes from "../data/filmes.json";
+
+function getFilmes() {
+  return filmes.data;
+}
+```
+
+```js
+// fallback automático (modo offline)
+import diretores from "../data/diretores.json";
+
+function getDiretores() {
+  return diretores.data;
+}
 ```
 
 3. Backend processa
@@ -189,9 +295,21 @@ fetch("/frontend/data/filmes.json")
 Se API falhar:
 
 ```js
-fetch("/frontend/data/filmes.json")
-  .then((res) => res.json())
-  .then((json) => json.data);
+// fallback automático (modo offline)
+import filmes from "../data/filmes.json";
+
+function getFilmes() {
+  return filmes.data;
+}
+```
+
+```js
+// fallback automático (modo offline)
+import diretores from "../data/diretores.json";
+
+function getDiretores() {
+  return diretores.data;
+}
 ```
 
 ---
@@ -253,9 +371,16 @@ return res.json({
 
 - GET /api/filmes
 - GET /api/filmes/:id
+
 - GET /api/diretores
 - GET /api/diretores/:id
+
 - POST /api/contato
+
+- Rotas de autenticação (auth)
+- Rotas de atores
+- Rotas de avaliações
+- Rotas de favoritos
 
 ---
 
@@ -264,21 +389,37 @@ return res.json({
 ### Backend
 
 ```
-backend/
-├── routes/
-├── controllers/
-├── services/
-├── config/
-├── mock/
+/backend
+└── src
+    ├── auth/
+    ├── config/
+    ├── controllers/
+    ├── database/
+    │   └── seeders/
+    ├── middleware/
+    ├── mock/
+    ├── models/
+    ├── routes/
+    ├── services/
+    ├── tests/
+    ├── utils/
+    └── server.js
 ```
 
 #### Responsabilidades:
 
-- routes → define endpoints
-- controllers → recebe requisição
-- services → lógica de negócio
-- config → configuração e conexão com banco
-- mock → fallback
+- auth → autenticação e autorização (JWT)
+- config → configuração da aplicação e conexão com banco
+- controllers → recebimento e tratamento das requisições
+- database → scripts, estrutura e seeders do banco
+- middleware → validações e tratamento das requisições
+- mock → dados de fallback
+- models → acesso e modelagem dos dados
+- routes → definição dos endpoints
+- services → regras de negócio
+- tests → testes automatizados
+- utils → funções utilitárias compartilhadas
+- server.js → inicialização da aplicação backend
 
 ---
 
@@ -287,9 +428,13 @@ backend/
 ```
 frontend/
 ├── pages/
-├── js/
-├── css/
-├── data/
+├── src/
+│   ├── js/
+│   ├── css/
+│   ├── data/
+│   │   ├── filmes.json
+│   │   └── diretores.json
+│   └── img/
 ```
 
 #### Responsabilidades:
@@ -348,6 +493,22 @@ Erro:
 - Cypress roda com dados mock (sem depender do backend)
 - Falha na pipeline bloqueia o merge
 - Deploy ocorre automaticamente após validação
+
+Fluxo da pipeline:
+
+```
+Pull Request
+↓
+Jest
+↓
+Cypress
+↓
+SonarQube
+↓
+Merge
+↓
+Deploy
+```
 
 ---
 

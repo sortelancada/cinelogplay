@@ -48,8 +48,8 @@ A resiliência do CinelogPlay é baseada em dois pilares:
 
 ```
 
-/frontend/data/filmes.json
-/frontend/data/diretores.json
+/frontend/src/data/filmes.json
+/frontend/src/data/diretores.json
 
 ```
 
@@ -77,12 +77,16 @@ VITE_API_URL=https://seu-backend.onrender.com
 const API_URL = import.meta.env.VITE_API_URL || "";
 const USE_MOCK = !API_URL;
 
+import filmes from "../data/filmes.json";
+
 async function getFilmes() {
   if (USE_MOCK || !API_URL) {
-    return fetch("/data/filmes.json").then((res) => res.json());
+    return filmes.data;
   }
 
-  return fetch(`${API_URL}/api/filmes`).then((res) => res.json());
+  return fetch(`${API_URL}/api/filmes`)
+    .then((res) => res.json())
+    .then((json) => json.data);
 }
 ```
 

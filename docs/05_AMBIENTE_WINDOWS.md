@@ -49,9 +49,8 @@ Este passo a passo detalha o processo completo para configurar o ambiente de des
     - [Documentação](#documentação-1)
     - [Instalação do Cypress](#instalação-do-cypress-1)
     - [Verificação](#verificação-3)
-  - [Instalação do Jest + Supertest (opcional)](#instalação-do-jest--supertest-opcional)
+  - [Instalação do Jest](#instalação-do-jest)
     - [Jest](#jest)
-    - [Supertest](#supertest)
     - [Instalar](#instalar)
     - [Verificação](#verificação-4)
   - [Instalação do VS Code + Extensões](#instalação-do-vs-code--extensões)
@@ -302,22 +301,18 @@ pnpm exec cypress -v   # Deve mostrar versão 13.x
 
 ---
 
-## Instalação do Jest + Supertest (opcional)
+## Instalação do Jest
 
 ### Jest
 
 [https://jestjs.io/docs/getting-started](https://jestjs.io/docs/getting-started)
-
-### Supertest
-
-[https://github.com/ladjs/supertest](https://github.com/ladjs/supertest)
 
 ---
 
 ### Instalar
 
 ```bash
-pnpm add jest supertest --save-dev
+pnpm add jest --save-dev
 ```
 
 ---
@@ -507,7 +502,7 @@ pnpm exec cypress -v
 
 ## Observações
 
-- Sempre usar **Node.js v24.16.0LTS**
+- Sempre usar **Node.js v24.16.0**
 - Utilizar **pnpm** para gerenciamento de dependências
 - Configurar variáveis sensíveis em `.env`
 - Usar senha forte no PostgreSQL (`POSTGRES_PASSWORD`)

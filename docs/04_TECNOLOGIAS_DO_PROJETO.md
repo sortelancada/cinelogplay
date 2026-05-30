@@ -22,18 +22,26 @@
 - CSS3 → Documentação (https://www.w3schools.com/css/)
 - Bootstrap 5.3.8.x → [Download](https://getbootstrap.com/) | Documentação (https://getbootstrap.com/docs/5.3/getting-started/introduction/)
 - JavaScript ES6+ → Documentação (https://www.w3schools.com/js/)
+- Vite v7.3.3 → [Site Oficial](https://vite.dev/) | [Documentação](https://vite.dev/guide/)
+  - Servidor de desenvolvimento
+  - Build de produção
+  - Gerenciamento de variáveis de ambiente
 
 ---
 
 ## Backend
 
-- Node.js v24.16.0LTS → [Download](https://nodejs.org/en/download) | [Documentação](https://nodejs.org/docs/latest-v20.x/api/)
+- Node.js v24.16.0 → [Download](https://nodejs.org/en/download) | [Documentação](https://nodejs.org/docs/latest-v24.x/api/)
   - Gerenciamento de versão: fnm (Linux e Windows) → [Instalação](https://github.com/Schniz/fnm)
   - Execução:
     - Linux: terminal padrão
     - Windows: Git Bash (obrigatório)
 - pnpm v10.12.4.x (`corepack enable pnpm`) → [Documentação](https://pnpm.io/)
 - Express.js v4.22.2.x → [Documentação](https://expressjs.com/)
+- JSON Web Token (JWT)
+  - Autenticação
+  - Autorização
+  - Proteção de rotas
 - Docker
   - Linux: Docker Engine 29.5.2 → [Download](https://docs.docker.com/engine/install/) | [Documentação](https://docs.docker.com/engine/)
   - Windows: Docker Desktop 4.69.0 → [Download](https://www.docker.com/products/docker-desktop) | [Documentação](https://docs.docker.com/desktop/)
@@ -45,16 +53,24 @@
 ## Testes
 
 - Cypress v14.5.4.x → [Documentação](https://docs.cypress.io/)
-- Jest v30.4.2.x (opcional) → Documentação (https://jestjs.io/docs/getting-started)
-- Supertest v6.x (opcional) → [Documentação](https://github.com/ladjs/supertest)
+- Jest v30.4.2.x → [Documentação](https://jestjs.io/docs/getting-started)
 
 ---
 
 ## DevOps
 
-- GitHub Actions → [Documentação](https://docs.github.com/actions)
-- Render → [Site Oficial](https://render.com/) | [Documentação](https://render.com/docs)
-- Vercel ou GitHub Pages → [Vercel](https://vercel.com/) | [GitHub Pages](https://pages.github.com/)
+- GitHub Actions → Documentação (https://docs.github.com/actions)
+
+- SonarQube Community Edition
+  - Análise estática de código
+  - Quality Gate
+  - Integração com GitHub Actions
+
+- Render → Site Oficial (https://render.com/) | Documentação (https://render.com/docs)
+
+- Vercel ou GitHub Pages
+  - Vercel (https://vercel.com/)
+  - GitHub Pages (https://pages.github.com/)
 
 ---
 
@@ -66,6 +82,10 @@
 ### Extensões recomendadas para VS Code
 
 - ESLint → Extensão (https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+  - Padronização de código JavaScript
+  - Análise estática
+  - Identificação de problemas de qualidade
+
 - Prettier → Extensão (https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 - Docker → Extensão (https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
 - PostgreSQL → Extensão (https://marketplace.visualstudio.com/items?itemName=ckolkman.vscode-postgres)
@@ -158,7 +178,7 @@ Exemplos:
 ### CI
 
 - Cypress
-- Jest + Supertest (opcional)
+- Jest
 
 ### CD
 
@@ -182,7 +202,7 @@ Exemplos:
 
 - HTML, CSS, Bootstrap
 - JavaScript ES6+
-- Node.js v24.16.0LTS + Express
+- Node.js v24.16.0 + Express
 - PostgreSQL + Supabase
 - Cypress
 - GitHub

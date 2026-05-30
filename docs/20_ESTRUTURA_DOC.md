@@ -135,8 +135,11 @@ CinelogPlay/
 │   ├── 26_CHECKLIST_HENRIQUE.md   ✅ 0%
 │   │   # Checklist de tarefas do Henrique
 │   │   # Controle de progresso individual
+│   ├── 26_CHECKLIST_.md   ✅ 0%
+│   │   # Checklist de tarefas do Henrique
+│   │   # Controle de progresso individual
 │   │
-│   └── 27_APRESENTACAO.md   ✅ 40%
+│   └── 28_APRESENTACAO.md   ✅ 40%
 │       # Roteiro da apresentação do projeto
 │       # Passo a passo para demonstrar o sistema AO VIVO
 │       # Evita travar na hora da entrega

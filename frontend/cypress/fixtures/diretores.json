@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "nome": "Francis Ford Coppola",
+    "nacionalidade": "EUA",
+    "principais_obras": "O Poderoso Chefão"
+  },
+  {
+    "id": 2,
+    "nome": "Quentin Tarantino",
+    "nacionalidade": "EUA",
+    "principais_obras": "Pulp Fiction"
+  },
+  {
+    "id": 3,
+    "nome": "Christopher Nolan",
+    "nacionalidade": "Reino Unido",
+    "principais_obras": "A Origem, Interestelar"
+  },
+  {
+    "id": 4,
+    "nome": "Bong Joon-ho",
+    "nacionalidade": "Coreia do Sul",
+    "principais_obras": "Parasita"
+  }
+]

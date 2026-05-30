@@ -279,7 +279,8 @@ Toda a documentação está organizada na pasta `/docs`.
 - 24_CHECKLIST_MATHEUS.md
 - 25_CHECKLIST_LUCAS.md
 - 26_CHECKLIST_HENRIQUE.md
-- 27_APRESENTACAO.md
+- 27_CHEKLIST_WINLEY.md
+- 28_APRESENTACAO.md
 
 ---
 

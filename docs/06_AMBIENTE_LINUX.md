@@ -26,7 +26,7 @@ Este passo a passo detalha o processo completo para configurar o ambiente de des
     - [Instalar fnm via script oficial](#instalar-fnm-via-script-oficial)
     - [Ativar fnm no shell](#ativar-fnm-no-shell)
     - [Persistir configuração](#persistir-configuração)
-    - [Instalar Node.js v24.16.0LTS](#instalar-nodejs-v24160lts)
+    - [Instalar Node.js v24.16.0](#instalar-nodejs-v24160lts)
     - [Verificação](#verificação)
   - [Instalação do pnpm](#instalação-do-pnpm)
     - [Documentação](#documentação)
@@ -54,9 +54,8 @@ Este passo a passo detalha o processo completo para configurar o ambiente de des
     - [Documentação](#documentação-1)
     - [Instalação do Cypress](#instalação-do-cypress-1)
     - [Verificação](#verificação-3)
-  - [Instalação do Jest + Supertest](#instalação-do-jest--supertest)
+  - [Instalação do Jest](#instalação-do-jest--)
     - [Jest](#jest)
-    - [Supertest](#supertest)
     - [Instalar](#instalar)
     - [Verificação](#verificação-4)
   - [Instalação do VS Code + Extensões](#instalação-do-vs-code--extensões)
@@ -143,7 +142,7 @@ source ~/.bashrc
 
 ---
 
-### Instalar Node.js v24.16.0LTS
+### Instalar Node.js v24.16.0
 
 ```bash
 fnm install 24.16.0 (v1.39.0x)
@@ -408,20 +407,20 @@ pnpm exec cypress -v   # Deve mostrar versão 13.x
 
 ---
 
-## Instalação do Jest + Supertest
+## Instalação do Jest +
 
 ### Jest
 
 [https://jestjs.io/docs/getting-started](https://jestjs.io/docs/getting-started)
 
-### Supertest
+###
 
-[https://github.com/ladjs/supertest](https://github.com/ladjs/supertest)
+[https://github.com/ladjs/](https://github.com/ladjs/)
 
 ### Instalar
 
 ```bash
-pnpm add jest supertest --save-dev
+pnpm add jest  --save-dev
 ```
 
 ---
@@ -609,7 +608,7 @@ pnpm exec cypress -v
 
 ## Observações
 
-- Sempre usar **Node.js v24.16.0LTS**
+- Sempre usar **Node.js v24.16.0**
 - Utilizar **pnpm** para gerenciamento de dependências
 - Configurar variáveis sensíveis em `.env`
 - Usar senha forte no PostgreSQL (`POSTGRES_PASSWORD`)
