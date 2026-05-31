@@ -76,7 +76,7 @@ frontend/cypress.config.js
 ```js
 module.exports = {
   e2e: {
-    baseUrl: "http://localhost:3000",
+    baseUrl: "http://localhost:5173",
   },
 };
 ```
@@ -133,9 +133,9 @@ Os scripts oficiais utilizados pelos testes Cypress devem ser mantidos no arquiv
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "cy:open": "cypress open",
-    "cy:run": "cypress run",
-    "test:ci": "start-server-and-test dev http://localhost:3000 cy:run"
+    "preview": "vite preview",
+    "test:ci": "cypress run",
+    "cypress:open": "cypress open"
   }
 }
 ```
@@ -219,7 +219,7 @@ Os testes devem cobrir:
 - Cypress chamando API real
 - Não usar `cy.intercept`
 - Servidor não rodando no CI
-- Porta diferente de `3000`
+- Porta diferente de `5173`
 - Falta de fixtures
 - Testes dependentes de dados externos
 

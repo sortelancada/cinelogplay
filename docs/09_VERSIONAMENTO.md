@@ -42,8 +42,8 @@ Definir como versionar código corretamente usando Git, garantindo:
 
 ### Gestor de Pacotes:
 
-- pnpm v9.x (OBRIGATÓRIO)
-- Node.js: v20.20.2 LTS
+- pnpm v10.12.4 (OBRIGATÓRIO)
+- Node.js: v24.16.0
 
 ### Proibido Usar:
 
@@ -69,12 +69,12 @@ Definir como versionar código corretamente usando Git, garantindo:
 
 ## Estrutura de Branches
 
-O projeto utiliza o padrão definido em `BRANCHING.md`:
+O projeto utiliza o padrão definido em `10_BRANCHING.md`:
 
-- `main` → versão estável
-- `feature/*` → desenvolvimento de funcionalidades
-- `fix/*` → correções de bugs
-- `hotfix/*` → correções urgentes
+- `main` → versão estável (produção)
+- `dev` → integração contínua (homologação)
+- `feature/*` → desenvolvimento de funcionalidades (criadas a partir de `dev`)
+- `hotfix/*` → correções urgentes (criadas a partir de `main`)
 
 ---
 
@@ -177,8 +177,8 @@ Toda alteração deve passar por PR:
 Antes de trabalhar:
 
 ```bash id="update-branch"
-git checkout main
-git pull origin main
+git checkout dev
+git pull origin dev
 ```
 
 ---

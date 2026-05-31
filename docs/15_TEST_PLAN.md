@@ -79,7 +79,7 @@ Executados utilizando Jest.
 
 ## Ambiente de Testes
 
-- URL base: `http://localhost:3000`
+- URL base: `http://localhost:5173`
 - Cypress configurado
 - Fixtures disponíveis
 

@@ -209,7 +209,7 @@ services:
     image: postgres:16-alpine
     container_name: postgres-CinelogPlay
     environment:
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: senha_segura
       POSTGRES_DB: CinelogPlay
     ports:
       - "5432:5432"
@@ -257,7 +257,7 @@ docker pull postgres:16
 ```bash
 docker run -d \
   --name postgres-CinelogPlay \
-  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_PASSWORD=senha_segura \
   -e POSTGRES_DB=cinelogplay \
   -p 5432:5432 \
   -v postgres_data:/var/lib/postgresql/data \

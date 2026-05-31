@@ -63,36 +63,6 @@
 
 ---
 
-## Pipeline de Testes
-
-```yaml id="ci-pipeline"
-name: CI/CD - CinelogPlay
-
-on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - run: corepack enable
-      - run: pnpm install
-
-      - run: pnpm run test:ci
-```
-
----
-
 ## Frontend — Vercel
 
 ### Passo a passo
@@ -149,7 +119,7 @@ pnpm install
 #### Start:
 
 ```bash id="start-backend"
-node server.js
+node backend/src/server.js
 ```
 
 ---
@@ -157,7 +127,7 @@ node server.js
 ### Porta dinâmica (OBRIGATÓRIO)
 
 ```js id="port-backend"
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT);
 ```
 

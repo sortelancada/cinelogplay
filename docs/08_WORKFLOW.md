@@ -59,12 +59,12 @@ Antes de começar qualquer coisa:
 
 ## Criação de Branch
 
-Sempre criar uma branch nova a partir da `main`:
+Sempre criar uma branch nova a partir da `dev`:
 
 ```bash id="create-branch"
-git checkout main
-git pull origin main
-git checkout -b feature/nome-da-feature
+git checkout dev
+git pull origin dev
+git checkout -b feature/[area]-nome-da-feature
 ```
 
 ---
@@ -113,7 +113,7 @@ git push origin feature/nome-da-feature
 
 Criar PR no GitHub:
 
-- Base: `main`
+- Base: `dev`
 - Explicar o que foi feito
 - Descrever mudanças
 
@@ -136,8 +136,9 @@ Antes do merge:
 
 Após aprovação:
 
-- Realizar merge na `dev`
+- Realizar merge na `dev` (via Pull Request)
 - Garantir que CI passou
+- A `main` recebe apenas merges de `dev` quando pronto para produção
 
 ---
 
@@ -146,8 +147,8 @@ Após aprovação:
 Após merge:
 
 ```bash id="update-main"
-git checkout main
-git pull origin main
+git checkout dev
+git pull origin dev
 ```
 
 ---

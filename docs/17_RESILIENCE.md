@@ -1,6 +1,6 @@
 # Resiliência do Sistema — CinelogPlay
 
-## Porposta
+## Proposta
 
 Garantir que o sistema continue funcionando corretamente mesmo diante de falhas externas, principalmente:
 

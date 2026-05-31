@@ -10,8 +10,6 @@
     - [CD (Continuous Deployment)](#cd-continuous-deployment)
   - [Estrutura Obrigatória](#estrutura-obrigatória)
   - [Pipeline CI e CD (GitHub Actions)](#pipeline-ci-e-cd-github-actions)
-    - [Arquivo: `.github/workflows/ci.yml`](#arquivo-githubworkflowsciyml)
-    - [Arquivo: `.github/workflows/cd.yml`](#arquivo-githubworkflowscdyml)
   - [Scripts Necessários no `frontend/package.json`](#scripts-necessários-no-frontendpackagejson)
   - [Fluxo da feature](#fluxo-da-feature)
   - [CI](#ci)
@@ -64,7 +62,7 @@ Toda vez que faz push em `dev` ou `main`:
 ```
 1. GitHub Actions é acionado automaticamente
 2. Clona repositório
-3. Instala dependências (pnpm v9.x)
+3. Instala dependências (pnpm v10.12.4)
 4. Roda Cypress com mock (testes E2E com fixtures)
 5. Passou → PR pode ser mergeado
 6. Falhou → PR é bloqueado (obrigatório corrigir)
@@ -111,82 +109,18 @@ Sua-Pasta-Raiz/
 
 ## Pipeline CI e CD (GitHub Actions)
 
-### Arquivo: `.github/workflows/ci.yml`
+O workflow completo encontra-se em:
 
-```yaml
-name: CI Pipeline - CinelogPlay
+`.github/workflows/ci-cd.yml`
 
-on:
-  push:
-    branches:
-      - dev
-      - main
-  pull_request:
-    branches:
-      - dev
-      - main
+Principais etapas:
 
-env:
-  NODE_VERSION: "24"
-
-jobs:
-  ci:
-    name: Testes (CI)
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Clonar repositório
-        uses: actions/checkout@v4
-
-      - name: Configurar Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Ativar pnpm via Corepack
-        run: corepack enable
-
-      - name: Instalar dependências
-        run: pnpm install --frozen-lockfile
-
-      - name: Rodar Cypress (Testes E2E)
-        run: pnpm run test:ci
-
-      - name: Upload artifacts (screenshots/videos)
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-artifacts-${{ github.run_number }}
-          path: |
-            cypress/screenshots/
-            cypress/videos/
-          retention-days: 7
-```
-
-### Arquivo: `.github/workflows/cd.yml`
-
-```yaml
-name: CD Pipeline - CinelogPlay
-
-on:
-  push:
-    branches:
-      - dev
-      - main
-
-jobs:
-  cd:
-    name: Deploy Notification (CD)
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Status do Deploy
-        run: |
-          echo " Validações concluídas com sucesso!"
-          echo " O deploy automático foi disparado para as plataformas:"
-          echo " Frontend (Vercel): https://seu-dominio.vercel.app"
-          echo " Backend (Render): https://seu-backend.onrender.com"
-```
+- Instalação das dependências
+- Cache de dependências
+- Build do frontend
+- Inicialização do servidor Vite
+- Execução dos testes E2E com Cypress
+- Upload de artefatos em caso de falha
 
 ---
 

@@ -225,8 +225,8 @@ Verificando logs...
 ### 1. Atualizar base
 
 ```bash
-git checkout main
-git pull origin main
+git checkout dev
+git pull origin dev
 ```
 
 ---
