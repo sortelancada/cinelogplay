@@ -1,4 +1,3 @@
-// src/auth/auth.routes.js
 import express from "express";
 import { notImplementedAuth } from "./auth.controller.js";
 

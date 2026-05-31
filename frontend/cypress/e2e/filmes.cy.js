@@ -1,44 +1,48 @@
-// frontend/cypress/e2e/filmes.cy.js
-
 describe("Página de Filmes", () => {
-  // Teste 1: Carregar página de filmes
-  it("deve carregar a página de filmes", () => {
-    cy.intercept("GET", "/api/filmes", {
-      fixture: "filmes.json",
-    }).as("getFilmes");
+  beforeEach(() => {
+    cy.intercept("GET", "**/api/filmes", { fixture: "filmes.json" }).as(
+      "getFilmes"
+    );
+    cy.visit("/pages/filmes.html");
+  });
 
-    cy.visit("/");
-    cy.get('a[data-page="filmes"]').click();
+  it("deve carregar a página com título do catálogo", () => {
     cy.contains("Catálogo de Filmes").should("be.visible");
   });
 
-  // Teste 2: Exibir lista de filmes
-  it("deve exibir lista de filmes", () => {
-    cy.intercept("GET", "/api/filmes", {
-      fixture: "filmes.json",
-    }).as("getFilmes");
-
-    cy.visit("/");
-    cy.get('a[data-page="filmes"]').click();
-    cy.wait("@getFilmes");
-
-    // Verifica se pelo menos um filme aparece
-    cy.get(".filme-card").should("have.length.greaterThan", 0);
+  it("deve exibir cards de filmes", () => {
+    cy.get("#filmes-container .filme-card", { timeout: 6000 }).should(
+      "have.length.greaterThan",
+      0
+    );
   });
 
-  // Teste 3: Filme tem informações corretas
-  it("filme deve ter título, gênero e ano", () => {
-    cy.intercept("GET", "/api/filmes", {
-      fixture: "filmes.json",
-    }).as("getFilmes");
+  it("card deve ter título, gênero e ano", () => {
+    cy.get(".filme-card")
+      .first()
+      .within(() => {
+        cy.get(".filme-card-titulo").should("not.be.empty");
+        cy.get(".filme-card-genero").should("contain", "Gênero");
+        cy.get(".filme-card-ano-classificacao").should("contain", "Ano");
+      });
+  });
 
-    cy.visit("/");
-    cy.get('a[data-page="filmes"]').click();
-    cy.wait("@getFilmes");
+  it("deve filtrar filmes pela pesquisa", () => {
+    cy.get("#pesquisa-input").type("Crime");
+    cy.get(".filme-card .filme-card-genero").each(($el) => {
+      cy.wrap($el).should("contain.text", "Crime");
+    });
+  });
 
-    // Verifica se contém os elementos esperados
-    cy.get(".filme-card h2").first().should("not.be.empty");
-    cy.contains("Gênero").should("be.visible");
-    cy.contains("Ano").should("be.visible");
+  it("ao clicar no card deve mostrar detalhes do filme", () => {
+    cy.get(".filme-card").first().click();
+    cy.get("#app").should("contain", "Sinopse");
+    cy.get("#btn-voltar-filmes").should("be.visible");
+  });
+
+  it("botão voltar deve retornar ao catálogo", () => {
+    cy.get(".filme-card").first().click();
+    cy.get("#btn-voltar-filmes").click();
+    cy.contains("Catálogo de Filmes").should("be.visible");
   });
 });

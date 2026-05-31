@@ -4,6 +4,8 @@ import { resolve } from "path";
 // Importa defineConfig do Vite
 import { defineConfig } from "vite";
 
+const __dirname = import.meta.dirname;
+
 // Exporta configuração
 export default defineConfig({
   // Configuração do servidor dev
@@ -27,11 +29,11 @@ export default defineConfig({
     // Configura entradas HTML multipágina
     rollupOptions: {
       input: {
-        main: resolve(__dirname, "index.html"),
+        ntmain: resolve(__dirname, "index.html"),
         home: resolve(__dirname, "pages/home.html"),
         filmes: resolve(__dirname, "pages/filmes.html"),
         diretores: resolve(__dirname, "pages/diretores.html"),
-        contato: resolve(__dirname, "pages/contato.html"),
+        coato: resolve(__dirname, "pages/contato.html"),
         login: resolve(__dirname, "pages/login.html"),
         cadastro: resolve(__dirname, "pages/cadastro.html"),
         admin: resolve(__dirname, "pages/admin.html"),

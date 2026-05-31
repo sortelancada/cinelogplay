@@ -293,7 +293,7 @@ export async function updateDiretor(id, diretorData) {
 export async function deleteDiretor(id) {
   try {
     const result = await pool.query(
-      "UPDATE diretores SET ativo = false, atualizado_em = NOW() WHERE id = $3 RETURNING id",
+      "UPDATE diretores SET ativo = false, atualizado_em = NOW() WHERE id = $1 RETURNING id",
       [id]
     );
 

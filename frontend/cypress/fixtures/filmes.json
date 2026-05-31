@@ -1,26 +1,38 @@
-[
-  {
-    "id": 1,
-    "titulo": "O Poderoso Chefão",
-    "ano": 1972,
-    "genero": "Crime",
-    "diretor_id": 1,
-    "tipo": "classico"
-  },
-  {
-    "id": 2,
-    "titulo": "Interestelar",
-    "ano": 2014,
-    "genero": "Ficção Científica",
-    "diretor_id": 3,
-    "tipo": "moderno"
-  },
-  {
-    "id": 3,
-    "titulo": "Parasita",
-    "ano": 2019,
-    "genero": "Drama",
-    "diretor_id": 4,
-    "tipo": "premiado"
-  }
-]
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "titulo": "O Poderoso Chefão",
+      "ano": 1972,
+      "genero": "Crime",
+      "classificacao": "14",
+      "imagem": "/filmes/o-poderoso-chefao.png",
+      "descricao_curta": "A história de um crime corporativo",
+      "sinopse": "A história da família Corleone e seu império do crime.",
+      "tipo": "classico"
+    },
+    {
+      "id": 2,
+      "titulo": "Interestelar",
+      "ano": 2014,
+      "genero": "Ficção Científica",
+      "classificacao": "10",
+      "imagem": "/filmes/interstellar.png",
+      "descricao_curta": "Um grupo de exploradores viaja pelo espaço",
+      "sinopse": "Astronautas viajam por um buraco de minhoca.",
+      "tipo": "moderno"
+    },
+    {
+      "id": 3,
+      "titulo": "Parasita",
+      "ano": 2019,
+      "genero": "Drama",
+      "classificacao": "16",
+      "imagem": "/filmes/parasita.jpg",
+      "descricao_curta": "Thriller social que conquistou o mundo",
+      "sinopse": "Uma família pobre se infiltra na vida de uma família rica.",
+      "tipo": "premiado"
+    }
+  ]
+}

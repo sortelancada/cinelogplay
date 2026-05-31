@@ -325,7 +325,7 @@ const todosFilmes = [...filmesData, ...filmesDataParte2];
 
 async function seedFilmes() {
   try {
-    console.log("🎬 Iniciando seed de filmes...");
+    console.log("Iniciando seed de filmes...");
 
     for (const filme of todosFilmes) {
       const query = `
@@ -363,12 +363,12 @@ async function seedFilmes() {
         filme.trailer_youtube,
       ]);
 
-      console.log(`✅ Filme adicionado: ${filme.titulo}`);
+      console.log(`Filme adicionado: ${filme.titulo}`);
     }
 
-    console.log("✅ Seed de filmes concluído com sucesso!");
+    console.log("Seed de filmes concluído com sucesso!");
   } catch (error) {
-    console.error("❌ Erro ao fazer seed de filmes:", error);
+    console.error("Erro ao fazer seed de filmes:", error);
     throw error;
   }
 }

@@ -7,11 +7,12 @@ import {
   searchFilmes,
   getFilmesByGenero,
   getFilmesComAvaliacao,
+  salvarFilme,
+  updateFilme,
+  deleteFilme,
 } from "../services/filmes.service.js";
 
 import { getMediaFilme } from "../services/avaliacao.service.js";
-
-import Filmes from "../models/filmes.model.js"; // necessário enquanto estiver usando create/update/delete
 
 const router = express.Router();
 
@@ -104,7 +105,13 @@ router.post("/", async (req, res) => {
       });
     }
 
-    const novoFilme = await Filmes.create(filmData);
+    const resultado = await salvarFilme(filmData);
+
+    if (!resultado.success) {
+      return res.status(500).json(resultado);
+    }
+
+    const novoFilme = resultado.data;
 
     return res.status(201).json({
       success: true,
@@ -134,7 +141,7 @@ router.put("/:id", async (req, res) => {
       });
     }
 
-    const filmeAtualizado = await Filmes.update(id, req.body);
+    const filmeAtualizado = await updateFilme(Number(id), req.body);
 
     return res.json({
       success: true,
@@ -164,7 +171,7 @@ router.delete("/:id", async (req, res) => {
       });
     }
 
-    await Filmes.delete(id);
+    await deleteFilme(Number(id));
 
     return res.json({
       success: true,

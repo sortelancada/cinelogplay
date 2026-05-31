@@ -1,4 +1,3 @@
-// src/middleware/auth.middleware.js
 import { verifyToken } from "../auth/jwt.js";
 
 export async function authMiddleware(req, res, next) {

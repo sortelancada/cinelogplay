@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="CinelogPlay — Catálogo Informativo de Produções Cinematográficas"
+    />
     <title>Home - CinelogPlay</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -15,109 +19,223 @@
   </head>
 
   <body>
-    <nav class="navbar-custom">
-      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
-        <i class="bi bi-list"></i>
+    <!-- NAVBAR -->
+    <nav
+      class="navbar-custom"
+      role="navigation"
+      aria-label="Navegação principal"
+    >
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+      >
+        <i class="bi bi-list" aria-hidden="true"></i>
       </button>
 
-      <a class="navbar-brand" href="/pages/home.html">
-        <img src="/cinelogplay.png" alt="CinelogPlay" title="CinelogPlay" />
+      <a
+        class="navbar-brand"
+        href="/pages/home.html"
+        aria-label="CinelogPlay - Página inicial"
+      >
+        <img src="/logo/cinelogplay.png" alt="CinelogPlay" />
       </a>
 
       <div class="user-profile-wrapper">
-        <button class="user-profile" id="userProfileBtn">
-          <div class="user-avatar" id="userAvatar">L</div>
-
+        <button
+          class="user-profile"
+          id="userProfileBtn"
+          aria-label="Menu do usuário"
+          aria-expanded="false"
+        >
+          <div class="user-avatar" id="userAvatar" aria-hidden="true">L</div>
           <div class="user-info">
-            <span class="user-name" id="userName"> Lucas </span>
-
-            <span class="user-email" id="userEmail"> lucas@email.com </span>
+            <span class="user-name" id="userName">Lucas</span>
+            <span class="user-email" id="userEmail">lucas@email.com</span>
           </div>
         </button>
 
-        <div class="user-dropdown" id="userDropdown">
-          <a href="#" id="profileLink">
-            <i class="bi bi-person"></i>
-            Perfil
+        <div class="user-dropdown" id="userDropdown" role="menu">
+          <a href="#" id="profileLink" role="menuitem">
+            <i class="bi bi-person" aria-hidden="true"></i> Perfil
           </a>
-
-          <a href="#" id="logoutLink" class="logout">
-            <i class="bi bi-box-arrow-right"></i>
-            Sair
+          <a href="/pages/filmes.html" role="menuitem">
+            <i class="bi bi-heart" aria-hidden="true"></i> Favoritos
+          </a>
+          <hr style="margin: 0.4rem 0; opacity: 0.2" />
+          <a href="#" id="logoutLink" class="logout" role="menuitem">
+            <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Sair
           </a>
         </div>
       </div>
     </nav>
 
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <!-- SIDEBAR OVERLAY -->
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
 
-    <aside class="sidebar" id="sidebar">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar" aria-label="Menu lateral">
       <nav>
         <ul class="sidebar-nav">
           <li>
-            <a href="/pages/home.html" class="nav-link active">
-              <i class="bi bi-house-door"></i>
-              Home
+            <a href="/pages/home.html" class="active">
+              <i class="bi bi-house-door" aria-hidden="true"></i> Home
             </a>
           </li>
-
           <li>
-            <a href="/pages/filmes.html" class="nav-link">
-              <i class="bi bi-film"></i>
-              Filmes
+            <a href="/pages/filmes.html">
+              <i class="bi bi-film" aria-hidden="true"></i> Filmes
             </a>
           </li>
-
           <li>
-            <a href="/pages/diretores.html" class="nav-link">
-              <i class="bi bi-person-circle"></i>
-              Diretores
+            <a href="/pages/diretores.html">
+              <i class="bi bi-camera-video" aria-hidden="true"></i> Diretores
             </a>
           </li>
-
           <li>
-            <a href="/pages/contato.html" class="nav-link">
-              <i class="bi bi-envelope"></i>
-              Contato
+            <a href="/pages/contato.html">
+              <i class="bi bi-envelope" aria-hidden="true"></i> Contato
             </a>
           </li>
         </ul>
       </nav>
     </aside>
 
-    <div id="app">
-      <div
-        class="container-fluid d-flex align-items-center justify-content-center"
-        style="min-height: calc(100vh - 80px)"
-      >
-        <div class="text-center">
-          <h1
-            style="
-              font-size: 2.5rem;
-              color: #333;
-              font-weight: 300;
-              letter-spacing: 1px;
-              margin-bottom: 1.5rem;
-            "
-          >
-            🎬 CinelogPlay
-          </h1>
-
-          <p style="font-size: 1.1rem; color: #999; margin-bottom: 0.5rem">
+    <!-- MAIN -->
+    <main id="app">
+      <!-- HERO -->
+      <section class="hero-section">
+        <div class="container">
+          <h1 class="hero-title">O melhor do cinema você encontra aqui!</h1>
+          <p class="hero-subtitle">
             Catálogo Informativo de Produções Cinematográficas
           </p>
+          <p class="hero-text">Bem-vindo ao seu diário de bordo do cinema!</p>
+        </div>
+      </section>
 
-          <p style="font-size: 1rem; color: #aaa">
-            Bem-vindo ao seu diário de bordo do cinema!
-          </p>
+      <!-- FILMES EM DESTAQUE -->
+      <section class="py-4 px-3 px-md-4" id="section-destaque">
+        <div class="container-fluid">
+          <div class="section-header">
+            <h2 class="section-title">Filmes em Destaque</h2>
+            <a
+              href="/pages/filmes.html"
+              class="btn btn-sm btn-outline-secondary"
+            >
+              Ver todos <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            </a>
+          </div>
+          <div
+            id="filmes-container"
+            class="filmes-scroll"
+            role="list"
+            aria-label="Filmes em destaque"
+          ></div>
+        </div>
+      </section>
+
+      <!-- LANÇAMENTOS -->
+      <section class="py-4 px-3 px-md-4" id="section-lancamentos">
+        <div class="container-fluid">
+          <div class="section-header">
+            <h2 class="section-title">Lançamentos</h2>
+            <a
+              href="/pages/filmes.html"
+              class="btn btn-sm btn-outline-secondary"
+            >
+              Ver todos <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            </a>
+          </div>
+          <div
+            id="lancamentos-container"
+            class="filmes-scroll"
+            role="list"
+            aria-label="Lançamentos"
+          ></div>
+        </div>
+      </section>
+
+      <!-- CLÁSSICOS -->
+      <section class="py-4 px-3 px-md-4 mb-5" id="section-classicos">
+        <div class="container-fluid">
+          <div class="section-header">
+            <h2 class="section-title">Clássicos</h2>
+            <a
+              href="/pages/filmes.html"
+              class="btn btn-sm btn-outline-secondary"
+            >
+              Ver todos <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            </a>
+          </div>
+          <div
+            id="classicos-container"
+            class="filmes-scroll"
+            role="list"
+            aria-label="Clássicos"
+          ></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row g-4 pb-3">
+          <div class="col-12 col-md-4">
+            <img
+              src="/logo/cinelogplay.png"
+              alt="CinelogPlay"
+              class="footer-logo"
+            />
+            <p class="footer-tagline mt-2">
+              Catálogo Informativo de Produções Cinematográficas
+            </p>
+          </div>
+          <div class="col-6 col-md-2">
+            <p class="footer-title">Navegar</p>
+            <ul class="footer-links">
+              <li><a href="/pages/home.html">Home</a></li>
+              <li><a href="/pages/filmes.html">Filmes</a></li>
+              <li><a href="/pages/diretores.html">Diretores</a></li>
+              <li><a href="/pages/contato.html">Contato</a></li>
+            </ul>
+          </div>
+          <div class="col-6 col-md-3">
+            <p class="footer-title">Gêneros</p>
+            <ul class="footer-links">
+              <li><a href="/pages/filmes.html">Ação</a></li>
+              <li><a href="/pages/filmes.html">Drama</a></li>
+              <li><a href="/pages/filmes.html">Ficção Científica</a></li>
+              <li><a href="/pages/filmes.html">Crime</a></li>
+            </ul>
+          </div>
+          <div class="col-12 col-md-3">
+            <p class="footer-title">Siga-nos</p>
+            <div class="footer-social">
+              <a href="#" aria-label="Instagram"
+                ><i class="bi bi-instagram" aria-hidden="true"></i
+              ></a>
+              <a href="#" aria-label="Twitter"
+                ><i class="bi bi-twitter-x" aria-hidden="true"></i
+              ></a>
+              <a href="#" aria-label="YouTube"
+                ><i class="bi bi-youtube" aria-hidden="true"></i
+              ></a>
+              <a href="#" aria-label="Facebook"
+                ><i class="bi bi-facebook" aria-hidden="true"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom text-center">
+          <p>&copy; 2026 CinelogPlay. Todos os direitos reservados.</p>
         </div>
       </div>
-
-      <div id="filmes-container"></div>
-    </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script type="module" src="/src/js/main.js"></script>
   </body>
 </html>

@@ -8,7 +8,7 @@ export async function enviarMensagem(req, res) {
 
     const validacao = validateContactData({ nome, email, mensagem });
 
-    if (!validacao.isValid) {
+    if (!validacao.valid) {
       return sendError(
         res,
         "Dados de entrada inválidos",
@@ -27,7 +27,12 @@ export async function enviarMensagem(req, res) {
       userAgent
     );
 
-    return sendSuccess(res, resultado, "Mensagem enviada com sucesso", 201);
+    return sendSuccess(
+      res,
+      resultado.data,
+      "Mensagem enviada com sucesso",
+      201
+    );
   } catch (error) {
     console.error("Erro ao enviar contato:", error);
 

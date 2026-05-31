@@ -8,12 +8,17 @@ dotenv.config();
 
 const { Pool } = pkg;
 
+// Defaults seguros: se as variáveis não estiverem definidas, usamos os
+// padrões de desenvolvimento local (localhost + padrões do Postgres).
+// Quando o .env define DB_HOST (ex.: "postgres" no Docker), o valor é
+// respeitado — isto apenas evita um crash de DNS (ENOTFOUND) quando a
+// configuração está ausente. Funciona igual em Windows e Linux.
 const pool = new Pool({
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  host: process.env.DB_HOST || "localhost",
+  port: Number(process.env.DB_PORT) || 5432,
+  user: process.env.DB_USER || "postgres",
+  password: process.env.DB_PASSWORD || "postgres",
+  database: process.env.DB_NAME || "cinelogplay",
 });
 
 async function initializeDatabase() {

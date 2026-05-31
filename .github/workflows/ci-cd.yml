@@ -11,7 +11,8 @@ on:
       - main
 
 env:
-  NODE_VERSION: "20"
+  NODE_VERSION: "24"
+  PNPM_VERSION: "10.12.4"
 
 jobs:
   # ========================================
@@ -26,20 +27,37 @@ jobs:
       # Clonar repositório (necessário para acessar código e rodar testes)
       - name: Clonar repositório
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 1
 
       # Configurar Node.js v24.16.0 (garante compatibilidade com pnpm e Vite)
       - name: Configurar Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
 
       # Ativar pnpm via Corepack (garante que a versão do pnpm seja consistente)
       - name: Ativar pnpm via Corepack
-        run: corepack enable
+        run: |
+          corepack enable
+          corepack prepare pnpm@${{ env.PNPM_VERSION }} --activate
 
-      # Instalar dependências (raiz + workspace)
+      # Scripts de instalação são permitidos neste pipeline
+      # porque dependências como Cypress exigem instalação
+      # de componentes adicionais após o download.
+      # As dependências são controladas via pnpm-lock.yaml.
       - name: Instalar dependências
         run: pnpm install --frozen-lockfile
+
+      - name: Cache do binário Cypress
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/Cypress
+          key: ${{ runner.os }}-cypress-${{ hashFiles('frontend/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-cypress-
 
       # Build do frontend (para garantir que não quebre, e para testes E2E)
       - name: Build frontend
@@ -54,8 +72,8 @@ jobs:
           nohup pnpm run dev > /tmp/vite.log 2>&1 &
           echo "Aguardando servidor iniciar..."
           for i in {1..60}; do
-            if curl -s http://localhost:5173 > /dev/null 2>&1; then
-              echo "Servidor rodando em http://localhost:5173"
+            if curl -s http://localhost:5173/pages/home.html > /dev/null 2>&1; then
+              echo "Servidor rodando em http://localhost:5173/pages/home.html"
               sleep 2
               exit 0
             fi
@@ -66,7 +84,8 @@ jobs:
           cat /tmp/vite.log
           exit 1
 
-      # Instalar Cypress binary
+      # Instala explicitamente o binário do Cypress.
+      # Execução necessária para os testes E2E do pipeline.
       - name: Instalar Cypress binary
         working-directory: ./frontend
         run: pnpm exec cypress install
@@ -119,6 +138,9 @@ jobs:
     steps:
       - name: Clonar repositório
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 1
 
       - name: CI passou! Preparando deploy
         run: |

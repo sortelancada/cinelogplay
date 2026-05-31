@@ -4,31 +4,35 @@
     "nome": "Francis Ford Coppola",
     "nacionalidade": "EUA",
     "principais_obras": "O Poderoso Chefão, O Poderoso Chefão Parte II, Apocalypse Now",
-    "biografia": "Diretor lendário do cinema americano, criador de obras-primas que definiram gerações",
-    "foto": "/francis-ford-coppola.jpg"
+    "biografia": "Diretor lendário do cinema americano, criador de obras-primas que definiram gerações.",
+    "foto": "/diretores/francis-ford-coppola.jpg",
+    "ativo": true
   },
   {
     "id": 2,
     "nome": "Quentin Tarantino",
     "nacionalidade": "EUA",
-    "principais_obras": "Pulp Fiction, Django Livre, Inglourious Basterds",
-    "biografia": "Diretor inovador conhecido por seu estilo único e diálogos memoráveis",
-    "foto": "/quentin-tarantino.jpg"
+    "principais_obras": "Pulp Fiction, Django Livre, Inglourious Basterds, Kill Bill",
+    "biografia": "Diretor inovador conhecido por seu estilo único, diálogos memoráveis e referências cinematográficas.",
+    "foto": "/diretores/quentin-tarantino.jpg",
+    "ativo": true
   },
   {
     "id": 3,
     "nome": "Christopher Nolan",
     "nacionalidade": "Reino Unido",
-    "principais_obras": "A Origem, Interestelar, O Cavaleiro das Trevas",
-    "biografia": "Mestre da ficção científica e narrativas complexas que desafiam a mente",
-    "foto": "/christopher-nolan.jpg"
+    "principais_obras": "A Origem, Interestelar, O Cavaleiro das Trevas, Oppenheimer",
+    "biografia": "Mestre da ficção científica e narrativas complexas que desafiam a mente.",
+    "foto": "/diretores/christopher-nolan.jpg",
+    "ativo": true
   },
   {
     "id": 4,
     "nome": "Bong Joon-ho",
     "nacionalidade": "Coreia do Sul",
-    "principais_obras": "Parasita, Snowpiercer, Mãe",
-    "biografia": "Visionário do cinema contemporâneo, premiado internacionalmente",
-    "foto": "/bong-joon-ho.jpg"
+    "principais_obras": "Parasita, Snowpiercer, Okja, Memórias de um Assassino",
+    "biografia": "Visionário do cinema contemporâneo, primeiro diretor sul-coreano a vencer o Oscar de Melhor Filme.",
+    "foto": "/diretores/bong-joon-ho.jpg",
+    "ativo": true
   }
 ]

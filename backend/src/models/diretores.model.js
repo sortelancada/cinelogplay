@@ -98,12 +98,13 @@ const Diretor = {
             nacionalidade = $3,
             data_nascimento = $4,
             biografia = $5,
-            principais_obras = $6
-        WHERE id = $1 $7
+            principais_obras = $6,
+            atualizado_em = NOW()
+        WHERE id = $7
         RETURNING *;
       `;
 
-      await db.query(query, [
+      const result = await db.query(query, [
         nome,
         foto,
         nacionalidade,
@@ -113,7 +114,7 @@ const Diretor = {
         id,
       ]);
 
-      return { id, ...diretorData };
+      return result.rows[0] || null;
     } catch (error) {
       console.error("Erro ao atualizar diretor:", error);
       throw error;

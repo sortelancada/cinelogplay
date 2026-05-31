@@ -1,4 +1,3 @@
-// src/middleware/validation.middleware.js
 import {
   validateFilme,
   validateContato,

@@ -118,7 +118,7 @@ RETURNING *
         id,
       ]);
 
-      return result.rows[0]; // ✅ agora 'result' existe
+      return result.rows[0];
     } catch (error) {
       console.error("Erro ao atualizar filme:", error);
       throw error;

@@ -13,16 +13,16 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"
     />
-    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="/src/css/style.css" />
   </head>
   <body>
     <!-- NAVBAR -->
     <nav class="navbar-custom">
-      <button class="menu-toggle" id="menuToggle">
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
         <i class="bi bi-list"></i>
       </button>
 
-      <a href="/" class="navbar-brand">
+      <a href="/pages/home.html" class="navbar-brand">
         <img src="/logo/cinelogplay.png" alt="CineLogPlay" />
       </a>
 
@@ -39,7 +39,7 @@
 
         <div class="user-dropdown" id="userDropdown">
           <a href="#"><i class="bi bi-person-circle"></i> Perfil</a>
-          <a href="./catalogo.html"><i class="bi bi-heart"></i> Favoritos</a>
+          <a href="/pages/filmes.html"><i class="bi bi-heart"></i> Favoritos</a>
           <a href="#"><i class="bi bi-gear"></i> Configurações</a>
           <hr style="margin: 0.5rem 0; opacity: 0.3" />
           <a href="#" class="logout"
@@ -54,20 +54,20 @@
     <aside class="sidebar" id="sidebar">
       <ul class="sidebar-nav">
         <li>
-          <a href="/"> <i class="bi bi-house-door"></i> Home </a>
+          <a href="/pages/home.html"><i class="bi bi-house-door"></i> Home</a>
         </li>
         <li>
-          <a href="./catalogo.html">
+          <a href="/pages/filmes.html">
             <i class="bi bi-film"></i> Catálogo de Filmes
           </a>
         </li>
         <li>
-          <a href="./diretores.html">
+          <a href="/pages/diretores.html">
             <i class="bi bi-camera-video"></i> Diretores
           </a>
         </li>
         <li>
-          <a href="./contato.html" class="active">
+          <a href="/pages/contato.html" class="active">
             <i class="bi bi-envelope"></i> Contato
           </a>
         </li>
@@ -78,14 +78,78 @@
     <main id="app">
       <div class="container-fluid py-5">
         <div class="container">
-          <h1 class="display-5 fw-light mb-3">📧 Contato</h1>
-          <p class="text-secondary fs-5">Em desenvolvimento...</p>
+          <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+              <h1 class="display-5 fw-light mb-2">📧 Contato</h1>
+              <p class="text-secondary mb-4">
+                Tem alguma dúvida ou sugestão? Entre em contato conosco.
+              </p>
+
+              <div
+                id="contato-feedback"
+                class="alert d-none"
+                role="alert"
+              ></div>
+
+              <form id="contato-form" novalidate>
+                <div class="mb-3">
+                  <label for="contato-nome" class="form-label fw-semibold"
+                    >Nome</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="contato-nome"
+                    placeholder="Seu nome completo"
+                    required
+                    minlength="2"
+                    maxlength="255"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="contato-email" class="form-label fw-semibold"
+                    >E-mail</label
+                  >
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="contato-email"
+                    placeholder="seu@email.com"
+                    required
+                  />
+                </div>
+
+                <div class="mb-4">
+                  <label for="contato-mensagem" class="form-label fw-semibold"
+                    >Mensagem</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="contato-mensagem"
+                    rows="5"
+                    placeholder="Escreva sua mensagem..."
+                    required
+                    minlength="10"
+                    maxlength="5000"
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  id="btn-enviar-contato"
+                  class="btn btn-primary w-100"
+                >
+                  <i class="bi bi-send me-2"></i>Enviar Mensagem
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </main>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/aplicacao.js"></script>
+    <script type="module" src="/src/js/contato.js"></script>
   </body>
 </html>

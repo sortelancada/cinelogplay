@@ -1,5 +1,3 @@
-// backend/src/controllers/avaliacao.controller.js
-
 import {
   getAvaliacoesByFilme,
   getMediaFilme,

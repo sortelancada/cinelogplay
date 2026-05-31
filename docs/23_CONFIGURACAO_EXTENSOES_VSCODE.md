@@ -27,12 +27,12 @@ Este documento define a configuração padronizada das extensões do VS Code uti
 
 ### As seguintes ferramentas e recursos são obrigatórios para o funcionamento do ambiente do projeto
 
-- ESLint + Prettier + EditorConfig → precisam de arquivos de configuração no repositório  
-- Thunder Client / REST Client → configurar collections para endpoints `/api/filmes`, `/api/diretores`, `/api/contato`  
-- PostgreSQL → configurar conexão local (host, user, senha do Docker)  
-- Docker → utilizar `docker-compose.yml`  
-- Cypress → integrado via `package.json` e scripts (`cy:open`, `cy:run`)  
-- GitHub Actions → já configurado via `.github/workflows/ci-cd.yml`  
+- ESLint + Prettier + EditorConfig → precisam de arquivos de configuração no repositório
+- Thunder Client / REST Client → configurar collections para endpoints `/api/filmes`, `/api/diretores`, `/api/contato`
+- PostgreSQL → configurar conexão local (host, user, senha do Docker)
+- Docker → utilizar `docker-compose.yml`
+- Cypress → integrado via `package.json` e scripts (`cy:open`, `cy:run`)
+- GitHub Actions → já configurado via `.github/workflows/ci-cd.yml`
 
 ---
 
@@ -40,12 +40,12 @@ Este documento define a configuração padronizada das extensões do VS Code uti
 
 As seguintes extensões/ferramentas exigem arquivos físicos no repositório:
 
-- ESLint → `.eslintrc.json`  
-- Prettier → `.prettierrc`  
-- EditorConfig → `.editorconfig`  
-- Docker (oficial) → `docker-compose.yml`  
-- Jest → `jest.config.js`  
-- Conventional Commits → `commitlint.config.js`  
+- ESLint → `.eslintrc.json`
+- Prettier → `.prettierrc`
+- EditorConfig → `.editorconfig`
+- Docker (oficial) → `docker-compose.yml`
+- Jest → `jest.config.js`
+- Conventional Commits → `commitlint.config.js`
 - markdownlint → `.markdownlint.json`
 
 ---
@@ -54,8 +54,8 @@ As seguintes extensões/ferramentas exigem arquivos físicos no repositório:
 
 As seguintes ferramentas são configuradas diretamente no editor:
 
-- Thunder Client → Collections no VS Code  
-- PostgreSQL → conexão com container Docker  
+- Thunder Client → Collections no VS Code
+- PostgreSQL → conexão com container Docker
 
 ---
 
@@ -63,8 +63,8 @@ As seguintes ferramentas são configuradas diretamente no editor:
 
 Não exigem configuração manual adicional, elas já estão integradas:
 
-- Cypress → via `package.json` (`cy:open`, `cy:run`)  
-- GitHub Actions → `.github/workflows/ci-cd.yml`  
+- Cypress → via `package.json` (`cy:open`, `cy:run`)
+- GitHub Actions → `.github/workflows/ci-cd.yml`
 
 ---
 
@@ -72,15 +72,15 @@ Não exigem configuração manual adicional, elas já estão integradas:
 
 ## 1. ESLint
 
-**O que configurar**  
+**O que configurar**
 
-- Criar arquivo `.eslintrc.json` na raiz do projeto.  
+- Criar arquivo `.eslintrc.json` na raiz do projeto.
 
-**Instalação**  
+**Instalação**
 
 ```bash
 npm install --save-dev eslint eslint-plugin-cypress
-````
+```
 
 **Passo a passo**
 
@@ -91,11 +91,7 @@ npm install --save-dev eslint eslint-plugin-cypress
 ```json
 {
   "env": { "browser": true, "es2021": true, "node": true },
-  "extends": [
-    "eslint:recommended",
-    "plugin:cypress/recommended",
-    "prettier"
-  ],
+  "extends": ["eslint:recommended", "plugin:cypress/recommended", "prettier"],
   "parserOptions": { "ecmaVersion": 12 },
   "rules": {
     "semi": ["error", "always"],
@@ -228,7 +224,7 @@ insert_final_newline = true
 - Host: `localhost` (ou `postgres` se usar docker-compose)
 - Porta: `5432`
 - Usuário: `postgres`
-- Senha: `senha_segura` (definida no docker-compose.yml)
+- Senha: `postgres` (definida no docker-compose.yml)
 - Database: `CinelogPlay`
 
 #### **Onde configurar** → painel da extensão PostgreSQL
@@ -257,7 +253,7 @@ services:
     image: postgres:16
     container_name: postgres-CinelogPlay
     environment:
-      POSTGRES_PASSWORD: senha_segura
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: CinelogPlay
     ports:
       - "5432:5432"
@@ -294,7 +290,7 @@ volumes:
 module.exports = {
   testEnvironment: "node",
   verbose: true,
-  coverageDirectory: "coverage"
+  coverageDirectory: "coverage",
 };
 ```
 
@@ -312,7 +308,6 @@ module.exports = {
 
 - Não precisa de arquivos extras, mas pode ser ajustado nas **Configurações do VS Code**.
 - Recomenda-se ativar:
-
   - Mostrar autor da linha (`Current Line Blame`).
   - Mostrar histórico de commits no painel lateral.
 
@@ -328,7 +323,6 @@ module.exports = {
 
 - Não exige arquivos, apenas instalar.
 - Recomenda-se configurar atalhos:
-
   - `Ctrl+Shift+Alt+G` para abrir o gráfico.
 
 #### **Onde configurar** → `Configurações → Atalhos de Teclado`
@@ -381,7 +375,7 @@ module.exports = {
 
 ```js
 module.exports = {
-  extends: ["@commitlint/config-conventional"]
+  extends: ["@commitlint/config-conventional"],
 };
 ```
 
@@ -402,7 +396,7 @@ module.exports = {
 - Recomenda-se ativar:
   - Mostrar tamanho das libs importadas no código.
 
-#### **Onde configurar** → `Configurações → Extensões → Import Cost`  
+#### **Onde configurar** → `Configurações → Extensões → Import Cost`
 
 #### **Objetivo** → otimizar uso de dependências
 
@@ -427,7 +421,7 @@ module.exports = {
   "MD013": false,
   "MD033": false
 }
-````
+```
 
 #### **Onde configurar** → raiz do repositório
 
@@ -444,7 +438,6 @@ module.exports = {
 - Precisa de servidor SonarQube configurado (não obrigatório para o projeto).
 
 - Se usar:
-
   - Criar arquivo `sonar-project.properties` na raiz.
 
 **Exemplo**
@@ -521,9 +514,9 @@ Depois de tudo configurado:
 
 1. Você salva o arquivo
 2. VS Code roda:
-
    - `formatOnSave` → Prettier formata
    - `fixAll.eslint` → ESLint corrige
+
 3. Código já sai padronizado e limpo
 
 ---

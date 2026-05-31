@@ -29,5 +29,6 @@
     "connectionId": "lucasitdias",
     "projectKey": "lucasitdias_cinelogplay-web"
   },
-  "sonarlint.pathToNodeExecutable": "/home/lucasitdevelop/.local/share/fnm/node-versions/v24.16.0/installation/bin/node"
+  "sonarlint.pathToNodeExecutable": "/home/lucasitdevelop/.local/share/fnm/node-versions/v24.16.0/installation/bin/node",
+  "cSpell.words": ["avaliacao", "AVALIAÇÕES"]
 }

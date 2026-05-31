@@ -1,9 +1,5 @@
 -- ============================================
 -- CINELOGPLAY DATABASE SEED DATA
--- Version: 1.0.0
--- Created: 2026-05-10
--- ============================================
-
 -- ============================================
 -- INSERT DIRECTORS (DIRETORES)
 -- ============================================
@@ -129,10 +125,3 @@ INSERT INTO filmes (titulo, descricao_curta, sinopse, ano, genero, duracao, clas
   2023, 'Comédia/Fantasia', '114 min', '12', 'https://images.unsplash.com/photo-1489599849228-ed4dc59ee56f?w=400&h=600&fit=crop',
   'https://www.youtube.com/embed/FRzsKX_9B3c', 6, ARRAY['Margot Robbie', 'Ryan Gosling', 'Will Ferrell'], 'filme', true);
 
--- ============================================
--- Verify data insertion
--- ============================================
--- Uncomment to verify:
--- SELECT COUNT(*) as total_diretores FROM diretores;
--- SELECT COUNT(*) as total_filmes FROM filmes;
--- SELECT f.titulo, d.nome as diretor FROM filmes f LEFT JOIN diretores d ON f.diretor_id = d.id ORDER BY f.titulo;

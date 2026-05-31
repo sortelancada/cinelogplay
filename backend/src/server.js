@@ -4,6 +4,9 @@ import dotenv from "dotenv";
 import filmesRoutes from "./routes/filmes.routes.js";
 import diretoresRoutes from "./routes/diretores.routes.js";
 import contatoRoutes from "./routes/contato.routes.js";
+import avaliacaoRoutes from "./routes/avaliacao.routes.js";
+import atoresRoutes from "./routes/atores.routes.js";
+import favoritoRoutes from "./routes/favorito.routes.js";
 import { initializeDatabase } from "./config/db.js";
 import {
   errorHandler,
@@ -18,7 +21,7 @@ const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || "0.0.0.0";
 
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN?.split(",") || ["http://localhost:5173"],
+  origin: ["http://localhost:5173", "http://localhost:5174"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 };
@@ -38,6 +41,9 @@ app.get("/", (req, res) => {
 app.use("/api/filmes", filmesRoutes);
 app.use("/api/diretores", diretoresRoutes);
 app.use("/api/contato", contatoRoutes);
+app.use("/api/avaliacoes", avaliacaoRoutes);
+app.use("/api/atores", atoresRoutes);
+app.use("/api/favoritos", favoritoRoutes);
 
 // 404 handler
 app.use(notFoundHandler);

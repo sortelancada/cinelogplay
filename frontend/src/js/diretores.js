@@ -29,11 +29,11 @@ function carregarDiretores() {
     })
     .then((data) => {
       const diretores = Array.isArray(data) ? data : data.data || [];
-      console.log("✅ Diretores carregados:", diretores.length);
+      console.log("Diretores carregados:", diretores.length);
       renderizarDiretores(diretores);
     })
     .catch((err) => {
-      console.error("❌ Erro ao carregar diretores:", err);
+      console.error("Erro ao carregar diretores:", err);
       const container = document.getElementById("diretores-container");
       if (container) {
         container.innerHTML =

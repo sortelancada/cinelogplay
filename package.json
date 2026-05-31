@@ -14,6 +14,7 @@
     "preview": "pnpm -C frontend run preview",
     "test:ci": "pnpm -C frontend run test:ci",
     "cypress:open": "pnpm -C frontend run cypress:open",
+    "cypress:install": "node scripts/install-cypress.mjs",
     "backend:dev": "pnpm -C backend run dev",
     "backend:start": "pnpm -C backend run start",
     "docker:up": "docker compose up -d",
@@ -29,7 +30,7 @@
     "catalogo",
     "filmes"
   ],
-  "author": "CinelogPlay Team",
+  "author": "CinelogPlay",
   "license": "MIT",
   "devDependencies": {
     "depcheck": "^1.4.7",

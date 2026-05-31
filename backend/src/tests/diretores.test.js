@@ -1,4 +1,4 @@
-import http from "http";
+// import http from "http";
 import app from "../server.js";
 import { describe, it, expect, beforeAll, afterAll } from "@jest/globals";
 
@@ -13,7 +13,7 @@ describe("Diretores API", () => {
     server.close();
   });
 
-  // Teste 1: Listar todos os diretores
+  // Teste: Listar todos os diretores
   it("GET /api/diretores deve retornar lista de diretores", async () => {
     const response = await fetch("http://localhost:3003/api/diretores");
 
@@ -31,7 +31,7 @@ describe("Diretores API", () => {
     expect(data[0]).toHaveProperty("principais_obras");
   });
 
-  // Teste 2: Validar formato dos dados
+  // Teste: Validar formato dos dados
   it("Diretores devem ter todas as propriedades obrigatórias", async () => {
     const response = await fetch("http://localhost:3003/api/diretores");
     const diretores = await response.json();

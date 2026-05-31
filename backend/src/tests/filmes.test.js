@@ -1,5 +1,5 @@
 // Importa o módulo http do Node.js para fazer requisições
-import http from "http";
+//import http from "http";
 
 // Importa a aplicação Express
 import app from "../server.js";
@@ -20,7 +20,7 @@ describe("Filmes API", () => {
     server.close();
   });
 
-  // Teste 1: Verificar se a rota /api/filmes existe
+  // Teste: Verificar se a rota /api/filmes existe
   it("GET /api/filmes deve retornar lista de filmes", async () => {
     // Faz requisição GET para a rota
     const response = await fetch("http://localhost:3002/api/filmes");
@@ -44,7 +44,7 @@ describe("Filmes API", () => {
     expect(data[0]).toHaveProperty("genero");
   });
 
-  // Teste 2: Verificar se os dados têm formato correto
+  // Teste: Verificar se os dados têm formato correto
   it("Filmes devem ter todas as propriedades obrigatórias", async () => {
     const response = await fetch("http://localhost:3002/api/filmes");
     const filmes = await response.json();
