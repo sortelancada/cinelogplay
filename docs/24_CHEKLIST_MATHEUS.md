@@ -23,10 +23,10 @@ Definir **todas as tarefas de testes (QA)** que Matheus e Winley deverão realiz
 
 ### 1: Setup Cypress
 
-- [x] Instalar Cypress v13.x
+- [x] Instalar Cypress 14.5.4
 
   ```bash
-  pnpm add -D cypress@13
+  pnpm add -D cypress@14.5.4
   ```
 
 - [x] Criar `cypress.config.js` na raiz:
@@ -55,10 +55,12 @@ Definir **todas as tarefas de testes (QA)** que Matheus e Winley deverão realiz
   ```
 
 - [x] Criar estrutura de pastas:
+
   ```
   cypress/
   ├── e2e/
   │   ├── home.cy.js
+  │   ├── navegacao.cy.js
   │   ├── diretores.cy.js
   │   ├── contato.cy.js
   │   └── responsividade.cy.js
@@ -467,7 +469,7 @@ Bloqueio: [o que está impedindo]
 
 ## Critério de Sucesso
 
-- Todos 7 arquivos de teste criados (home, navegação, diretores, contato, responsividade + fixtures)
+- Todos os 5 arquivos E2E criados (home, navegacao, diretores, contato e responsividade)
 - 100% dos testes passando localmente
 - 100% dos testes passando no CI (GitHub Actions)
 - CI bloqueador funcionando (merge impossível se falhar)
@@ -483,12 +485,13 @@ Bloqueio: [o que está impedindo]
 #### Branch Management
 
 - [ ] Criar feature branch: `git checkout -b feature/[area]`
-- [ ] Manter branch atualizada: `git pull origin main`
+- [ ] Manter branch atualizada: `git pull origin dev`
+- [ ] Sincronizar branch dev: git pull origin dev
 - [ ] Commits descritivos: `feat:`, `fix:`, `docs:`, `test:`
 
 #### Pull Requests
 
-- [ ] Criar PR para main com descrição clara
+- [ ] Criar PR para dev com descrição clara
 - [ ] Aguardar 1 aprovação mínima
 - [ ] Garantir CI verde antes de merge
 - [ ] Resolver comentários antes de merge

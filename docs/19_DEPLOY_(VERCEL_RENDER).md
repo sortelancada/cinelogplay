@@ -8,7 +8,6 @@
   - [Pré-requisitos](#pré-requisitos)
   - [GitHub Actions (CI)](#github-actions-ci)
     - [Arquivo obrigatório:](#arquivo-obrigatório)
-  - [Pipeline de Testes](#pipeline-de-testes)
   - [Frontend — Vercel](#frontend--vercel)
     - [Passo a passo](#passo-a-passo)
     - [Configuração](#configuração)
@@ -25,7 +24,8 @@
   - [Integração Frontend ↔ Backend](#integração-frontend--backend)
     - [CRÍTICO](#crítico)
   - [Ordem correta de deploy](#ordem-correta-de-deploy)
-    - [Passo a passo obrigatório:](#passo-a-passo-obrigatório)
+    - [Passo a passo obrigatório (primeira configuração)](#passo-a-passo-obrigatório-primeira-configuração)
+      - [Observação](#observação)
   - [Validação do Deploy](#validação-do-deploy)
     - [Testar:](#testar)
     - [Teste de robustez](#teste-de-robustez)
@@ -193,17 +193,19 @@ VITE_API_URL=https://seu-backend.onrender.com
 
 ## Ordem correta de deploy
 
-### Passo a passo obrigatório:
+### Passo a passo obrigatório (primeira configuração)
 
 1. Subir backend no Render
 2. Testar endpoint:
 
-```
 https://seu-backend.onrender.com/api/filmes
-```
 
 3. Configurar `.env` no frontend
 4. Subir frontend no Vercel
+
+#### Observação
+
+Após a configuração inicial e a integração das plataformas com o GitHub, os deploys passam a ocorrer automaticamente a cada push ou merge nas branches configuradas (`dev` e `main`), não sendo necessário realizar novos deploys manuais.
 
 ---
 

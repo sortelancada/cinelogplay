@@ -5,7 +5,7 @@ Ambiente Windows — Instalação e Configuração
 
 Este passo a passo detalha o processo completo para configurar o ambiente de desenvolvimento no Windows, garantindo que todos os integrantes utilizem a mesma base para desenvolvimento do projeto CinelogPlay.
 
-- Git v2.53 (recomendado)
+- Git v2.54 (recomendado)
 - fnm
 - Node.js v24.16.0
 - pnpm (via corepack)
@@ -136,9 +136,9 @@ Feche e abra novamente o terminal para carregar o fnm.
 ### Instalar Node.js v24.16.0
 
 ```bash
-fnm install 20.20.2
-fnm use 20.20.2
-fnm default 20.20.2
+fnm install 24.16.0
+fnm use 24.16.0
+fnm default 24.16.0
 ```
 
 ---
@@ -160,7 +160,8 @@ node -v
 ### Ativar Corepack
 
 ```bash
-RUN corepack enable && corepack prepare pnpm@10.12.4. --activate
+corepack enable
+corepack prepare pnpm@10.12.4 --activate
 ```
 
 ---
@@ -168,7 +169,7 @@ RUN corepack enable && corepack prepare pnpm@10.12.4. --activate
 ### Verificação
 
 ```bash
-pnpm -v   # Deve mostrar versão 9.x
+pnpm -v   # Deve mostrar versão 10.12.4
 ```
 
 ---
@@ -205,7 +206,7 @@ version: "3.9"
 
 services:
   postgres:
-    image: postgres:16
+    image: postgres:16-alpine
     container_name: postgres-CinelogPlay
     environment:
       POSTGRES_PASSWORD: postgres
@@ -289,14 +290,16 @@ docker compose ps
 
 ### Instalação do Cypress
 
+```bash
 pnpm add cypress --save-dev
+```
 
 ---
 
 ### Verificação
 
 ```bash
-pnpm exec cypress -v   # Deve mostrar versão 13.x
+pnpm exec cypress -v   # Deve mostrar versão 14.5.4
 ```
 
 ---
@@ -320,7 +323,7 @@ pnpm add jest --save-dev
 ### Verificação
 
 ```bash
-pnpm exec jest --version   # Deve mostrar versão 29.x
+pnpm exec jest --version   # Deve mostrar versão 30.4.2
 ```
 
 ---
@@ -372,8 +375,8 @@ cd CinelogPlay
 ### Atualizar base
 
 ```bash
-git checkout main
-git pull origin main
+git checkout dev
+git pull origin dev
 ```
 
 ---
@@ -406,7 +409,9 @@ cp .env.example .env  # Git Bash
 
 # ou
 
+```bash
 copy .env.example .env # CMD/PowerShell
+```
 
 ---
 

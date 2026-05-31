@@ -10,6 +10,7 @@ Este documento define todas as regras obrigatórias para contribuição no proje
 - Colaboração eficiente entre os membros
 
 ---
+
 ## `Leia Primeiro os seguintes documentos (Obrigatório):`
 
 1. **01_ESCOPO_DO_PROJETO.md** → Entender o projeto
@@ -27,6 +28,7 @@ Este documento define todas as regras obrigatórias para contribuição no proje
 ### ANTES DE COMEÇAR:
 
 - [ ] Sincronizar branch `dev` local com remoto
+
   ```bash
   git checkout dev
   git pull origin dev
@@ -44,6 +46,7 @@ Este documento define todas as regras obrigatórias para contribuição no proje
 - [ ] Seguir arquitetura em `03_ARQUITETURA.md`
 
 - [ ] Fazer commits pequenos e frequentes
+
   ```bash
   git commit -m "tipo: descrição clara"
   ```
@@ -102,6 +105,7 @@ Este documento define todas as regras obrigatórias para contribuição no proje
 ### APÓS MERGE:
 
 - [ ] Sincronizar ambiente local
+
   ```bash
   git checkout dev
   git pull origin dev
@@ -163,19 +167,18 @@ tarefa → branch → commit → pull request → revisão → merge
 
 ## PROIBIDO (Crítico)
 
--  Commit direto em `main` ( protegida)
--  Commit direto em `dev` (protegida)
--  PR sem descrição ou genérica
--  Código não testado localmente
--  Ignorar CI quebrado (testes falhando)
--  Fazer merge sem aprovação de colega
--  Deixar `console.log` no código
--  Ignorar padrões do projeto
--  Criar branch de `main` (sempre de `dev`)
--  Trabalhar muito tempo sem fazer push (risco de conflitos)
+- Commit direto em `main` ( protegida)
+- Commit direto em `dev` (protegida)
+- PR sem descrição ou genérica
+- Código não testado localmente
+- Ignorar CI quebrado (testes falhando)
+- Fazer merge sem aprovação de colega
+- Deixar `console.log` no código
+- Ignorar padrões do projeto
+- Criar branch de `main` (sempre de `dev`)
+- Trabalhar muito tempo sem fazer push (risco de conflitos)
 
 ---
-
 
 ## Comunicação (Obrigatório)
 
@@ -206,7 +209,7 @@ Verificando logs...
 
 ## Dúvidas?
 
-  - Consulte ordem abaixo:
+- Consulte ordem abaixo:
 
 1. **01_ESCOPO_DO_PROJETO.md** → O que fazer
 2. **03_ARQUITETURA.md** → Como estruturar
@@ -265,7 +268,7 @@ git push origin feature/nome-da-feature
 
 No GitHub:
 
-- Base: `main`
+- Base: dev
 - Comparar com: sua branch
 
 ---
@@ -284,7 +287,7 @@ No GitHub:
 
 Após aprovação:
 
-- Merge na `main`
+- Merge na `dev`
 - Branch pode ser deletada
 
 ---
@@ -365,7 +368,7 @@ pnpm run cy:run
 Caso ocorra conflito:
 
 ```bash
-git pull origin main
+git pull origin dev
 ```
 
 Resolver manualmente antes de continuar

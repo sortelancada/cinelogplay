@@ -81,11 +81,14 @@ Durante o desenvolvimento:
 
 ## Commits
 
-Realizar commits pequenos e organizados:
+Realizar commits pequenos e organizados, exemplo:
 
 ```bash id="commit-example"
 git add .
 git commit -m "feat: adiciona listagem de filmes"
+git commit -m "fix: corrige validação do formulário"
+git commit -m "test: adiciona testes Cypress da navbar"
+git commit -m "docs: atualiza ambiente Linux"
 ```
 
 ---
@@ -123,6 +126,9 @@ Antes do merge:
 - Outro membro deve revisar
 - Validar funcionamento
 - Verificar padrões
+- O Pull Request deve receber pelo menos 1 aprovação
+- Comentários pendentes devem ser resolvidos antes do merge
+- Caso novos commits sejam enviados, a revisão poderá ser solicitada novamente
 
 ---
 
@@ -185,14 +191,16 @@ git pull origin main
 ## Fluxo resumido
 
 ```id="workflow-summary"
-1. Criar tarefa
-2. Criar branch
+1. Atualizar ambiente
+2. Criar branch feature/*
 3. Desenvolver
-4. Commit
+4. Commitar
 5. Push
 6. PR
-7. Review
-8. Merge
+7. Comunicar no grupo
+8. Revisão
+10. Merge
+11. Atualizar ambiente
 ```
 
 ---

@@ -85,24 +85,27 @@ CORS_ORIGIN=http://localhost:5173,https://seu-frontend.vercel.app
 ```
 backend/
 ├── controllers/
-│   ├── filmesController.js
-│   ├── diretoresController.js
-│   └── contatoController.js
+│   ├── filmes.controller.js
+│   ├── diretores.controller.js
+│   ├── avaliacao.controller.js
+│   └── contato.controller.js
 ├── routes/
-│   ├── filmes.js
-│   ├── diretores.js
+│   ├── filmes.routes.js
+│   ├── autores.routes.js
+│   ├── avaliacao.routes.js
+│   ├── diretores.routes.js
+│   ├── favorito.routes.js
 │   └── contato.js
 ├── services/
-│   ├── filmesService.js
-│   ├── diretoresService.js
-│   └── contatoService.js
+│   ├── avaliacao.service.js
+│   ├── filmes.service.js
+│   ├── diretores.service.js
+│   └── contato.service.js
 ├── config/
-│   ├── database.js
-│   └── cors.js
+│   └── db.js
 ├── mock/
 │   ├── filmes.json
-│   ├── diretores.json
-│   └── mensagens.json
+│   └── diretores.json
 ├── .env.example
 ├── server.js
 └── package.json
@@ -432,86 +435,10 @@ docker-compose down
 
 ### 9: GitHub Actions CI/CD
 
-#### Criar `.github/workflows/ci.yml` e depois crie `cd.yml`
+#### Criar `.github/workflows/ci-cd.yml`
 
-- Arquivo: `.github/workflows/ci.yml`
+- Arquivo: `.github/workflows/ci-cd.yml`
 
-```yaml
-name: CI Pipeline - cinelogplay
-
-on:
-  push:
-    branches:
-      - dev
-      - main
-  pull_request:
-    branches:
-      - dev
-      - main
-
-env:
-  NODE_VERSION: "24"
-
-jobs:
-  # INTEGRAÇÃO CONTÍNUA (CI)
-  ci:
-    name: Testes (CI)
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Clonar repositório
-        uses: actions/checkout@v4
-
-      - name: Configurar Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: "pnpm"
-
-      - name: Ativar pnpm via Corepack
-        run: corepack enable
-
-      - name: Instalar dependências
-        run: pnpm install --frozen-lockfile
-
-      - name: Rodar Cypress (Testes E2E)
-        run: pnpm run test:ci
-
-      - name: Upload artifacts
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-artifacts-${{ github.run_number }}
-          path: cypress/screenshots/
-          retention-days: 7
-```
-
-- Arquivo: `.github/workflows/cd.yml`
-
-```yaml
-name: CD Pipeline - cinelogplay
-
-on:
-  workflow_run:
-    workflows: ["CI Pipeline - cinelogplay"]
-    types:
-      - completed
-
-jobs:
-  # ENTREGA CONTÍNUA (CD)
-  cd:
-    name: Deploy (CD)
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' && (github.event.workflow_run.head_branch == 'dev' || github.event.workflow_run.head_branch == 'main') }}
-
-    steps:
-      - name: CI passou! Deploy automático será executado
-        run: |
-          echo " CI passou com sucesso!"
-          echo " Vercel e Render farão deploy automático nos próximos minutos"
-```
-
-- [ ] `.github/workflows/ci.yml` de forma separadas `cd.yml`
 - [ ] CI roda em cada PR e push
 - [ ] CD roda após CI bem-sucedido
 - [ ] Artifacts capturados se falhar
@@ -687,12 +614,13 @@ Variáveis de ambiente: [o que está faltando]
 #### Branch Management
 
 - [ ] Criar feature branch: `git checkout -b feature/[area]`
-- [ ] Manter branch atualizada: `git pull origin main`
+- [ ] Manter branch atualizada: `git pull origin dev`
+- [ ] Sincronizar branch dev: git pull origin dev
 - [ ] Commits descritivos: `feat:`, `fix:`, `docs:`, `test:`
 
 #### Pull Requests
 
-- [ ] Criar PR para main com descrição clara
+- [ ] Criar PR para dev com descrição clara
 - [ ] Aguardar 1 aprovação mínima
 - [ ] Garantir CI verde antes de merge
 - [ ] Resolver comentários antes de merge
