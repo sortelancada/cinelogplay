@@ -3,30 +3,1288 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin - CinelogPlay</title>
+    <title>CinelogPlay — Admin</title>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/src/css/style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --sidebar: 250px;
+        --red: #e50914;
+        --bg: #141414;
+        --card: #1e1e1e;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: #fff;
+        font-family: "Segoe UI", sans-serif;
+        margin: 0;
+      }
+
+      /* LOGIN */
+      #login-screen {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #141414, #1a1a2e);
+      }
+      .login-card {
+        background: var(--card);
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 40px;
+        width: 100%;
+        max-width: 400px;
+      }
+
+      /* PANEL */
+      #admin-panel {
+        display: none;
+      }
+      .sidebar {
+        width: var(--sidebar);
+        min-height: 100vh;
+        background: #0a0a0a;
+        border-right: 1px solid #e6e2e2;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+      }
+      .sidebar-brand {
+        padding: 20px;
+        border-bottom: 1px solid #e6e2e2;
+      }
+      .sidebar-brand h5 {
+        color: var(--red);
+        font-weight: 700;
+        margin: 0;
+      }
+      .sidebar-nav {
+        padding: 16px 0;
+        flex: 1;
+      }
+      .nav-link {
+        color: #aaa;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.2s;
+        border-left: 3px solid transparent;
+        cursor: pointer;
+      }
+      .nav-link:hover,
+      .nav-link.active {
+        color: #fff;
+        background: #1a1a1a;
+        border-left-color: var(--red);
+      }
+      .main-content {
+        margin-left: var(--sidebar);
+        padding: 30px;
+        min-height: 100vh;
+      }
+
+      /* STATS */
+      .stat-card {
+        background: var(--card);
+        border: 1px solid #2a2a2a;
+        border-radius: 10px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+      .stat-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+      }
+
+      /* TABLE */
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .section-content {
+        display: none;
+      }
+      .section-content.active {
+        display: block;
+      }
+      .table-dark {
+        background: var(--card);
+      }
+      .table-dark th {
+        background: #111;
+        border-color: #333;
+      }
+      .table-dark td {
+        border-color: #2a2a2a;
+        vertical-align: middle;
+      }
+      .img-thumb {
+        width: 38px;
+        height: 54px;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+      .img-circle {
+        width: 38px;
+        height: 38px;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+
+      /* TOAST */
+      .toast-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+      }
+
+      /* FORM CONTROLS DARK */
+      .form-control,
+      .form-select {
+        background: #2a2a2a !important;
+        color: #fff !important;
+        border-color: #444 !important;
+      }
+      .form-control:focus,
+      .form-select:focus {
+        border-color: var(--red) !important;
+        box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2) !important;
+      }
+      .form-control::placeholder {
+        color: #666;
+      }
+    </style>
   </head>
   <body>
-    <div
-      class="d-flex align-items-center justify-content-center"
-      style="min-height: 100vh; background: var(--color-bg)"
-    >
-      <div class="text-center p-4">
-        <img
-          src="/logo/cinelogplay.png"
-          alt="CinelogPlay"
-          style="max-height: 60px; margin-bottom: 2rem"
-        />
-        <h1 class="h4 mb-4" style="color: var(--color-text-dark)">
-          Painel Admin
-        </h1>
-        <p class="text-muted mb-4">Funcionalidade em desenvolvimento</p>
-        <a href="/pages/home.html" class="btn btn-primary">← Voltar à Home</a>
+    <!-- ===================== LOGIN ===================== -->
+    <div id="login-screen">
+      <div class="login-card">
+        <div class="text-center mb-4">
+          <div style="font-size: 2.5rem">🎬</div>
+          <h4 style="color: var(--red); font-weight: 700">CinelogPlay</h4>
+          <p class="text-muted mb-0">Painel Administrativo</p>
+        </div>
+        <div id="login-error" class="alert alert-danger d-none py-2"></div>
+        <div class="mb-3">
+          <label class="form-label text-secondary small">EMAIL</label>
+          <input
+            type="email"
+            id="login-email"
+            class="form-control"
+            placeholder="admin@email.com"
+          />
+        </div>
+        <div class="mb-4">
+          <label class="form-label text-secondary small">SENHA</label>
+          <input
+            type="password"
+            id="login-senha"
+            class="form-control"
+            placeholder="••••••••"
+          />
+        </div>
+        <button class="btn btn-danger w-100 py-2 fw-semibold" onclick="login()">
+          <span
+            id="login-spinner"
+            class="spinner-border spinner-border-sm d-none me-2"
+          ></span>
+          Entrar
+        </button>
       </div>
     </div>
+
+    <!-- ===================== ADMIN PANEL ===================== -->
+    <div id="admin-panel">
+      <!-- SIDEBAR -->
+      <div class="sidebar">
+        <div class="sidebar-brand">
+          <h5>🎬 CinelogPlay</h5>
+          <small class="text-muted">Admin Panel</small>
+        </div>
+        <nav class="sidebar-nav">
+          <a class="nav-link active" onclick="showSection('dashboard')">
+            <i class="bi bi-speedometer2"></i> Dashboard
+          </a>
+          <a class="nav-link" onclick="showSection('filmes')">
+            <i class="bi bi-film"></i> Filmes
+          </a>
+          <a class="nav-link" onclick="showSection('atores')">
+            <i class="bi bi-person-badge"></i> Atores
+          </a>
+          <a class="nav-link" onclick="showSection('diretores')">
+            <i class="bi bi-camera-video"></i> Diretores
+          </a>
+        </nav>
+        <div class="p-3" style="border-top: 1px solid #e6e2e2">
+          <div id="user-info" class="text-muted small mb-2 text-truncate"></div>
+          <button
+            class="btn btn-outline-danger btn-sm w-100"
+            onclick="logout()"
+          >
+            <i class="bi bi-box-arrow-right"></i> Sair
+          </button>
+        </div>
+      </div>
+
+      <!-- MAIN -->
+      <div class="main-content">
+        <!-- DASHBOARD -->
+        <div id="section-dashboard" class="section-content active">
+          <h4 class="fw-bold mb-4">Dashboard</h4>
+          <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+              <div class="stat-card">
+                <div
+                  class="stat-icon"
+                  style="background: rgba(229, 9, 20, 0.1)"
+                >
+                  🎬
+                </div>
+                <div>
+                  <div class="text-muted small">Filmes</div>
+                  <div id="stat-filmes" class="h3 mb-0 fw-bold">—</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="stat-card">
+                <div
+                  class="stat-icon"
+                  style="background: rgba(13, 202, 240, 0.1)"
+                >
+                  🎭
+                </div>
+                <div>
+                  <div class="text-muted small">Atores</div>
+                  <div id="stat-atores" class="h3 mb-0 fw-bold">—</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="stat-card">
+                <div
+                  class="stat-icon"
+                  style="background: rgba(25, 135, 84, 0.1)"
+                >
+                  🎥
+                </div>
+                <div>
+                  <div class="text-muted small">Diretores</div>
+                  <div id="stat-diretores" class="h3 mb-0 fw-bold">—</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="stat-card">
+                <div
+                  class="stat-icon"
+                  style="background: rgba(255, 193, 7, 0.1)"
+                >
+                  ⭐
+                </div>
+                <div>
+                  <div class="text-muted small">Avaliações</div>
+                  <div id="stat-avaliacoes" class="h3 mb-0 fw-bold">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="text-muted">
+            Use o menu lateral para gerenciar o conteúdo do site.
+          </p>
+        </div>
+
+        <!-- FILMES -->
+        <div id="section-filmes" class="section-content">
+          <div class="section-header">
+            <h4 class="fw-bold mb-0">🎬 Filmes</h4>
+            <button class="btn btn-danger" onclick="abrirModalFilme()">
+              <i class="bi bi-plus-lg"></i> Novo Filme
+            </button>
+          </div>
+          <div id="filmes-msg" class="text-center py-5 text-muted">
+            Carregando...
+          </div>
+          <div class="table-responsive">
+            <table
+              class="table table-dark table-hover rounded"
+              id="table-filmes"
+              style="display: none"
+            >
+              <thead>
+                <tr>
+                  <th style="width: 50px">Capa</th>
+                  <th>Título</th>
+                  <th>Ano</th>
+                  <th>Gênero</th>
+                  <th>Class.</th>
+                  <th style="width: 100px">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-filmes"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ATORES -->
+        <div id="section-atores" class="section-content">
+          <div class="section-header">
+            <h4 class="fw-bold mb-0">🎭 Atores</h4>
+            <button class="btn btn-danger" onclick="abrirModalAtor()">
+              <i class="bi bi-plus-lg"></i> Novo Ator
+            </button>
+          </div>
+          <div id="atores-msg" class="text-center py-5 text-muted">
+            Carregando...
+          </div>
+          <div class="table-responsive">
+            <table
+              class="table table-dark table-hover"
+              id="table-atores"
+              style="display: none"
+            >
+              <thead>
+                <tr>
+                  <th style="width: 50px">Foto</th>
+                  <th>Nome</th>
+                  <th>Nacionalidade</th>
+                  <th>Nascimento</th>
+                  <th style="width: 100px">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-atores"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- DIRETORES -->
+        <div id="section-diretores" class="section-content">
+          <div class="section-header">
+            <h4 class="fw-bold mb-0">🎥 Diretores</h4>
+            <button class="btn btn-danger" onclick="abrirModalDiretor()">
+              <i class="bi bi-plus-lg"></i> Novo Diretor
+            </button>
+          </div>
+          <div id="diretores-msg" class="text-center py-5 text-muted">
+            Carregando...
+          </div>
+          <div class="table-responsive">
+            <table
+              class="table table-dark table-hover"
+              id="table-diretores"
+              style="display: none"
+            >
+              <thead>
+                <tr>
+                  <th style="width: 50px">Foto</th>
+                  <th>Nome</th>
+                  <th>Nacionalidade</th>
+                  <th>Principais Obras</th>
+                  <th style="width: 100px">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-diretores"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== MODAL FILME ===================== -->
+    <div class="modal fade" id="modalFilme" tabindex="-1">
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div
+          class="modal-content"
+          style="background: #1e1e1e; color: #fff; border: 1px solid #333"
+        >
+          <div class="modal-header" style="border-color: #333">
+            <h5 class="modal-title" id="tituloModalFilme">Novo Filme</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="filme-id" />
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label small text-secondary">TÍTULO *</label>
+                <input type="text" id="filme-titulo" class="form-control" />
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small text-secondary">ANO</label>
+                <input
+                  type="number"
+                  id="filme-ano"
+                  class="form-control"
+                  min="1800"
+                  max="2030"
+                />
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small text-secondary">DURAÇÃO</label>
+                <input
+                  type="text"
+                  id="filme-duracao"
+                  class="form-control"
+                  placeholder="120 min"
+                />
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small text-secondary"
+                  >CLASSIFICAÇÃO</label
+                >
+                <select id="filme-classificacao" class="form-select">
+                  <option value="L">Livre</option>
+                  <option value="10">10</option>
+                  <option value="12" selected>12</option>
+                  <option value="14">14</option>
+                  <option value="16">16</option>
+                  <option value="18">18</option>
+                </select>
+              </div>
+              <div class="col-md-8">
+                <label class="form-label small text-secondary">GÊNERO</label>
+                <input
+                  type="text"
+                  id="filme-genero"
+                  class="form-control"
+                  placeholder="ex: Ficção Científica/Ação"
+                />
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small text-secondary">TIPO</label>
+                <select id="filme-tipo" class="form-select">
+                  <option value="filme">Filme</option>
+                  <option value="serie">Série</option>
+                  <option value="documentario">Documentário</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label small text-secondary"
+                  >DESCRIÇÃO CURTA</label
+                >
+                <input
+                  type="text"
+                  id="filme-descricao"
+                  class="form-control"
+                  maxlength="500"
+                />
+              </div>
+              <div class="col-12">
+                <label class="form-label small text-secondary">SINOPSE</label>
+                <textarea
+                  id="filme-sinopse"
+                  class="form-control"
+                  rows="3"
+                ></textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label small text-secondary"
+                  >URL DA CAPA</label
+                >
+                <input
+                  type="url"
+                  id="filme-imagem"
+                  class="form-control"
+                  placeholder="https://..."
+                />
+              </div>
+              <div class="col-md-8">
+                <label class="form-label small text-secondary"
+                  >TRAILER (YouTube embed URL)</label
+                >
+                <input
+                  type="url"
+                  id="filme-trailer"
+                  class="form-control"
+                  placeholder="https://www.youtube.com/embed/..."
+                />
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small text-secondary"
+                  >ID DO DIRETOR</label
+                >
+                <input type="number" id="filme-diretor" class="form-control" />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer" style="border-color: #333">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+            <button class="btn btn-danger" onclick="salvarFilme()">
+              <span
+                id="filme-spinner"
+                class="spinner-border spinner-border-sm d-none me-1"
+              ></span>
+              Salvar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== MODAL ATOR ===================== -->
+    <div class="modal fade" id="modalAtor" tabindex="-1">
+      <div class="modal-dialog">
+        <div
+          class="modal-content"
+          style="background: #1e1e1e; color: #fff; border: 1px solid #333"
+        >
+          <div class="modal-header" style="border-color: #333">
+            <h5 class="modal-title" id="tituloModalAtor">Novo Ator</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="ator-id" />
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label small text-secondary">NOME *</label>
+                <input type="text" id="ator-nome" class="form-control" />
+              </div>
+              <div class="col-12">
+                <label class="form-label small text-secondary"
+                  >FOTO (URL)</label
+                >
+                <input type="url" id="ator-foto" class="form-control" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small text-secondary"
+                  >NACIONALIDADE</label
+                >
+                <input
+                  type="text"
+                  id="ator-nacionalidade"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small text-secondary"
+                  >NASCIMENTO</label
+                >
+                <input type="date" id="ator-nascimento" class="form-control" />
+              </div>
+              <div class="col-12">
+                <label class="form-label small text-secondary">BIOGRAFIA</label>
+                <textarea
+                  id="ator-biografia"
+                  class="form-control"
+                  rows="3"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer" style="border-color: #333">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+            <button class="btn btn-danger" onclick="salvarAtor()">
+              Salvar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== MODAL DIRETOR ===================== -->
+    <div class="modal fade" id="modalDiretor" tabindex="-1">
+      <div class="modal-dialog">
+        <div
+          class="modal-content"
+          style="background: #1e1e1e; color: #fff; border: 1px solid #333"
+        >
+          <div class="modal-header" style="border-color: #333">
+            <h5 class="modal-title" id="tituloModalDiretor">Novo Diretor</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="diretor-id" />
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label small text-secondary">NOME *</label>
+                <input type="text" id="diretor-nome" class="form-control" />
+              </div>
+              <div class="col-12">
+                <label class="form-label small text-secondary"
+                  >FOTO (URL)</label
+                >
+                <input type="url" id="diretor-foto" class="form-control" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small text-secondary"
+                  >NACIONALIDADE</label
+                >
+                <input
+                  type="text"
+                  id="diretor-nacionalidade"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small text-secondary"
+                  >NASCIMENTO</label
+                >
+                <input
+                  type="date"
+                  id="diretor-nascimento"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-12">
+                <label class="form-label small text-secondary"
+                  >PRINCIPAIS OBRAS</label
+                >
+                <input
+                  type="text"
+                  id="diretor-obras"
+                  class="form-control"
+                  placeholder="ex: Inception, Interstellar"
+                />
+              </div>
+              <div class="col-12">
+                <label class="form-label small text-secondary">BIOGRAFIA</label>
+                <textarea
+                  id="diretor-biografia"
+                  class="form-control"
+                  rows="3"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer" style="border-color: #333">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+            <button class="btn btn-danger" onclick="salvarDiretor()">
+              Salvar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== MODAL DELETE ===================== -->
+    <div class="modal fade" id="modalDelete" tabindex="-1">
+      <div class="modal-dialog modal-sm">
+        <div
+          class="modal-content"
+          style="background: #1e1e1e; color: #fff; border: 1px solid #c00"
+        >
+          <div class="modal-header" style="border-color: #333">
+            <h6 class="modal-title text-danger">⚠️ Confirmar Exclusão</h6>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p id="delete-msg" class="mb-1"></p>
+            <small class="text-muted">Esta ação não pode ser desfeita.</small>
+          </div>
+          <div class="modal-footer" style="border-color: #333">
+            <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+            <button class="btn btn-danger btn-sm" id="btn-delete-ok">
+              Excluir
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast-container">
+      <div
+        id="myToast"
+        class="toast text-white border-0"
+        role="alert"
+        style="min-width: 250px"
+      >
+        <div class="d-flex">
+          <div class="toast-body fw-semibold" id="toast-body"></div>
+          <button
+            type="button"
+            class="btn-close btn-close-white me-2 m-auto"
+            data-bs-dismiss="toast"
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // ============================================================
+      // CONFIG
+      // ============================================================
+      const API = "http://localhost:3001";
+
+      // ============================================================
+      // UTILS
+      // ============================================================
+      const getToken = () => localStorage.getItem("clp_token");
+      const getUser = () => {
+        try {
+          return JSON.parse(localStorage.getItem("clp_user"));
+        } catch {
+          return null;
+        }
+      };
+
+      async function req(path, opts = {}) {
+        const token = getToken();
+        const res = await fetch(`${API}${path}`, {
+          ...opts,
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            ...(opts.headers || {}),
+          },
+        });
+        return res.json();
+      }
+
+      function toast(msg, type = "success") {
+        const el = document.getElementById("myToast");
+        const body = document.getElementById("toast-body");
+        el.className = `toast text-white border-0 bg-${type === "success" ? "success" : "danger"}`;
+        body.textContent = msg;
+        new bootstrap.Toast(el, { delay: 3000 }).show();
+      }
+
+      function confirmDelete(msg, cb) {
+        document.getElementById("delete-msg").textContent = msg;
+        const oldBtn = document.getElementById("btn-delete-ok");
+        const newBtn = oldBtn.cloneNode(true);
+        oldBtn.replaceWith(newBtn);
+        const modal = new bootstrap.Modal(
+          document.getElementById("modalDelete")
+        );
+        newBtn.addEventListener("click", () => {
+          modal.hide();
+          cb();
+        });
+        modal.show();
+      }
+
+      // ============================================================
+      // AUTH
+      // ============================================================
+      async function login() {
+        const email = document.getElementById("login-email").value.trim();
+        const senha = document.getElementById("login-senha").value;
+        const errEl = document.getElementById("login-error");
+        const spin = document.getElementById("login-spinner");
+
+        errEl.classList.add("d-none");
+        if (!email || !senha) {
+          errEl.textContent = "Preencha email e senha.";
+          return errEl.classList.remove("d-none");
+        }
+
+        spin.classList.remove("d-none");
+        try {
+          const r = await req("/api/auth/login", {
+            method: "POST",
+            body: JSON.stringify({ email, senha }),
+          });
+          if (r.success) {
+            localStorage.setItem("clp_token", r.data.token);
+            localStorage.setItem("clp_user", JSON.stringify(r.data.usuario));
+            initAdmin();
+          } else {
+            errEl.textContent = r.message || "Credenciais inválidas.";
+            errEl.classList.remove("d-none");
+          }
+        } catch {
+          errEl.textContent = "Erro de conexão com o servidor.";
+          errEl.classList.remove("d-none");
+        } finally {
+          spin.classList.add("d-none");
+        }
+      }
+
+      function logout() {
+        localStorage.removeItem("clp_token");
+        localStorage.removeItem("clp_user");
+        document.getElementById("admin-panel").style.display = "none";
+        document.getElementById("login-screen").style.display = "flex";
+      }
+
+      function initAdmin() {
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("admin-panel").style.display = "block";
+        const u = getUser();
+        if (u) document.getElementById("user-info").textContent = `${u.nome}`;
+        loadStats();
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (
+          e.key === "Enter" &&
+          document.getElementById("login-screen").style.display !== "none"
+        )
+          login();
+      });
+
+      // ============================================================
+      // NAV
+      // ============================================================
+      function showSection(name) {
+        document
+          .querySelectorAll(".section-content")
+          .forEach((s) => s.classList.remove("active"));
+        document
+          .querySelectorAll(".nav-link")
+          .forEach((l) => l.classList.remove("active"));
+        document.getElementById(`section-${name}`).classList.add("active");
+        event.currentTarget.classList.add("active");
+        if (name === "filmes") loadFilmes();
+        if (name === "atores") loadAtores();
+        if (name === "diretores") loadDiretores();
+      }
+
+      // ============================================================
+      // STATS
+      // ============================================================
+      async function loadStats() {
+        try {
+          const [f, a, d] = await Promise.all([
+            req("/api/filmes"),
+            req("/api/atores"),
+            req("/api/diretores"),
+          ]);
+          document.getElementById("stat-filmes").textContent =
+            f.data?.length ?? "—";
+          document.getElementById("stat-atores").textContent =
+            a.data?.length ?? "—";
+          document.getElementById("stat-diretores").textContent =
+            d.data?.length ?? "—";
+          document.getElementById("stat-avaliacoes").textContent = "★";
+        } catch {}
+      }
+
+      // ============================================================
+      // FILMES
+      // ============================================================
+      let filmesCache = [];
+
+      async function loadFilmes() {
+        const msg = document.getElementById("filmes-msg");
+        const tbl = document.getElementById("table-filmes");
+        msg.style.display = "block";
+        tbl.style.display = "none";
+        try {
+          const r = await req("/api/filmes");
+          filmesCache = r.data || [];
+          renderFilmes();
+          msg.style.display = "none";
+          tbl.style.display = "table";
+        } catch {
+          msg.textContent = "Erro ao carregar filmes.";
+        }
+      }
+
+      function renderFilmes() {
+        const tbody = document.getElementById("tbody-filmes");
+        if (!filmesCache.length) {
+          tbody.innerHTML =
+            '<tr><td colspan="6" class="text-center text-muted py-4">Nenhum filme cadastrado.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = filmesCache
+          .map(
+            (f) => `
+    <tr>
+      <td>${f.imagem ? `<img src="${f.imagem}" class="img-thumb" onerror="this.src=''" />` : "—"}</td>
+      <td>
+        <div class="fw-semibold">${esc(f.titulo)}</div>
+        <small class="text-muted">${f.tipo || "filme"}</small>
+      </td>
+      <td>${f.ano || "—"}</td>
+      <td><small>${esc(f.genero || "—")}</small></td>
+      <td><span class="badge bg-warning text-dark">${f.classificacao || "—"}</span></td>
+      <td>
+        <button class="btn btn-sm btn-outline-light me-1" onclick="editarFilme(${f.id})" title="Editar">
+          <i class="bi bi-pencil"></i>
+        </button>
+        <button class="btn btn-sm btn-outline-danger" onclick="excluirFilme(${f.id},'${esc(f.titulo)}')" title="Excluir">
+          <i class="bi bi-trash"></i>
+        </button>
+      </td>
+    </tr>
+  `
+          )
+          .join("");
+      }
+
+      function abrirModalFilme(f = null) {
+        document.getElementById("tituloModalFilme").textContent = f
+          ? "Editar Filme"
+          : "Novo Filme";
+        document.getElementById("filme-id").value = f?.id ?? "";
+        document.getElementById("filme-titulo").value = f?.titulo ?? "";
+        document.getElementById("filme-ano").value =
+          f?.ano ?? new Date().getFullYear();
+        document.getElementById("filme-duracao").value = f?.duracao ?? "";
+        document.getElementById("filme-genero").value = f?.genero ?? "";
+        document.getElementById("filme-classificacao").value =
+          f?.classificacao ?? "12";
+        document.getElementById("filme-tipo").value = f?.tipo ?? "filme";
+        document.getElementById("filme-descricao").value =
+          f?.descricao_curta ?? "";
+        document.getElementById("filme-sinopse").value = f?.sinopse ?? "";
+        document.getElementById("filme-imagem").value = f?.imagem ?? "";
+        document.getElementById("filme-trailer").value =
+          f?.trailer_youtube ?? "";
+        document.getElementById("filme-diretor").value = f?.diretor_id ?? "";
+        new bootstrap.Modal(document.getElementById("modalFilme")).show();
+      }
+
+      function editarFilme(id) {
+        abrirModalFilme(filmesCache.find((f) => f.id === id));
+      }
+
+      async function salvarFilme() {
+        const id = document.getElementById("filme-id").value;
+        const titulo = document.getElementById("filme-titulo").value.trim();
+        if (!titulo) return toast("Título é obrigatório.", "error");
+
+        const spin = document.getElementById("filme-spinner");
+        spin.classList.remove("d-none");
+
+        const body = {
+          titulo,
+          ano: parseInt(document.getElementById("filme-ano").value) || null,
+          duracao: document.getElementById("filme-duracao").value,
+          genero: document.getElementById("filme-genero").value,
+          classificacao: document.getElementById("filme-classificacao").value,
+          tipo: document.getElementById("filme-tipo").value,
+          descricao_curta: document.getElementById("filme-descricao").value,
+          sinopse: document.getElementById("filme-sinopse").value,
+          imagem: document.getElementById("filme-imagem").value,
+          trailer_youtube: document.getElementById("filme-trailer").value,
+          diretor_id:
+            parseInt(document.getElementById("filme-diretor").value) || null,
+        };
+
+        try {
+          const r = id
+            ? await req(`/api/filmes/${id}`, {
+                method: "PUT",
+                body: JSON.stringify(body),
+              })
+            : await req("/api/filmes", {
+                method: "POST",
+                body: JSON.stringify(body),
+              });
+
+          if (r.success) {
+            toast(id ? "Filme atualizado!" : "Filme criado!");
+            bootstrap.Modal.getInstance(
+              document.getElementById("modalFilme")
+            ).hide();
+            loadFilmes();
+            loadStats();
+          } else {
+            toast(r.message || "Erro ao salvar.", "error");
+          }
+        } catch {
+          toast("Erro de conexão.", "error");
+        } finally {
+          spin.classList.add("d-none");
+        }
+      }
+
+      function excluirFilme(id, titulo) {
+        confirmDelete(`Excluir "${titulo}"?`, async () => {
+          const r = await req(`/api/filmes/${id}`, { method: "DELETE" });
+          r.success
+            ? (toast("Filme excluído!"), loadFilmes(), loadStats())
+            : toast(r.message || "Erro.", "error");
+        });
+      }
+
+      // ============================================================
+      // ATORES
+      // ============================================================
+      let atoresCache = [];
+
+      async function loadAtores() {
+        const msg = document.getElementById("atores-msg");
+        const tbl = document.getElementById("table-atores");
+        msg.style.display = "block";
+        tbl.style.display = "none";
+        try {
+          const r = await req("/api/atores");
+          atoresCache = r.data || [];
+          renderAtores();
+          msg.style.display = "none";
+          tbl.style.display = "table";
+        } catch {
+          msg.textContent = "Erro ao carregar atores.";
+        }
+      }
+
+      function renderAtores() {
+        const tbody = document.getElementById("tbody-atores");
+        if (!atoresCache.length) {
+          tbody.innerHTML =
+            '<tr><td colspan="5" class="text-center text-muted py-4">Nenhum ator cadastrado.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = atoresCache
+          .map(
+            (a) => `
+    <tr>
+      <td>${a.foto ? `<img src="${a.foto}" class="img-circle" onerror="this.src=''" />` : "—"}</td>
+      <td class="fw-semibold">${esc(a.nome)}</td>
+      <td>${esc(a.nacionalidade || "—")}</td>
+      <td>${a.data_nascimento ? new Date(a.data_nascimento).toLocaleDateString("pt-BR") : "—"}</td>
+      <td>
+        <button class="btn btn-sm btn-outline-light me-1" onclick="editarAtor(${a.id})"><i class="bi bi-pencil"></i></button>
+        <button class="btn btn-sm btn-outline-danger" onclick="excluirAtor(${a.id},'${esc(a.nome)}')"><i class="bi bi-trash"></i></button>
+      </td>
+    </tr>
+  `
+          )
+          .join("");
+      }
+
+      function abrirModalAtor(a = null) {
+        document.getElementById("tituloModalAtor").textContent = a
+          ? "Editar Ator"
+          : "Novo Ator";
+        document.getElementById("ator-id").value = a?.id ?? "";
+        document.getElementById("ator-nome").value = a?.nome ?? "";
+        document.getElementById("ator-foto").value = a?.foto ?? "";
+        document.getElementById("ator-nacionalidade").value =
+          a?.nacionalidade ?? "";
+        document.getElementById("ator-nascimento").value =
+          a?.data_nascimento?.split("T")[0] ?? "";
+        document.getElementById("ator-biografia").value = a?.biografia ?? "";
+        new bootstrap.Modal(document.getElementById("modalAtor")).show();
+      }
+
+      function editarAtor(id) {
+        abrirModalAtor(atoresCache.find((a) => a.id === id));
+      }
+
+      async function salvarAtor() {
+        const id = document.getElementById("ator-id").value;
+        const nome = document.getElementById("ator-nome").value.trim();
+        if (!nome) return toast("Nome é obrigatório.", "error");
+
+        const body = {
+          nome,
+          foto: document.getElementById("ator-foto").value,
+          nacionalidade: document.getElementById("ator-nacionalidade").value,
+          data_nascimento:
+            document.getElementById("ator-nascimento").value || null,
+          biografia: document.getElementById("ator-biografia").value,
+        };
+
+        try {
+          const r = id
+            ? await req(`/api/atores/${id}`, {
+                method: "PUT",
+                body: JSON.stringify(body),
+              })
+            : await req("/api/atores", {
+                method: "POST",
+                body: JSON.stringify(body),
+              });
+          if (r.success) {
+            toast(id ? "Ator atualizado!" : "Ator criado!");
+            bootstrap.Modal.getInstance(
+              document.getElementById("modalAtor")
+            ).hide();
+            loadAtores();
+            loadStats();
+          } else {
+            toast(r.message || "Erro.", "error");
+          }
+        } catch {
+          toast("Erro de conexão.", "error");
+        }
+      }
+
+      function excluirAtor(id, nome) {
+        confirmDelete(`Excluir "${nome}"?`, async () => {
+          const r = await req(`/api/atores/${id}`, { method: "DELETE" });
+          r.success
+            ? (toast("Ator excluído!"), loadAtores(), loadStats())
+            : toast(r.message || "Erro.", "error");
+        });
+      }
+
+      // ============================================================
+      // DIRETORES
+      // ============================================================
+      let diretoresCache = [];
+
+      async function loadDiretores() {
+        const msg = document.getElementById("diretores-msg");
+        const tbl = document.getElementById("table-diretores");
+        msg.style.display = "block";
+        tbl.style.display = "none";
+        try {
+          const r = await req("/api/diretores");
+          diretoresCache = r.data || [];
+          renderDiretores();
+          msg.style.display = "none";
+          tbl.style.display = "table";
+        } catch {
+          msg.textContent = "Erro ao carregar diretores.";
+        }
+      }
+
+      function renderDiretores() {
+        const tbody = document.getElementById("tbody-diretores");
+        if (!diretoresCache.length) {
+          tbody.innerHTML =
+            '<tr><td colspan="5" class="text-center text-muted py-4">Nenhum diretor cadastrado.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = diretoresCache
+          .map(
+            (d) => `
+    <tr>
+      <td>${d.foto ? `<img src="${d.foto}" class="img-circle" onerror="this.src=''" />` : "—"}</td>
+      <td class="fw-semibold">${esc(d.nome)}</td>
+      <td>${esc(d.nacionalidade || "—")}</td>
+      <td><small class="text-muted">${esc(d.principais_obras || "—")}</small></td>
+      <td>
+        <button class="btn btn-sm btn-outline-light me-1" onclick="editarDiretor(${d.id})"><i class="bi bi-pencil"></i></button>
+        <button class="btn btn-sm btn-outline-danger" onclick="excluirDiretor(${d.id},'${esc(d.nome)}')"><i class="bi bi-trash"></i></button>
+      </td>
+    </tr>
+  `
+          )
+          .join("");
+      }
+
+      function abrirModalDiretor(d = null) {
+        document.getElementById("tituloModalDiretor").textContent = d
+          ? "Editar Diretor"
+          : "Novo Diretor";
+        document.getElementById("diretor-id").value = d?.id ?? "";
+        document.getElementById("diretor-nome").value = d?.nome ?? "";
+        document.getElementById("diretor-foto").value = d?.foto ?? "";
+        document.getElementById("diretor-nacionalidade").value =
+          d?.nacionalidade ?? "";
+        document.getElementById("diretor-nascimento").value =
+          d?.data_nascimento?.split("T")[0] ?? "";
+        document.getElementById("diretor-obras").value =
+          d?.principais_obras ?? "";
+        document.getElementById("diretor-biografia").value = d?.biografia ?? "";
+        new bootstrap.Modal(document.getElementById("modalDiretor")).show();
+      }
+
+      function editarDiretor(id) {
+        abrirModalDiretor(diretoresCache.find((d) => d.id === id));
+      }
+
+      async function salvarDiretor() {
+        const id = document.getElementById("diretor-id").value;
+        const nome = document.getElementById("diretor-nome").value.trim();
+        if (!nome) return toast("Nome é obrigatório.", "error");
+
+        const body = {
+          nome,
+          foto: document.getElementById("diretor-foto").value,
+          nacionalidade: document.getElementById("diretor-nacionalidade").value,
+          data_nascimento:
+            document.getElementById("diretor-nascimento").value || null,
+          principais_obras: document.getElementById("diretor-obras").value,
+          biografia: document.getElementById("diretor-biografia").value,
+        };
+
+        try {
+          const r = id
+            ? await req(`/api/diretores/${id}`, {
+                method: "PUT",
+                body: JSON.stringify(body),
+              })
+            : await req("/api/diretores", {
+                method: "POST",
+                body: JSON.stringify(body),
+              });
+          if (r.success) {
+            toast(id ? "Diretor atualizado!" : "Diretor criado!");
+            bootstrap.Modal.getInstance(
+              document.getElementById("modalDiretor")
+            ).hide();
+            loadDiretores();
+            loadStats();
+          } else {
+            toast(r.message || "Erro.", "error");
+          }
+        } catch {
+          toast("Erro de conexão.", "error");
+        }
+      }
+
+      function excluirDiretor(id, nome) {
+        confirmDelete(`Excluir "${nome}"?`, async () => {
+          const r = await req(`/api/diretores/${id}`, { method: "DELETE" });
+          r.success
+            ? (toast("Diretor excluído!"), loadDiretores(), loadStats())
+            : toast(r.message || "Erro.", "error");
+        });
+      }
+
+      // ============================================================
+      // HELPERS
+      // ============================================================
+      function esc(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      // ============================================================
+      // INIT
+      // ============================================================
+      if (getToken()) initAdmin();
+    </script>
   </body>
 </html>

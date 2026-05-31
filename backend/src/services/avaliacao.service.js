@@ -1,9 +1,16 @@
-// backend/src/services/avaliacao.service.js
+// ========================================
+// AVALIACAO SERVICE
+// ========================================
+
+import pool from "../config/db.js";
 
 export async function getAvaliacoesByFilme(filmeId) {
   try {
-    const avaliacoes = await Avaliacao.getByFilmeId(filmeId);
-    return { success: true, data: avaliacoes, total: avaliacoes.length };
+    const result = await pool.query(
+      "SELECT * FROM avaliacoes WHERE filme_id = $1 ORDER BY criado_em DESC",
+      [filmeId]
+    );
+    return { success: true, data: result.rows, total: result.rows.length };
   } catch (error) {
     console.error("Erro no service ao obter avaliações:", error);
     return { success: false, error: error.message };
@@ -12,18 +19,28 @@ export async function getAvaliacoesByFilme(filmeId) {
 
 export async function getMediaFilme(filmeId) {
   try {
-    const media = await Avaliacao.getMediaFilme(filmeId);
-    return { success: true, data: media || null };
+    const result = await pool.query(
+      `SELECT
+        COALESCE(ROUND(AVG(estrelas)::numeric, 2), 0) AS media,
+        COUNT(*) AS total
+       FROM avaliacoes
+       WHERE filme_id = $1`,
+      [filmeId]
+    );
+    return { success: true, data: result.rows[0] };
   } catch (error) {
-    console.error("Erro no service ao obter média de avaliação:", error);
+    console.error("Erro no service ao obter média:", error);
     return { success: false, error: error.message };
   }
 }
 
 export async function getAvaliacaoUsuario(usuarioId, filmeId) {
   try {
-    const avaliacao = await Avaliacao.getByUsuarioEFilme(usuarioId, filmeId);
-    return { success: true, data: avaliacao };
+    const result = await pool.query(
+      "SELECT * FROM avaliacoes WHERE usuario_id = $1 AND filme_id = $2",
+      [usuarioId, filmeId]
+    );
+    return { success: true, data: result.rows[0] || null };
   } catch (error) {
     console.error("Erro no service ao obter avaliação do usuário:", error);
     return { success: false, error: error.message };
@@ -34,7 +51,6 @@ export async function salvarAvaliacao(avaliacaoData) {
   try {
     const { filme_id, usuario_id, estrelas, comentario } = avaliacaoData;
 
-    // Validações
     if (!filme_id || !usuario_id || !estrelas) {
       return {
         success: false,
@@ -47,31 +63,32 @@ export async function salvarAvaliacao(avaliacaoData) {
     }
 
     // Verifica se já existe
-    const avaliacaoExistente = await Avaliacao.getByUsuarioEFilme(
-      usuario_id,
-      filme_id
+    const existing = await pool.query(
+      "SELECT * FROM avaliacoes WHERE usuario_id = $1 AND filme_id = $2",
+      [usuario_id, filme_id]
     );
 
-    let resultado;
-    if (avaliacaoExistente) {
-      // Atualiza
-      resultado = await Avaliacao.update(avaliacaoExistente.id, {
-        estrelas,
-        comentario,
-      });
+    let result;
+    if (existing.rows.length > 0) {
+      result = await pool.query(
+        `UPDATE avaliacoes
+         SET estrelas = $1, comentario = $2, atualizado_em = NOW()
+         WHERE usuario_id = $3 AND filme_id = $4
+         RETURNING *`,
+        [estrelas, comentario, usuario_id, filme_id]
+      );
     } else {
-      // Cria nova
-      resultado = await Avaliacao.create({
-        filme_id,
-        usuario_id,
-        estrelas,
-        comentario,
-      });
+      result = await pool.query(
+        `INSERT INTO avaliacoes (filme_id, usuario_id, estrelas, comentario)
+         VALUES ($1, $2, $3, $4)
+         RETURNING *`,
+        [filme_id, usuario_id, estrelas, comentario]
+      );
     }
 
     return {
       success: true,
-      data: resultado,
+      data: result.rows[0],
       message: "Avaliação salva com sucesso",
     };
   } catch (error) {
@@ -82,7 +99,7 @@ export async function salvarAvaliacao(avaliacaoData) {
 
 export async function deletarAvaliacao(id) {
   try {
-    await Avaliacao.delete(id);
+    await pool.query("DELETE FROM avaliacoes WHERE id = $1", [id]);
     return { success: true, message: "Avaliação deletada com sucesso" };
   } catch (error) {
     console.error("Erro no service ao deletar avaliação:", error);

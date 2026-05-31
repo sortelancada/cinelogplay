@@ -7,6 +7,7 @@ import contatoRoutes from "./routes/contato.routes.js";
 import avaliacaoRoutes from "./routes/avaliacao.routes.js";
 import atoresRoutes from "./routes/atores.routes.js";
 import favoritoRoutes from "./routes/favorito.routes.js";
+import authRoutes from "./auth/auth.routes.js";
 import { initializeDatabase } from "./config/db.js";
 import {
   errorHandler,
@@ -44,6 +45,7 @@ app.use("/api/contato", contatoRoutes);
 app.use("/api/avaliacoes", avaliacaoRoutes);
 app.use("/api/atores", atoresRoutes);
 app.use("/api/favoritos", favoritoRoutes);
+app.use("/api/auth", authRoutes);
 
 // 404 handler
 app.use(notFoundHandler);
