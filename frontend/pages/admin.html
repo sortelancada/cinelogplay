@@ -18,35 +18,46 @@
         --red: #e50914;
         --bg: #141414;
         --card: #1e1e1e;
+        --border: #2a2a2a;
       }
       * {
         box-sizing: border-box;
       }
       body {
         background: var(--bg);
-        color: #fff;
-        font-family: "Segoe UI", sans-serif;
+        color: #f0f0f0;
+        font-family: "Segoe UI", system-ui, sans-serif;
         margin: 0;
       }
 
-      /* LOGIN */
+      /* ── LOGIN ── */
       #login-screen {
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, #141414, #1a1a2e);
+        background: radial-gradient(
+          ellipse at 60% 40%,
+          #1a0a0a 0%,
+          #0a0a14 70%
+        );
       }
       .login-card {
         background: var(--card);
         border: 1px solid #333;
-        border-radius: 12px;
-        padding: 40px;
+        border-radius: 14px;
+        padding: 42px 40px;
         width: 100%;
         max-width: 400px;
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.7);
+      }
+      .login-logo {
+        max-height: 52px;
+        margin-bottom: 14px;
+        filter: drop-shadow(0 0 12px rgba(229, 9, 20, 0.3));
       }
 
-      /* PANEL */
+      /* ── SIDEBAR ── */
       #admin-panel {
         display: none;
       }
@@ -54,7 +65,7 @@
         width: var(--sidebar);
         min-height: 100vh;
         background: #0a0a0a;
-        border-right: 1px solid #e6e2e2;
+        border-right: 1px solid var(--border);
         position: fixed;
         top: 0;
         left: 0;
@@ -63,98 +74,195 @@
         flex-direction: column;
       }
       .sidebar-brand {
-        padding: 20px;
-        border-bottom: 1px solid #e6e2e2;
+        padding: 18px 20px 14px;
+        border-bottom: 1px solid var(--border);
+        text-align: center;
       }
-      .sidebar-brand h5 {
+      .sidebar-brand img {
+        max-height: 42px;
+      }
+      .sidebar-brand img.fallback-text {
+        display: none;
+      }
+      .sidebar-brand h6 {
         color: var(--red);
         font-weight: 700;
-        margin: 0;
+        margin: 6px 0 0;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
       }
       .sidebar-nav {
-        padding: 16px 0;
+        padding: 12px 0;
         flex: 1;
+        overflow-y: auto;
       }
       .nav-link {
-        color: #aaa;
-        padding: 12px 20px;
+        color: #888;
+        padding: 11px 20px;
         display: flex;
         align-items: center;
         gap: 10px;
-        transition: all 0.2s;
-        border-left: 3px solid transparent;
         cursor: pointer;
+        border-left: 3px solid transparent;
+        font-size: 0.875rem;
+        transition: all 0.18s;
       }
-      .nav-link:hover,
+      .nav-link:hover {
+        color: #e0e0e0;
+        background: rgba(255, 255, 255, 0.04);
+        border-left-color: #444;
+      }
       .nav-link.active {
         color: #fff;
-        background: #1a1a1a;
+        background: rgba(229, 9, 20, 0.08);
         border-left-color: var(--red);
+      }
+      .nav-divider {
+        border-color: var(--border);
+        margin: 6px 16px;
       }
       .main-content {
         margin-left: var(--sidebar);
-        padding: 30px;
+        padding: 32px;
         min-height: 100vh;
       }
 
-      /* STATS */
+      /* ── STATS ── */
       .stat-card {
         background: var(--card);
-        border: 1px solid #2a2a2a;
+        border: 1px solid var(--border);
         border-radius: 10px;
-        padding: 20px;
+        padding: 18px 20px;
         display: flex;
         align-items: center;
-        gap: 15px;
+        gap: 14px;
+        transition: border-color 0.2s;
+      }
+      .stat-card:hover {
+        border-color: #3a3a3a;
       }
       .stat-icon {
-        width: 52px;
-        height: 52px;
+        width: 48px;
+        height: 48px;
         border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.5rem;
+        font-size: 1.4rem;
+        flex-shrink: 0;
       }
 
-      /* TABLE */
-      .section-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-      }
+      /* ── TABLE ── */
       .section-content {
         display: none;
       }
       .section-content.active {
         display: block;
       }
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
       .table-dark {
         background: var(--card);
       }
       .table-dark th {
-        background: #111;
-        border-color: #333;
+        background: #0e0e0e;
+        border-color: var(--border);
+        color: #888;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
       }
       .table-dark td {
-        border-color: #2a2a2a;
+        border-color: var(--border);
         vertical-align: middle;
+        color: #d0d0d0;
+      }
+      .table-dark tr:hover td {
+        background: rgba(255, 255, 255, 0.025);
       }
       .img-thumb {
-        width: 38px;
-        height: 54px;
+        width: 36px;
+        height: 52px;
         object-fit: cover;
         border-radius: 4px;
+        background: #333;
       }
       .img-circle {
-        width: 38px;
-        height: 38px;
+        width: 36px;
+        height: 36px;
         object-fit: cover;
         border-radius: 50%;
+        background: #333;
       }
 
-      /* TOAST */
+      /* ── IMAGE PICKER ── */
+      .img-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        gap: 8px;
+      }
+      .img-grid-item {
+        position: relative;
+        aspect-ratio: 2/3;
+        border-radius: 6px;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition:
+          border-color 0.15s,
+          transform 0.15s;
+      }
+      .img-grid-item:hover {
+        border-color: var(--red);
+        transform: scale(1.04);
+      }
+      .img-grid-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .img-grid-item .img-label {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+        color: #ccc;
+        font-size: 0.65rem;
+        padding: 4px 4px 3px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .dropzone {
+        border: 2px dashed #444;
+        border-radius: 10px;
+        padding: 40px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+      }
+      .dropzone:hover,
+      .dropzone.drag-over {
+        border-color: var(--red);
+        background: rgba(229, 9, 20, 0.04);
+      }
+      .img-preview-box {
+        max-height: 64px;
+        border-radius: 5px;
+        margin-top: 7px;
+        display: none;
+        border: 1px solid var(--border);
+      }
+
+      /* ── TOAST ── */
       .toast-container {
         position: fixed;
         bottom: 20px;
@@ -162,35 +270,106 @@
         z-index: 9999;
       }
 
-      /* FORM CONTROLS DARK */
+      /* ── FORMS ── */
       .form-control,
       .form-select {
-        background: #2a2a2a !important;
-        color: #fff !important;
-        border-color: #444 !important;
+        background: #252525 !important;
+        color: #e8e8e8 !important;
+        border-color: #3a3a3a !important;
       }
       .form-control:focus,
       .form-select:focus {
         border-color: var(--red) !important;
-        box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2) !important;
+        box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.18) !important;
+        background: #2c2c2c !important;
       }
       .form-control::placeholder {
-        color: #666;
+        color: #555 !important;
+      }
+      .input-group .btn-outline-secondary {
+        border-color: #3a3a3a;
+        color: #888;
+        background: #252525;
+      }
+      .input-group .btn-outline-secondary:hover {
+        background: #333;
+        color: #ccc;
+        border-color: #555;
+      }
+      .input-group .btn-outline-info {
+        border-color: #0dcaf044;
+        color: #6ea8fe;
+        background: #252525;
+      }
+      .input-group .btn-outline-info:hover {
+        background: rgba(13, 202, 240, 0.1);
+        color: #fff;
+      }
+
+      /* ── NAV TABS (picker) ── */
+      #pickerTabs .nav-link {
+        border: none;
+        color: #888;
+        background: transparent;
+        border-bottom: 2px solid transparent;
+        border-radius: 0;
+      }
+      #pickerTabs .nav-link:hover {
+        color: #ccc;
+      }
+      #pickerTabs .nav-link.active {
+        color: #fff;
+        border-bottom-color: var(--red);
+        background: transparent;
+      }
+
+      /* ── MISC ── */
+      .badge-classif {
+        font-size: 0.7rem;
+        padding: 3px 7px;
       }
     </style>
   </head>
   <body>
-    <!-- ===================== LOGIN ===================== -->
+    <!-- ══════════════════════════════════════════
+         LOGIN
+    ══════════════════════════════════════════ -->
     <div id="login-screen">
       <div class="login-card">
         <div class="text-center mb-4">
-          <div style="font-size: 2.5rem">🎬</div>
-          <h4 style="color: var(--red); font-weight: 700">CinelogPlay</h4>
-          <p class="text-muted mb-0">Painel Administrativo</p>
+          <img
+            src="/logo/cinelogplay.png"
+            alt="CinelogPlay"
+            class="login-logo"
+            onerror="
+              this.style.display = 'none';
+              document.getElementById('login-brand-text').style.display =
+                'block';
+            "
+          />
+          <div
+            id="login-brand-text"
+            style="
+              display: none;
+              font-size: 1.6rem;
+              font-weight: 700;
+              color: var(--red);
+            "
+          >
+            🎬 CinelogPlay
+          </div>
+          <p class="text-muted mt-1 mb-0" style="font-size: 0.85rem">
+            Painel Administrativo
+          </p>
         </div>
-        <div id="login-error" class="alert alert-danger d-none py-2"></div>
+        <div
+          id="login-error"
+          class="alert alert-danger d-none py-2 small"
+        ></div>
         <div class="mb-3">
-          <label class="form-label text-secondary small">EMAIL</label>
+          <label class="form-label text-secondary small fw-semibold"
+            >EMAIL</label
+          >
           <input
             type="email"
             id="login-email"
@@ -199,7 +378,9 @@
           />
         </div>
         <div class="mb-4">
-          <label class="form-label text-secondary small">SENHA</label>
+          <label class="form-label text-secondary small fw-semibold"
+            >SENHA</label
+          >
           <input
             type="password"
             id="login-senha"
@@ -217,30 +398,56 @@
       </div>
     </div>
 
-    <!-- ===================== ADMIN PANEL ===================== -->
+    <!-- ══════════════════════════════════════════
+         ADMIN PANEL
+    ══════════════════════════════════════════ -->
     <div id="admin-panel">
       <!-- SIDEBAR -->
       <div class="sidebar">
         <div class="sidebar-brand">
-          <h5>🎬 CinelogPlay</h5>
-          <small class="text-muted">Admin Panel</small>
+          <img
+            src="/logo/cinelogplay.png"
+            alt="CinelogPlay"
+            onerror="
+              this.style.display = 'none';
+              this.nextElementSibling.style.display = 'block';
+            "
+          />
+          <span
+            style="
+              display: none;
+              font-size: 1.3rem;
+              font-weight: 700;
+              color: var(--red);
+            "
+            >🎬</span
+          >
+          <h6>CinelogPlay</h6>
         </div>
         <nav class="sidebar-nav">
-          <a class="nav-link active" onclick="showSection('dashboard')">
+          <a class="nav-link active" onclick="showSection('dashboard', event)">
             <i class="bi bi-speedometer2"></i> Dashboard
           </a>
-          <a class="nav-link" onclick="showSection('filmes')">
+          <a class="nav-link" onclick="showSection('filmes', event)">
             <i class="bi bi-film"></i> Filmes
           </a>
-          <a class="nav-link" onclick="showSection('atores')">
+          <a class="nav-link" onclick="showSection('atores', event)">
             <i class="bi bi-person-badge"></i> Atores
           </a>
-          <a class="nav-link" onclick="showSection('diretores')">
+          <a class="nav-link" onclick="showSection('diretores', event)">
             <i class="bi bi-camera-video"></i> Diretores
           </a>
+          <hr class="nav-divider" />
+          <a class="nav-link" onclick="abrirModalSenha()">
+            <i class="bi bi-key"></i> Alterar Senha
+          </a>
         </nav>
-        <div class="p-3" style="border-top: 1px solid #e6e2e2">
-          <div id="user-info" class="text-muted small mb-2 text-truncate"></div>
+        <div class="p-3" style="border-top: 1px solid var(--border)">
+          <div
+            id="user-info"
+            class="text-muted small mb-2 text-truncate"
+            style="font-size: 0.78rem"
+          ></div>
           <button
             class="btn btn-outline-danger btn-sm w-100"
             onclick="logout()"
@@ -250,11 +457,14 @@
         </div>
       </div>
 
-      <!-- MAIN -->
+      <!-- MAIN CONTENT -->
       <div class="main-content">
         <!-- DASHBOARD -->
         <div id="section-dashboard" class="section-content active">
-          <h4 class="fw-bold mb-4">Dashboard</h4>
+          <h4 class="fw-bold mb-1">Dashboard</h4>
+          <p class="text-muted small mb-4">
+            Bem-vindo ao painel de controle CinelogPlay.
+          </p>
           <div class="row g-3 mb-4">
             <div class="col-6 col-md-3">
               <div class="stat-card">
@@ -265,7 +475,9 @@
                   🎬
                 </div>
                 <div>
-                  <div class="text-muted small">Filmes</div>
+                  <div class="text-muted" style="font-size: 0.75rem">
+                    Filmes
+                  </div>
                   <div id="stat-filmes" class="h3 mb-0 fw-bold">—</div>
                 </div>
               </div>
@@ -279,7 +491,9 @@
                   🎭
                 </div>
                 <div>
-                  <div class="text-muted small">Atores</div>
+                  <div class="text-muted" style="font-size: 0.75rem">
+                    Atores
+                  </div>
                   <div id="stat-atores" class="h3 mb-0 fw-bold">—</div>
                 </div>
               </div>
@@ -293,7 +507,9 @@
                   🎥
                 </div>
                 <div>
-                  <div class="text-muted small">Diretores</div>
+                  <div class="text-muted" style="font-size: 0.75rem">
+                    Diretores
+                  </div>
                   <div id="stat-diretores" class="h3 mb-0 fw-bold">—</div>
                 </div>
               </div>
@@ -307,13 +523,15 @@
                   ⭐
                 </div>
                 <div>
-                  <div class="text-muted small">Avaliações</div>
+                  <div class="text-muted" style="font-size: 0.75rem">
+                    Avaliações
+                  </div>
                   <div id="stat-avaliacoes" class="h3 mb-0 fw-bold">—</div>
                 </div>
               </div>
             </div>
           </div>
-          <p class="text-muted">
+          <p class="text-muted small">
             Use o menu lateral para gerenciar o conteúdo do site.
           </p>
         </div>
@@ -321,28 +539,31 @@
         <!-- FILMES -->
         <div id="section-filmes" class="section-content">
           <div class="section-header">
-            <h4 class="fw-bold mb-0">🎬 Filmes</h4>
-            <button class="btn btn-danger" onclick="abrirModalFilme()">
-              <i class="bi bi-plus-lg"></i> Novo Filme
+            <div>
+              <h4 class="fw-bold mb-0">Filmes</h4>
+              <p class="text-muted small mb-0">Gerenciar catálogo de filmes</p>
+            </div>
+            <button class="btn btn-danger btn-sm" onclick="abrirModalFilme()">
+              <i class="bi bi-plus-lg me-1"></i>Novo Filme
             </button>
           </div>
           <div id="filmes-msg" class="text-center py-5 text-muted">
-            Carregando...
+            <div class="spinner-border text-danger"></div>
           </div>
           <div class="table-responsive">
             <table
-              class="table table-dark table-hover rounded"
+              class="table table-dark table-hover"
               id="table-filmes"
               style="display: none"
             >
               <thead>
                 <tr>
-                  <th style="width: 50px">Capa</th>
+                  <th style="width: 48px"></th>
                   <th>Título</th>
                   <th>Ano</th>
                   <th>Gênero</th>
                   <th>Class.</th>
-                  <th style="width: 100px">Ações</th>
+                  <th style="width: 90px"></th>
                 </tr>
               </thead>
               <tbody id="tbody-filmes"></tbody>
@@ -353,13 +574,16 @@
         <!-- ATORES -->
         <div id="section-atores" class="section-content">
           <div class="section-header">
-            <h4 class="fw-bold mb-0">🎭 Atores</h4>
-            <button class="btn btn-danger" onclick="abrirModalAtor()">
-              <i class="bi bi-plus-lg"></i> Novo Ator
+            <div>
+              <h4 class="fw-bold mb-0">Atores</h4>
+              <p class="text-muted small mb-0">Gerenciar elenco</p>
+            </div>
+            <button class="btn btn-danger btn-sm" onclick="abrirModalAtor()">
+              <i class="bi bi-plus-lg me-1"></i>Novo Ator
             </button>
           </div>
           <div id="atores-msg" class="text-center py-5 text-muted">
-            Carregando...
+            <div class="spinner-border text-danger"></div>
           </div>
           <div class="table-responsive">
             <table
@@ -369,11 +593,11 @@
             >
               <thead>
                 <tr>
-                  <th style="width: 50px">Foto</th>
+                  <th style="width: 48px"></th>
                   <th>Nome</th>
                   <th>Nacionalidade</th>
                   <th>Nascimento</th>
-                  <th style="width: 100px">Ações</th>
+                  <th style="width: 90px"></th>
                 </tr>
               </thead>
               <tbody id="tbody-atores"></tbody>
@@ -384,13 +608,16 @@
         <!-- DIRETORES -->
         <div id="section-diretores" class="section-content">
           <div class="section-header">
-            <h4 class="fw-bold mb-0">🎥 Diretores</h4>
-            <button class="btn btn-danger" onclick="abrirModalDiretor()">
-              <i class="bi bi-plus-lg"></i> Novo Diretor
+            <div>
+              <h4 class="fw-bold mb-0">Diretores</h4>
+              <p class="text-muted small mb-0">Gerenciar diretores</p>
+            </div>
+            <button class="btn btn-danger btn-sm" onclick="abrirModalDiretor()">
+              <i class="bi bi-plus-lg me-1"></i>Novo Diretor
             </button>
           </div>
           <div id="diretores-msg" class="text-center py-5 text-muted">
-            Carregando...
+            <div class="spinner-border text-danger"></div>
           </div>
           <div class="table-responsive">
             <table
@@ -400,11 +627,11 @@
             >
               <thead>
                 <tr>
-                  <th style="width: 50px">Foto</th>
+                  <th style="width: 48px"></th>
                   <th>Nome</th>
                   <th>Nacionalidade</th>
                   <th>Principais Obras</th>
-                  <th style="width: 100px">Ações</th>
+                  <th style="width: 90px"></th>
                 </tr>
               </thead>
               <tbody id="tbody-diretores"></tbody>
@@ -414,12 +641,18 @@
       </div>
     </div>
 
-    <!-- ===================== MODAL FILME ===================== -->
+    <!-- ══════════════════════════════════════════
+         MODAL: FILME
+    ══════════════════════════════════════════ -->
     <div class="modal fade" id="modalFilme" tabindex="-1">
       <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div
           class="modal-content"
-          style="background: #1e1e1e; color: #fff; border: 1px solid #333"
+          style="
+            background: var(--card);
+            color: #e8e8e8;
+            border: 1px solid #333;
+          "
         >
           <div class="modal-header" style="border-color: #333">
             <h5 class="modal-title" id="tituloModalFilme">Novo Filme</h5>
@@ -433,11 +666,20 @@
             <input type="hidden" id="filme-id" />
             <div class="row g-3">
               <div class="col-12">
-                <label class="form-label small text-secondary">TÍTULO *</label>
-                <input type="text" id="filme-titulo" class="form-control" />
+                <label class="form-label small text-secondary fw-semibold"
+                  >TÍTULO *</label
+                >
+                <input
+                  type="text"
+                  id="filme-titulo"
+                  class="form-control"
+                  placeholder="Nome do filme"
+                />
               </div>
               <div class="col-md-4">
-                <label class="form-label small text-secondary">ANO</label>
+                <label class="form-label small text-secondary fw-semibold"
+                  >ANO</label
+                >
                 <input
                   type="number"
                   id="filme-ano"
@@ -447,7 +689,9 @@
                 />
               </div>
               <div class="col-md-4">
-                <label class="form-label small text-secondary">DURAÇÃO</label>
+                <label class="form-label small text-secondary fw-semibold"
+                  >DURAÇÃO</label
+                >
                 <input
                   type="text"
                   id="filme-duracao"
@@ -456,7 +700,7 @@
                 />
               </div>
               <div class="col-md-4">
-                <label class="form-label small text-secondary"
+                <label class="form-label small text-secondary fw-semibold"
                   >CLASSIFICAÇÃO</label
                 >
                 <select id="filme-classificacao" class="form-select">
@@ -469,16 +713,20 @@
                 </select>
               </div>
               <div class="col-md-8">
-                <label class="form-label small text-secondary">GÊNERO</label>
+                <label class="form-label small text-secondary fw-semibold"
+                  >GÊNERO</label
+                >
                 <input
                   type="text"
                   id="filme-genero"
                   class="form-control"
-                  placeholder="ex: Ficção Científica/Ação"
+                  placeholder="ex: Ficção Científica / Ação"
                 />
               </div>
               <div class="col-md-4">
-                <label class="form-label small text-secondary">TIPO</label>
+                <label class="form-label small text-secondary fw-semibold"
+                  >TIPO</label
+                >
                 <select id="filme-tipo" class="form-select">
                   <option value="filme">Filme</option>
                   <option value="serie">Série</option>
@@ -486,7 +734,7 @@
                 </select>
               </div>
               <div class="col-12">
-                <label class="form-label small text-secondary"
+                <label class="form-label small text-secondary fw-semibold"
                   >DESCRIÇÃO CURTA</label
                 >
                 <input
@@ -494,29 +742,57 @@
                   id="filme-descricao"
                   class="form-control"
                   maxlength="500"
+                  placeholder="Resumo curto..."
                 />
               </div>
               <div class="col-12">
-                <label class="form-label small text-secondary">SINOPSE</label>
+                <label class="form-label small text-secondary fw-semibold"
+                  >SINOPSE</label
+                >
                 <textarea
                   id="filme-sinopse"
                   class="form-control"
                   rows="3"
+                  placeholder="Sinopse completa..."
                 ></textarea>
               </div>
               <div class="col-12">
-                <label class="form-label small text-secondary"
-                  >URL DA CAPA</label
+                <label class="form-label small text-secondary fw-semibold"
+                  >CAPA DO FILME</label
                 >
-                <input
-                  type="url"
-                  id="filme-imagem"
-                  class="form-control"
-                  placeholder="https://..."
+                <div class="input-group">
+                  <input
+                    type="text"
+                    id="filme-imagem"
+                    class="form-control"
+                    placeholder="URL ou selecione →"
+                    oninput="mostrarPreview('filme-imagem')"
+                  />
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    title="Selecionar imagem existente"
+                    onclick="abrirImagePicker('filme-imagem', 'filmes')"
+                  >
+                    <i class="bi bi-folder2-open"></i>
+                  </button>
+                  <button
+                    class="btn btn-outline-info"
+                    type="button"
+                    title="Enviar nova imagem"
+                    onclick="triggerUpload('filme-imagem')"
+                  >
+                    <i class="bi bi-upload"></i>
+                  </button>
+                </div>
+                <img
+                  id="preview-filme-imagem"
+                  class="img-preview-box"
+                  alt="preview"
                 />
               </div>
               <div class="col-md-8">
-                <label class="form-label small text-secondary"
+                <label class="form-label small text-secondary fw-semibold"
                   >TRAILER (YouTube embed URL)</label
                 >
                 <input
@@ -527,18 +803,23 @@
                 />
               </div>
               <div class="col-md-4">
-                <label class="form-label small text-secondary"
+                <label class="form-label small text-secondary fw-semibold"
                   >ID DO DIRETOR</label
                 >
-                <input type="number" id="filme-diretor" class="form-control" />
+                <input
+                  type="number"
+                  id="filme-diretor"
+                  class="form-control"
+                  placeholder="ex: 1"
+                />
               </div>
             </div>
           </div>
           <div class="modal-footer" style="border-color: #333">
-            <button class="btn btn-secondary" data-bs-dismiss="modal">
+            <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
               Cancelar
             </button>
-            <button class="btn btn-danger" onclick="salvarFilme()">
+            <button class="btn btn-danger btn-sm" onclick="salvarFilme()">
               <span
                 id="filme-spinner"
                 class="spinner-border spinner-border-sm d-none me-1"
@@ -550,12 +831,18 @@
       </div>
     </div>
 
-    <!-- ===================== MODAL ATOR ===================== -->
+    <!-- ══════════════════════════════════════════
+         MODAL: ATOR
+    ══════════════════════════════════════════ -->
     <div class="modal fade" id="modalAtor" tabindex="-1">
       <div class="modal-dialog">
         <div
           class="modal-content"
-          style="background: #1e1e1e; color: #fff; border: 1px solid #333"
+          style="
+            background: var(--card);
+            color: #e8e8e8;
+            border: 1px solid #333;
+          "
         >
           <div class="modal-header" style="border-color: #333">
             <h5 class="modal-title" id="tituloModalAtor">Novo Ator</h5>
@@ -569,17 +856,48 @@
             <input type="hidden" id="ator-id" />
             <div class="row g-3">
               <div class="col-12">
-                <label class="form-label small text-secondary">NOME *</label>
+                <label class="form-label small text-secondary fw-semibold"
+                  >NOME *</label
+                >
                 <input type="text" id="ator-nome" class="form-control" />
               </div>
               <div class="col-12">
-                <label class="form-label small text-secondary"
-                  >FOTO (URL)</label
+                <label class="form-label small text-secondary fw-semibold"
+                  >FOTO</label
                 >
-                <input type="url" id="ator-foto" class="form-control" />
+                <div class="input-group">
+                  <input
+                    type="text"
+                    id="ator-foto"
+                    class="form-control"
+                    placeholder="URL ou selecione →"
+                    oninput="mostrarPreview('ator-foto')"
+                  />
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    title="Selecionar foto existente"
+                    onclick="abrirImagePicker('ator-foto', 'diretores')"
+                  >
+                    <i class="bi bi-folder2-open"></i>
+                  </button>
+                  <button
+                    class="btn btn-outline-info"
+                    type="button"
+                    title="Enviar nova foto"
+                    onclick="triggerUpload('ator-foto')"
+                  >
+                    <i class="bi bi-upload"></i>
+                  </button>
+                </div>
+                <img
+                  id="preview-ator-foto"
+                  class="img-preview-box"
+                  alt="preview"
+                />
               </div>
               <div class="col-md-6">
-                <label class="form-label small text-secondary"
+                <label class="form-label small text-secondary fw-semibold"
                   >NACIONALIDADE</label
                 >
                 <input
@@ -589,13 +907,15 @@
                 />
               </div>
               <div class="col-md-6">
-                <label class="form-label small text-secondary"
+                <label class="form-label small text-secondary fw-semibold"
                   >NASCIMENTO</label
                 >
                 <input type="date" id="ator-nascimento" class="form-control" />
               </div>
               <div class="col-12">
-                <label class="form-label small text-secondary">BIOGRAFIA</label>
+                <label class="form-label small text-secondary fw-semibold"
+                  >BIOGRAFIA</label
+                >
                 <textarea
                   id="ator-biografia"
                   class="form-control"
@@ -605,10 +925,10 @@
             </div>
           </div>
           <div class="modal-footer" style="border-color: #333">
-            <button class="btn btn-secondary" data-bs-dismiss="modal">
+            <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
               Cancelar
             </button>
-            <button class="btn btn-danger" onclick="salvarAtor()">
+            <button class="btn btn-danger btn-sm" onclick="salvarAtor()">
               Salvar
             </button>
           </div>
@@ -616,12 +936,18 @@
       </div>
     </div>
 
-    <!-- ===================== MODAL DIRETOR ===================== -->
+    <!-- ══════════════════════════════════════════
+         MODAL: DIRETOR
+    ══════════════════════════════════════════ -->
     <div class="modal fade" id="modalDiretor" tabindex="-1">
       <div class="modal-dialog">
         <div
           class="modal-content"
-          style="background: #1e1e1e; color: #fff; border: 1px solid #333"
+          style="
+            background: var(--card);
+            color: #e8e8e8;
+            border: 1px solid #333;
+          "
         >
           <div class="modal-header" style="border-color: #333">
             <h5 class="modal-title" id="tituloModalDiretor">Novo Diretor</h5>
@@ -635,17 +961,48 @@
             <input type="hidden" id="diretor-id" />
             <div class="row g-3">
               <div class="col-12">
-                <label class="form-label small text-secondary">NOME *</label>
+                <label class="form-label small text-secondary fw-semibold"
+                  >NOME *</label
+                >
                 <input type="text" id="diretor-nome" class="form-control" />
               </div>
               <div class="col-12">
-                <label class="form-label small text-secondary"
-                  >FOTO (URL)</label
+                <label class="form-label small text-secondary fw-semibold"
+                  >FOTO</label
                 >
-                <input type="url" id="diretor-foto" class="form-control" />
+                <div class="input-group">
+                  <input
+                    type="text"
+                    id="diretor-foto"
+                    class="form-control"
+                    placeholder="URL ou selecione →"
+                    oninput="mostrarPreview('diretor-foto')"
+                  />
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    title="Selecionar foto existente"
+                    onclick="abrirImagePicker('diretor-foto', 'diretores')"
+                  >
+                    <i class="bi bi-folder2-open"></i>
+                  </button>
+                  <button
+                    class="btn btn-outline-info"
+                    type="button"
+                    title="Enviar nova foto"
+                    onclick="triggerUpload('diretor-foto')"
+                  >
+                    <i class="bi bi-upload"></i>
+                  </button>
+                </div>
+                <img
+                  id="preview-diretor-foto"
+                  class="img-preview-box"
+                  alt="preview"
+                />
               </div>
               <div class="col-md-6">
-                <label class="form-label small text-secondary"
+                <label class="form-label small text-secondary fw-semibold"
                   >NACIONALIDADE</label
                 >
                 <input
@@ -655,7 +1012,7 @@
                 />
               </div>
               <div class="col-md-6">
-                <label class="form-label small text-secondary"
+                <label class="form-label small text-secondary fw-semibold"
                   >NASCIMENTO</label
                 >
                 <input
@@ -665,7 +1022,7 @@
                 />
               </div>
               <div class="col-12">
-                <label class="form-label small text-secondary"
+                <label class="form-label small text-secondary fw-semibold"
                   >PRINCIPAIS OBRAS</label
                 >
                 <input
@@ -676,7 +1033,9 @@
                 />
               </div>
               <div class="col-12">
-                <label class="form-label small text-secondary">BIOGRAFIA</label>
+                <label class="form-label small text-secondary fw-semibold"
+                  >BIOGRAFIA</label
+                >
                 <textarea
                   id="diretor-biografia"
                   class="form-control"
@@ -686,10 +1045,10 @@
             </div>
           </div>
           <div class="modal-footer" style="border-color: #333">
-            <button class="btn btn-secondary" data-bs-dismiss="modal">
+            <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
               Cancelar
             </button>
-            <button class="btn btn-danger" onclick="salvarDiretor()">
+            <button class="btn btn-danger btn-sm" onclick="salvarDiretor()">
               Salvar
             </button>
           </div>
@@ -697,12 +1056,238 @@
       </div>
     </div>
 
-    <!-- ===================== MODAL DELETE ===================== -->
+    <!-- ══════════════════════════════════════════
+         MODAL: ALTERAR SENHA
+    ══════════════════════════════════════════ -->
+    <div class="modal fade" id="modalSenha" tabindex="-1">
+      <div class="modal-dialog modal-sm">
+        <div
+          class="modal-content"
+          style="
+            background: var(--card);
+            color: #e8e8e8;
+            border: 1px solid #333;
+          "
+        >
+          <div class="modal-header" style="border-color: #333">
+            <h5 class="modal-title">
+              <i class="bi bi-key me-2 text-danger"></i>Alterar Senha
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div
+              id="senha-error"
+              class="alert alert-danger d-none py-2 small mb-3"
+            ></div>
+            <div class="mb-3">
+              <label class="form-label small text-secondary fw-semibold"
+                >SENHA ATUAL</label
+              >
+              <input
+                type="password"
+                id="senha-atual"
+                class="form-control"
+                placeholder="••••••••"
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label small text-secondary fw-semibold"
+                >NOVA SENHA</label
+              >
+              <input
+                type="password"
+                id="senha-nova"
+                class="form-control"
+                placeholder="mín. 6 caracteres"
+              />
+            </div>
+            <div class="mb-1">
+              <label class="form-label small text-secondary fw-semibold"
+                >CONFIRMAR NOVA SENHA</label
+              >
+              <input
+                type="password"
+                id="senha-confirmar"
+                class="form-control"
+                placeholder="••••••••"
+              />
+            </div>
+          </div>
+          <div class="modal-footer" style="border-color: #333">
+            <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="alterarSenha()">
+              <span
+                id="senha-spinner"
+                class="spinner-border spinner-border-sm d-none me-1"
+              ></span>
+              Alterar Senha
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         MODAL: IMAGE PICKER
+    ══════════════════════════════════════════ -->
+    <div class="modal fade" id="modalImagePicker" tabindex="-1">
+      <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div
+          class="modal-content"
+          style="
+            background: var(--card);
+            color: #e8e8e8;
+            border: 1px solid #333;
+          "
+        >
+          <div class="modal-header" style="border-color: #333">
+            <h5 class="modal-title">
+              <i class="bi bi-images me-2"></i>Selecionar Imagem
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body p-0">
+            <ul
+              class="nav px-3 pt-3 pb-0"
+              id="pickerTabs"
+              style="border-bottom: 1px solid var(--border)"
+            >
+              <li class="nav-item">
+                <button
+                  class="nav-link active px-3 py-2"
+                  data-bs-toggle="tab"
+                  data-bs-target="#tab-upload"
+                  type="button"
+                  onclick="prepararUploadTab()"
+                >
+                  <i class="bi bi-cloud-upload me-1"></i>Upload
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="nav-link px-3 py-2"
+                  data-bs-toggle="tab"
+                  data-bs-target="#tab-filmes"
+                  type="button"
+                  onclick="carregarGrid('filmes')"
+                >
+                  <i class="bi bi-film me-1"></i>Filmes
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="nav-link px-3 py-2"
+                  data-bs-toggle="tab"
+                  data-bs-target="#tab-diretores"
+                  type="button"
+                  onclick="carregarGrid('diretores')"
+                >
+                  <i class="bi bi-camera-video me-1"></i>Diretores
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="nav-link px-3 py-2"
+                  data-bs-toggle="tab"
+                  data-bs-target="#tab-uploads"
+                  type="button"
+                  onclick="carregarGrid('uploads')"
+                >
+                  <i class="bi bi-folder2 me-1"></i>Enviados
+                </button>
+              </li>
+            </ul>
+            <div class="tab-content p-3">
+              <!-- Upload -->
+              <div class="tab-pane fade show active" id="tab-upload">
+                <div
+                  class="dropzone"
+                  id="picker-dropzone"
+                  onclick="document.getElementById('picker-file-input').click()"
+                  ondragover="
+                    event.preventDefault();
+                    this.classList.add('drag-over');
+                  "
+                  ondragleave="this.classList.remove('drag-over')"
+                  ondrop="handlePickerDrop(event)"
+                >
+                  <i
+                    class="bi bi-cloud-arrow-up"
+                    style="font-size: 2.8rem; color: #555"
+                  ></i>
+                  <p class="text-muted mt-3 mb-1">
+                    Clique ou arraste uma imagem aqui
+                  </p>
+                  <small class="text-muted"
+                    >PNG, JPG, JPEG, SVG, WEBP — máx. 5 MB</small
+                  >
+                </div>
+                <div
+                  id="picker-upload-progress"
+                  class="text-center py-3 d-none"
+                >
+                  <div class="spinner-border text-danger"></div>
+                  <p class="text-muted mt-2 small">Enviando...</p>
+                </div>
+                <input
+                  type="file"
+                  id="picker-file-input"
+                  accept="image/png,image/jpeg,image/jpg,image/svg+xml,image/webp"
+                  class="d-none"
+                  onchange="handlePickerFileChange(event)"
+                />
+              </div>
+              <!-- Filmes grid -->
+              <div class="tab-pane fade" id="tab-filmes">
+                <div id="grid-filmes" class="img-grid">
+                  <div class="text-muted col-12 py-4 text-center">
+                    Carregando...
+                  </div>
+                </div>
+              </div>
+              <!-- Diretores grid -->
+              <div class="tab-pane fade" id="tab-diretores">
+                <div id="grid-diretores" class="img-grid">
+                  <div class="text-muted col-12 py-4 text-center">
+                    Carregando...
+                  </div>
+                </div>
+              </div>
+              <!-- Uploads grid -->
+              <div class="tab-pane fade" id="tab-uploads">
+                <div id="grid-uploads" class="img-grid">
+                  <div class="text-muted col-12 py-4 text-center">
+                    Carregando...
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: CONFIRM DELETE -->
     <div class="modal fade" id="modalDelete" tabindex="-1">
       <div class="modal-dialog modal-sm">
         <div
           class="modal-content"
-          style="background: #1e1e1e; color: #fff; border: 1px solid #c00"
+          style="
+            background: var(--card);
+            color: #e8e8e8;
+            border: 1px solid #c00;
+          "
         >
           <div class="modal-header" style="border-color: #333">
             <h6 class="modal-title text-danger">⚠️ Confirmar Exclusão</h6>
@@ -728,6 +1313,15 @@
       </div>
     </div>
 
+    <!-- Hidden file input for direct (non-picker) upload -->
+    <input
+      type="file"
+      id="direct-file-input"
+      accept="image/png,image/jpeg,image/jpg,image/svg+xml,image/webp"
+      class="d-none"
+      onchange="handleDirectUpload(event)"
+    />
+
     <!-- TOAST -->
     <div class="toast-container">
       <div
@@ -749,14 +1343,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      // ============================================================
-      // CONFIG
-      // ============================================================
+      // ─── CONFIG ───────────────────────────────────────────────────────────────
       const API = "http://localhost:3001";
 
-      // ============================================================
-      // UTILS
-      // ============================================================
+      // ─── UTILS ───────────────────────────────────────────────────────────────
       const getToken = () => localStorage.getItem("clp_token");
       const getUser = () => {
         try {
@@ -766,45 +1356,277 @@
         }
       };
 
+      function esc(str) {
+        return String(str ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
       async function req(path, opts = {}) {
         const token = getToken();
+        const headers = { "Content-Type": "application/json" };
+        if (token) headers["Authorization"] = `Bearer ${token}`;
         const res = await fetch(`${API}${path}`, {
           ...opts,
-          headers: {
-            "Content-Type": "application/json",
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-            ...(opts.headers || {}),
-          },
+          headers: { ...headers, ...(opts.headers || {}) },
+        });
+        return res.json();
+      }
+
+      async function uploadFile(file) {
+        const fd = new FormData();
+        fd.append("imagem", file);
+        const res = await fetch(`${API}/api/upload`, {
+          method: "POST",
+          headers: getToken() ? { Authorization: `Bearer ${getToken()}` } : {},
+          body: fd,
         });
         return res.json();
       }
 
       function toast(msg, type = "success") {
         const el = document.getElementById("myToast");
-        const body = document.getElementById("toast-body");
         el.className = `toast text-white border-0 bg-${type === "success" ? "success" : "danger"}`;
-        body.textContent = msg;
+        document.getElementById("toast-body").textContent = msg;
         new bootstrap.Toast(el, { delay: 3000 }).show();
       }
 
       function confirmDelete(msg, cb) {
         document.getElementById("delete-msg").textContent = msg;
-        const oldBtn = document.getElementById("btn-delete-ok");
-        const newBtn = oldBtn.cloneNode(true);
-        oldBtn.replaceWith(newBtn);
+        const old = document.getElementById("btn-delete-ok");
+        const btn = old.cloneNode(true);
+        old.replaceWith(btn);
         const modal = new bootstrap.Modal(
           document.getElementById("modalDelete")
         );
-        newBtn.addEventListener("click", () => {
+        btn.addEventListener("click", () => {
           modal.hide();
           cb();
         });
         modal.show();
       }
 
-      // ============================================================
-      // AUTH
-      // ============================================================
+      // ─── IMAGE PICKER ─────────────────────────────────────────────────────────
+      let pickerTarget = null; // ID of the input field to fill
+
+      function abrirImagePicker(inputId, pasta = "filmes") {
+        pickerTarget = inputId;
+        const modal = new bootstrap.Modal(
+          document.getElementById("modalImagePicker")
+        );
+        modal.show();
+        // Give Bootstrap time to show, then switch tab
+        setTimeout(() => {
+          const tabMap = {
+            filmes: "#tab-filmes-btn",
+            diretores: "#tab-diretores-btn",
+            uploads: "#tab-uploads-btn",
+          };
+          const btnId = `picker-tab-${pasta}`;
+          const btn = document.getElementById(btnId);
+          if (btn) {
+            bootstrap.Tab.getOrCreateInstance(btn).show();
+          }
+          carregarGrid(pasta);
+        }, 200);
+      }
+
+      async function carregarGrid(pasta) {
+        const grid = document.getElementById(`grid-${pasta}`);
+        if (!grid) return;
+        grid.innerHTML = `<div class="text-center py-4" style="grid-column:1/-1"><div class="spinner-border text-danger"></div></div>`;
+        try {
+          const r = await req(`/api/upload/list?pasta=${pasta}`);
+          const imgs = r.data || [];
+          if (!imgs.length) {
+            grid.innerHTML = `<div class="text-muted text-center py-4" style="grid-column:1/-1">Nenhuma imagem em /${pasta}</div>`;
+            return;
+          }
+          grid.innerHTML = imgs
+            .map(
+              (img) => `
+            <div class="img-grid-item" onclick="selecionarImagem('${esc(img.url)}')" title="${esc(img.filename)}">
+              <img src="${API}${esc(img.url)}" alt="${esc(img.filename)}"
+                   onerror="this.closest('.img-grid-item').style.display='none'" />
+              <div class="img-label">${esc(img.filename)}</div>
+            </div>`
+            )
+            .join("");
+        } catch {
+          grid.innerHTML = `<div class="text-danger text-center py-4" style="grid-column:1/-1">Erro ao carregar imagens.</div>`;
+        }
+      }
+
+      function selecionarImagem(url) {
+        if (!pickerTarget) return;
+        const fullUrl = `${API}${url}`;
+        const inp = document.getElementById(pickerTarget);
+        if (inp) {
+          inp.value = fullUrl;
+          mostrarPreview(pickerTarget);
+        }
+        bootstrap.Modal.getInstance(
+          document.getElementById("modalImagePicker")
+        )?.hide();
+        toast("Imagem selecionada!");
+      }
+
+      function mostrarPreview(inputId) {
+        const inp = document.getElementById(inputId);
+        const preview = document.getElementById(`preview-${inputId}`);
+        if (!preview) return;
+        if (inp?.value) {
+          preview.src = inp.value;
+          preview.style.display = "block";
+          preview.onerror = () => {
+            preview.style.display = "none";
+          };
+        } else {
+          preview.style.display = "none";
+        }
+      }
+
+      function prepararUploadTab() {
+        document
+          .getElementById("picker-upload-progress")
+          ?.classList.add("d-none");
+      }
+
+      // Picker modal file input
+      async function handlePickerFileChange(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const prog = document.getElementById("picker-upload-progress");
+        prog.classList.remove("d-none");
+        try {
+          const data = await uploadFile(file);
+          if (data.success) {
+            if (pickerTarget) {
+              document.getElementById(pickerTarget).value = data.url;
+              mostrarPreview(pickerTarget);
+            }
+            toast("Upload concluído!");
+            // Refresh uploads tab and switch to it
+            await carregarGrid("uploads");
+            const uploadsBtn = document.querySelector(
+              '[data-bs-target="#tab-uploads"]'
+            );
+            if (uploadsBtn)
+              bootstrap.Tab.getOrCreateInstance(uploadsBtn).show();
+            bootstrap.Modal.getInstance(
+              document.getElementById("modalImagePicker")
+            )?.hide();
+          } else {
+            toast(data.message || "Erro no upload", "error");
+          }
+        } catch {
+          toast("Erro ao enviar imagem", "error");
+        } finally {
+          prog.classList.add("d-none");
+          e.target.value = "";
+        }
+      }
+
+      async function handlePickerDrop(e) {
+        e.preventDefault();
+        document
+          .getElementById("picker-dropzone")
+          .classList.remove("drag-over");
+        const file = e.dataTransfer.files[0];
+        if (file) {
+          // Simulate the file input change
+          const dt = new DataTransfer();
+          dt.items.add(file);
+          const inp = document.getElementById("picker-file-input");
+          inp.files = dt.files;
+          await handlePickerFileChange({ target: inp });
+        }
+      }
+
+      // Direct upload (button next to URL input, outside picker modal)
+      function triggerUpload(inputId) {
+        pickerTarget = inputId;
+        document.getElementById("direct-file-input").click();
+      }
+
+      async function handleDirectUpload(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        try {
+          const data = await uploadFile(file);
+          if (data.success && pickerTarget) {
+            document.getElementById(pickerTarget).value = data.url;
+            mostrarPreview(pickerTarget);
+            toast("Upload concluído!");
+          } else {
+            toast(data.message || "Erro no upload", "error");
+          }
+        } catch {
+          toast("Erro ao enviar imagem", "error");
+        } finally {
+          e.target.value = "";
+        }
+      }
+
+      // ─── CHANGE PASSWORD ─────────────────────────────────────────────────────
+      function abrirModalSenha() {
+        ["senha-atual", "senha-nova", "senha-confirmar"].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.value = "";
+        });
+        document.getElementById("senha-error").classList.add("d-none");
+        new bootstrap.Modal(document.getElementById("modalSenha")).show();
+      }
+
+      async function alterarSenha() {
+        const senhaAtual = document.getElementById("senha-atual").value;
+        const senhaNova = document.getElementById("senha-nova").value;
+        const senhaConfirm = document.getElementById("senha-confirmar").value;
+        const errEl = document.getElementById("senha-error");
+        const spin = document.getElementById("senha-spinner");
+
+        errEl.classList.add("d-none");
+
+        if (!senhaAtual || !senhaNova || !senhaConfirm) {
+          errEl.textContent = "Preencha todos os campos.";
+          return errEl.classList.remove("d-none");
+        }
+        if (senhaNova.length < 6) {
+          errEl.textContent = "A nova senha deve ter ao menos 6 caracteres.";
+          return errEl.classList.remove("d-none");
+        }
+        if (senhaNova !== senhaConfirm) {
+          errEl.textContent = "As novas senhas não coincidem.";
+          return errEl.classList.remove("d-none");
+        }
+
+        spin.classList.remove("d-none");
+        try {
+          const r = await req("/api/auth/change-password", {
+            method: "POST",
+            body: JSON.stringify({ senhaAtual, novaSenha: senhaNova }),
+          });
+          if (r.success) {
+            toast("Senha alterada com sucesso!");
+            bootstrap.Modal.getInstance(
+              document.getElementById("modalSenha")
+            )?.hide();
+          } else {
+            errEl.textContent = r.message || "Erro ao alterar senha.";
+            errEl.classList.remove("d-none");
+          }
+        } catch {
+          errEl.textContent = "Erro de conexão.";
+          errEl.classList.remove("d-none");
+        } finally {
+          spin.classList.add("d-none");
+        }
+      }
+
+      // ─── AUTH ─────────────────────────────────────────────────────────────────
       async function login() {
         const email = document.getElementById("login-email").value.trim();
         const senha = document.getElementById("login-senha").value;
@@ -813,10 +1635,9 @@
 
         errEl.classList.add("d-none");
         if (!email || !senha) {
-          errEl.textContent = "Preencha email e senha.";
+          errEl.textContent = "Preencha e-mail e senha.";
           return errEl.classList.remove("d-none");
         }
-
         spin.classList.remove("d-none");
         try {
           const r = await req("/api/auth/login", {
@@ -850,7 +1671,8 @@
         document.getElementById("login-screen").style.display = "none";
         document.getElementById("admin-panel").style.display = "block";
         const u = getUser();
-        if (u) document.getElementById("user-info").textContent = `${u.nome}`;
+        document.getElementById("user-info").textContent =
+          u?.nome || u?.email || "";
         loadStats();
       }
 
@@ -862,26 +1684,22 @@
           login();
       });
 
-      // ============================================================
-      // NAV
-      // ============================================================
-      function showSection(name) {
+      // ─── NAV ──────────────────────────────────────────────────────────────────
+      function showSection(name, event) {
         document
           .querySelectorAll(".section-content")
           .forEach((s) => s.classList.remove("active"));
         document
           .querySelectorAll(".nav-link")
           .forEach((l) => l.classList.remove("active"));
-        document.getElementById(`section-${name}`).classList.add("active");
-        event.currentTarget.classList.add("active");
+        document.getElementById(`section-${name}`)?.classList.add("active");
+        event?.currentTarget?.classList.add("active");
         if (name === "filmes") loadFilmes();
         if (name === "atores") loadAtores();
         if (name === "diretores") loadDiretores();
       }
 
-      // ============================================================
-      // STATS
-      // ============================================================
+      // ─── STATS ────────────────────────────────────────────────────────────────
       async function loadStats() {
         try {
           const [f, a, d] = await Promise.all([
@@ -896,12 +1714,12 @@
           document.getElementById("stat-diretores").textContent =
             d.data?.length ?? "—";
           document.getElementById("stat-avaliacoes").textContent = "★";
-        } catch {}
+        } catch {
+          /* silently fail */
+        }
       }
 
-      // ============================================================
-      // FILMES
-      // ============================================================
+      // ─── FILMES ───────────────────────────────────────────────────────────────
       let filmesCache = [];
 
       async function loadFilmes() {
@@ -916,7 +1734,8 @@
           msg.style.display = "none";
           tbl.style.display = "table";
         } catch {
-          msg.textContent = "Erro ao carregar filmes.";
+          msg.innerHTML =
+            '<span class="text-danger">Erro ao carregar filmes.</span>';
         }
       }
 
@@ -930,25 +1749,24 @@
         tbody.innerHTML = filmesCache
           .map(
             (f) => `
-    <tr>
-      <td>${f.imagem ? `<img src="${f.imagem}" class="img-thumb" onerror="this.src=''" />` : "—"}</td>
-      <td>
-        <div class="fw-semibold">${esc(f.titulo)}</div>
-        <small class="text-muted">${f.tipo || "filme"}</small>
-      </td>
-      <td>${f.ano || "—"}</td>
-      <td><small>${esc(f.genero || "—")}</small></td>
-      <td><span class="badge bg-warning text-dark">${f.classificacao || "—"}</span></td>
-      <td>
-        <button class="btn btn-sm btn-outline-light me-1" onclick="editarFilme(${f.id})" title="Editar">
-          <i class="bi bi-pencil"></i>
-        </button>
-        <button class="btn btn-sm btn-outline-danger" onclick="excluirFilme(${f.id},'${esc(f.titulo)}')" title="Excluir">
-          <i class="bi bi-trash"></i>
-        </button>
-      </td>
-    </tr>
-  `
+          <tr>
+            <td>${f.imagem ? `<img src="${esc(f.imagem)}" class="img-thumb" onerror="this.style.display='none'" />` : "—"}</td>
+            <td>
+              <div class="fw-semibold" style="font-size:0.9rem">${esc(f.titulo)}</div>
+              <small class="text-muted">${f.tipo || "filme"}</small>
+            </td>
+            <td class="text-muted small">${f.ano || "—"}</td>
+            <td><small>${esc(f.genero || "—")}</small></td>
+            <td><span class="badge bg-warning text-dark badge-classif">${f.classificacao || "—"}</span></td>
+            <td>
+              <button class="btn btn-sm btn-outline-light py-0 me-1" onclick="editarFilme(${f.id})" title="Editar">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger py-0" onclick="excluirFilme(${f.id},'${esc(f.titulo)}')" title="Excluir">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>`
           )
           .join("");
       }
@@ -973,6 +1791,7 @@
         document.getElementById("filme-trailer").value =
           f?.trailer_youtube ?? "";
         document.getElementById("filme-diretor").value = f?.diretor_id ?? "";
+        mostrarPreview("filme-imagem");
         new bootstrap.Modal(document.getElementById("modalFilme")).show();
       }
 
@@ -987,7 +1806,6 @@
 
         const spin = document.getElementById("filme-spinner");
         spin.classList.remove("d-none");
-
         const body = {
           titulo,
           ano: parseInt(document.getElementById("filme-ano").value) || null,
@@ -1002,7 +1820,6 @@
           diretor_id:
             parseInt(document.getElementById("filme-diretor").value) || null,
         };
-
         try {
           const r = id
             ? await req(`/api/filmes/${id}`, {
@@ -1013,12 +1830,11 @@
                 method: "POST",
                 body: JSON.stringify(body),
               });
-
           if (r.success) {
             toast(id ? "Filme atualizado!" : "Filme criado!");
             bootstrap.Modal.getInstance(
               document.getElementById("modalFilme")
-            ).hide();
+            )?.hide();
             loadFilmes();
             loadStats();
           } else {
@@ -1040,9 +1856,7 @@
         });
       }
 
-      // ============================================================
-      // ATORES
-      // ============================================================
+      // ─── ATORES ───────────────────────────────────────────────────────────────
       let atoresCache = [];
 
       async function loadAtores() {
@@ -1057,7 +1871,8 @@
           msg.style.display = "none";
           tbl.style.display = "table";
         } catch {
-          msg.textContent = "Erro ao carregar atores.";
+          msg.innerHTML =
+            '<span class="text-danger">Erro ao carregar atores.</span>';
         }
       }
 
@@ -1071,17 +1886,16 @@
         tbody.innerHTML = atoresCache
           .map(
             (a) => `
-    <tr>
-      <td>${a.foto ? `<img src="${a.foto}" class="img-circle" onerror="this.src=''" />` : "—"}</td>
-      <td class="fw-semibold">${esc(a.nome)}</td>
-      <td>${esc(a.nacionalidade || "—")}</td>
-      <td>${a.data_nascimento ? new Date(a.data_nascimento).toLocaleDateString("pt-BR") : "—"}</td>
-      <td>
-        <button class="btn btn-sm btn-outline-light me-1" onclick="editarAtor(${a.id})"><i class="bi bi-pencil"></i></button>
-        <button class="btn btn-sm btn-outline-danger" onclick="excluirAtor(${a.id},'${esc(a.nome)}')"><i class="bi bi-trash"></i></button>
-      </td>
-    </tr>
-  `
+          <tr>
+            <td>${a.foto ? `<img src="${esc(a.foto)}" class="img-circle" onerror="this.style.display='none'" />` : "—"}</td>
+            <td class="fw-semibold" style="font-size:0.9rem">${esc(a.nome)}</td>
+            <td class="text-muted small">${esc(a.nacionalidade || "—")}</td>
+            <td class="text-muted small">${a.data_nascimento ? new Date(a.data_nascimento).toLocaleDateString("pt-BR") : "—"}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-light py-0 me-1" onclick="editarAtor(${a.id})"><i class="bi bi-pencil"></i></button>
+              <button class="btn btn-sm btn-outline-danger py-0" onclick="excluirAtor(${a.id},'${esc(a.nome)}')"><i class="bi bi-trash"></i></button>
+            </td>
+          </tr>`
           )
           .join("");
       }
@@ -1098,6 +1912,7 @@
         document.getElementById("ator-nascimento").value =
           a?.data_nascimento?.split("T")[0] ?? "";
         document.getElementById("ator-biografia").value = a?.biografia ?? "";
+        mostrarPreview("ator-foto");
         new bootstrap.Modal(document.getElementById("modalAtor")).show();
       }
 
@@ -1109,7 +1924,6 @@
         const id = document.getElementById("ator-id").value;
         const nome = document.getElementById("ator-nome").value.trim();
         if (!nome) return toast("Nome é obrigatório.", "error");
-
         const body = {
           nome,
           foto: document.getElementById("ator-foto").value,
@@ -1118,7 +1932,6 @@
             document.getElementById("ator-nascimento").value || null,
           biografia: document.getElementById("ator-biografia").value,
         };
-
         try {
           const r = id
             ? await req(`/api/atores/${id}`, {
@@ -1133,7 +1946,7 @@
             toast(id ? "Ator atualizado!" : "Ator criado!");
             bootstrap.Modal.getInstance(
               document.getElementById("modalAtor")
-            ).hide();
+            )?.hide();
             loadAtores();
             loadStats();
           } else {
@@ -1153,9 +1966,7 @@
         });
       }
 
-      // ============================================================
-      // DIRETORES
-      // ============================================================
+      // ─── DIRETORES ────────────────────────────────────────────────────────────
       let diretoresCache = [];
 
       async function loadDiretores() {
@@ -1170,7 +1981,8 @@
           msg.style.display = "none";
           tbl.style.display = "table";
         } catch {
-          msg.textContent = "Erro ao carregar diretores.";
+          msg.innerHTML =
+            '<span class="text-danger">Erro ao carregar diretores.</span>';
         }
       }
 
@@ -1184,17 +1996,16 @@
         tbody.innerHTML = diretoresCache
           .map(
             (d) => `
-    <tr>
-      <td>${d.foto ? `<img src="${d.foto}" class="img-circle" onerror="this.src=''" />` : "—"}</td>
-      <td class="fw-semibold">${esc(d.nome)}</td>
-      <td>${esc(d.nacionalidade || "—")}</td>
-      <td><small class="text-muted">${esc(d.principais_obras || "—")}</small></td>
-      <td>
-        <button class="btn btn-sm btn-outline-light me-1" onclick="editarDiretor(${d.id})"><i class="bi bi-pencil"></i></button>
-        <button class="btn btn-sm btn-outline-danger" onclick="excluirDiretor(${d.id},'${esc(d.nome)}')"><i class="bi bi-trash"></i></button>
-      </td>
-    </tr>
-  `
+          <tr>
+            <td>${d.foto ? `<img src="${esc(d.foto)}" class="img-circle" onerror="this.style.display='none'" />` : "—"}</td>
+            <td class="fw-semibold" style="font-size:0.9rem">${esc(d.nome)}</td>
+            <td class="text-muted small">${esc(d.nacionalidade || "—")}</td>
+            <td><small class="text-muted">${esc(d.principais_obras || "—")}</small></td>
+            <td>
+              <button class="btn btn-sm btn-outline-light py-0 me-1" onclick="editarDiretor(${d.id})"><i class="bi bi-pencil"></i></button>
+              <button class="btn btn-sm btn-outline-danger py-0" onclick="excluirDiretor(${d.id},'${esc(d.nome)}')"><i class="bi bi-trash"></i></button>
+            </td>
+          </tr>`
           )
           .join("");
       }
@@ -1213,6 +2024,7 @@
         document.getElementById("diretor-obras").value =
           d?.principais_obras ?? "";
         document.getElementById("diretor-biografia").value = d?.biografia ?? "";
+        mostrarPreview("diretor-foto");
         new bootstrap.Modal(document.getElementById("modalDiretor")).show();
       }
 
@@ -1224,7 +2036,6 @@
         const id = document.getElementById("diretor-id").value;
         const nome = document.getElementById("diretor-nome").value.trim();
         if (!nome) return toast("Nome é obrigatório.", "error");
-
         const body = {
           nome,
           foto: document.getElementById("diretor-foto").value,
@@ -1234,7 +2045,6 @@
           principais_obras: document.getElementById("diretor-obras").value,
           biografia: document.getElementById("diretor-biografia").value,
         };
-
         try {
           const r = id
             ? await req(`/api/diretores/${id}`, {
@@ -1249,7 +2059,7 @@
             toast(id ? "Diretor atualizado!" : "Diretor criado!");
             bootstrap.Modal.getInstance(
               document.getElementById("modalDiretor")
-            ).hide();
+            )?.hide();
             loadDiretores();
             loadStats();
           } else {
@@ -1269,21 +2079,7 @@
         });
       }
 
-      // ============================================================
-      // HELPERS
-      // ============================================================
-      function esc(str) {
-        return String(str)
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#39;");
-      }
-
-      // ============================================================
-      // INIT
-      // ============================================================
+      // ─── INIT ─────────────────────────────────────────────────────────────────
       if (getToken()) initAdmin();
     </script>
   </body>
