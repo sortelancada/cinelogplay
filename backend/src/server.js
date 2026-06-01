@@ -8,6 +8,11 @@ import avaliacaoRoutes from "./routes/avaliacao.routes.js";
 import atoresRoutes from "./routes/atores.routes.js";
 import favoritoRoutes from "./routes/favorito.routes.js";
 import authRoutes from "./auth/auth.routes.js";
+import uploadRoutes from "./routes/upload.routes.js";
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 import { initializeDatabase } from "./config/db.js";
 import {
   errorHandler,
@@ -46,6 +51,8 @@ app.use("/api/avaliacoes", avaliacaoRoutes);
 app.use("/api/atores", atoresRoutes);
 app.use("/api/favoritos", favoritoRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
+app.use("/api/upload", uploadRoutes);
 
 // 404 handler
 app.use(notFoundHandler);
