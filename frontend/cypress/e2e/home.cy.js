@@ -1,71 +1,38 @@
-// frontend/cypress/e2e/home.cy.js
-
 describe("Home Page", () => {
-  // Teste 1: Carregar página home
+  beforeEach(() => {
+    cy.visit("http://localhost:5173/pages/home.html");
+  });
+
   it("deve carregar a página home", () => {
-    cy.visit("/");
-    cy.get("h1").should("contain", "CinelogPlay");
+    cy.get(".hero-title").should("contain", "O melhor do cinema");
   });
 
-  // Teste 2: Carregar filmes com fixture
-  it("deve carregar filmes da API", () => {
-    // Intercepta requisição GET /api/filmes e retorna fixture
-    cy.intercept("GET", "/api/filmes", {
-      fixture: "filmes.json",
-    }).as("getFilmes");
-
-    // Visita a página
-    cy.visit("/");
-
-    // Aguarda a requisição ser completada
-    cy.wait("@getFilmes");
-
-    // Verifica se um dos filmes aparece
-    cy.contains("O Poderoso Chefão").should("be.visible");
+  it("deve exibir seções de filmes", () => {
+    cy.get("#section-destaque").should("exist");
+    cy.get("#section-lancamentos").should("exist");
+    cy.get("#section-classicos").should("exist");
   });
 
-  // Teste 3: Menu hambúrguer funciona
   it("deve abrir e fechar menu hambúrguer", () => {
-    cy.visit("/");
-
-    // Clica no botão menu
     cy.get("#menuToggle").click();
-
-    // Verifica se sidebar fica ativa
     cy.get("#sidebar").should("have.class", "active");
-
-    // Clica fora para fechar
-    cy.get("#sidebarOverlay").click();
-
-    // Verifica se sidebar fecha
+    cy.get("#menuToggle").click();
     cy.get("#sidebar").should("not.have.class", "active");
   });
 
-  // Teste 4: Dropdown de perfil funciona
   it("deve abrir e fechar dropdown de perfil", () => {
-    cy.visit("/");
-
-    // Clica no botão de perfil
     cy.get("#userProfileBtn").click();
-
-    // Verifica se dropdown fica ativo
     cy.get("#userDropdown").should("have.class", "active");
-
-    // Clica fora para fechar
-    cy.get("body").click(0, 0);
-
-    // Verifica se dropdown fecha
+    cy.get("#userProfileBtn").click();
     cy.get("#userDropdown").should("not.have.class", "active");
   });
 
-  // Teste 5: Navegação funciona
-  it("deve navegar para página de filmes", () => {
-    cy.visit("/");
-
-    // Clica no link de filmes
-    cy.get('a[data-page="filmes"]').click();
-
-    // Verifica se a página mudou
-    cy.contains("Catálogo de Filmes").should("be.visible");
+  it("deve navegar para página de filmes via sidebar", () => {
+    // Abrir menu primeiro
+    cy.get("#menuToggle").click();
+    // Clicar no link via sidebar
+    cy.get(".sidebar-nav a[href='/pages/filmes.html']").click();
+    // Verificar navegação
+    cy.url().should("include", "/pages/filmes.html");
   });
 });

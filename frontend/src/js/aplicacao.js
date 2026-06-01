@@ -1,14 +1,20 @@
-import { config } from "./config.js";
-
-const API_URL = config.apiUrl;
+/**
+ * aplicacao.js
+ * Arquivo de inicialização global
+ * Usado por páginas que carregam este script
+ */
 
 document.addEventListener("DOMContentLoaded", () => {
-  setupMenuToggle();
-  setupUserDropdown();
-  setupContatoForm();
+  initializeMenus();
+  initializeDropdowns();
+  initializePageLinks();
 });
 
-function setupMenuToggle() {
+// ========================================
+// MENU HAMBÚRGUER
+// ========================================
+
+function initializeMenus() {
   const menuToggle = document.getElementById("menuToggle");
   const sidebar = document.getElementById("sidebar");
   const sidebarOverlay = document.getElementById("sidebarOverlay");
@@ -47,7 +53,11 @@ function setupMenuToggle() {
   });
 }
 
-function setupUserDropdown() {
+// ========================================
+// DROPDOWN DO PERFIL
+// ========================================
+
+function initializeDropdowns() {
   const userProfileBtn = document.getElementById("userProfileBtn");
   const userDropdown = document.getElementById("userDropdown");
 
@@ -70,43 +80,11 @@ function setupUserDropdown() {
   });
 }
 
-function setupContatoForm() {
-  const form = document.getElementById("contato-form");
-  if (!form) return;
+// ========================================
+// NAVEGAÇÃO
+// ========================================
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const nome = document.getElementById("contato-nome")?.value;
-    const email = document.getElementById("contato-email")?.value;
-    const assunto = document.getElementById("contato-assunto")?.value;
-    const mensagem = document.getElementById("contato-mensagem")?.value;
-
-    if (!nome || !email || !assunto || !mensagem) {
-      alert("Todos os campos são obrigatórios");
-      return;
-    }
-
-    try {
-      const res = await fetch(`${API_URL}/api/contato`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nome, email, assunto, mensagem }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        alert("Mensagem enviada com sucesso!");
-        form.reset();
-      } else {
-        alert(
-          "Erro ao enviar mensagem: " + (data.message || "Tente novamente")
-        );
-      }
-    } catch (err) {
-      console.error("Erro:", err);
-      alert("Erro ao enviar mensagem");
-    }
-  });
+function initializePageLinks() {
+  // Links são navegados via HTML href
+  // Esta função fica como placeholder para lógica futura
 }

@@ -1,68 +1,40 @@
-// frontend/cypress/e2e/contato.cy.js
-
 describe("Página de Contato", () => {
-  // Teste 1: Carregar página de contato
+  beforeEach(() => {
+    cy.visit("http://localhost:5173/pages/contato.html");
+  });
+
   it("deve carregar a página de contato", () => {
-    cy.visit("/");
-    cy.get('a[data-page="contato"]').click();
-    cy.contains("Entre em Contato").should("be.visible");
+    cy.get("h1").should("contain", "Entre em Contato");
   });
 
-  // Teste 2: Formulário tem campos obrigatórios
-  it("formulário deve ter campos de email e mensagem", () => {
-    cy.visit("/");
-    cy.get('a[data-page="contato"]').click();
-
-    cy.get("input[type='email']").should("exist");
-    cy.get("textarea").should("exist");
-    cy.get("button[type='submit']").should("exist");
+  it("deve exibir formulário com todos os campos", () => {
+    cy.get("#contato-nome").should("exist");
+    cy.get("#contato-email").should("exist");
+    cy.get("#contato-assunto").should("exist");
+    cy.get("#contato-mensagem").should("exist");
+    cy.get("button[type=submit]").should("exist");
   });
 
-  // Teste 3: Enviar mensagem válida
-  it("deve enviar mensagem válida", () => {
-    cy.visit("/");
-    cy.get('a[data-page="contato"]').click();
-
-    // Preenche o formulário
-    cy.get("input[type='email']").type("teste@example.com");
-    cy.get("textarea").type("Mensagem de teste");
-
-    // Envia o formulário
-    cy.get("button[type='submit']").click();
-
-    // Verifica se alerta aparece
-    cy.on("window:alert", (str) => {
-      expect(str).to.contain("sucesso");
+  it("deve validar email", () => {
+    cy.get("#contato-email").type("email-invalido");
+    cy.get("button[type=submit]").click();
+    cy.get("#contato-email").then(($input) => {
+      expect($input[0].validity.valid).to.be.false;
     });
   });
 
-  // Teste 4: Não enviar sem email
-  it("não deve enviar sem email", () => {
-    cy.visit("/");
-    cy.get('a[data-page="contato"]').click();
+  it("deve enviar formulário válido", () => {
+    cy.intercept("POST", "**/api/contato", {
+      statusCode: 200,
+      body: { success: true },
+    }).as("sendContato");
 
-    // Preenche apenas mensagem
-    cy.get("textarea").type("Mensagem de teste");
+    cy.get("#contato-nome").type("Test User");
+    cy.get("#contato-email").type("test@email.com");
+    cy.get("#contato-assunto").type("Test Subject");
+    cy.get("#contato-mensagem").type("Test message content");
+    cy.get("button[type=submit]").click();
 
-    // Tenta enviar
-    cy.get("button[type='submit']").click();
-
-    // Verifica se input de email fica inválido
-    cy.get("input[type='email']").should("have.attr", "required");
-  });
-
-  // Teste 5: Não enviar sem mensagem
-  it("não deve enviar sem mensagem", () => {
-    cy.visit("/");
-    cy.get('a[data-page="contato"]').click();
-
-    // Preenche apenas email
-    cy.get("input[type='email']").type("teste@example.com");
-
-    // Tenta enviar
-    cy.get("button[type='submit']").click();
-
-    // Verifica se textarea fica inválido
-    cy.get("textarea").should("have.attr", "required");
+    cy.wait("@sendContato");
   });
 });

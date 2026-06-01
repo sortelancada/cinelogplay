@@ -89,11 +89,11 @@ function criarCartaoDiretor(diretor) {
   imagemDiv.className = "diretor-card-imagem";
 
   const img = document.createElement("img");
-  img.src = diretor.foto || "/cinelogplay.png";
+  img.src = diretor.foto || "/diretores";
   img.alt = diretor.nome;
   img.loading = "lazy";
   img.onerror = () => {
-    img.src = "/cinelogplay.png";
+    img.src = "/logo/cinelogplay.png";
   };
 
   imagemDiv.appendChild(img);
@@ -158,11 +158,11 @@ function mostrarDetalhesDirector(diretor) {
         <div class="row">
           <div class="col-12 col-md-4 mb-4">
             <img
-              src="${diretor.foto || "/cinelogplay.png"}"
+              src="${diretor.foto || "/logo/cinelogplay.png"}"
               alt="${diretor.nome}"
               class="img-fluid rounded shadow"
               loading="lazy"
-              onerror="this.src='/cinelogplay.png'"
+              onerror="this.src='/logo/cinelogplay.png'"
             >
           </div>
 

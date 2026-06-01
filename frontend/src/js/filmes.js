@@ -74,11 +74,11 @@ function criarCartaoFilme(filme) {
   const imagemDiv = document.createElement("div");
   imagemDiv.className = "filme-card-imagem";
   const img = document.createElement("img");
-  img.src = filme.imagem || "/logo/cinelogplay.png";
+  img.src = filme.imagem || "/filmes";
   img.alt = filme.titulo;
   img.loading = "lazy";
   img.onerror = () => {
-    img.src = "/logo/cinelogplay.png";
+    img.src = "/filmes";
   };
   imagemDiv.appendChild(img);
   card.appendChild(imagemDiv);

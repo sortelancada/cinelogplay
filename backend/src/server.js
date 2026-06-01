@@ -9,8 +9,8 @@ import atoresRoutes from "./routes/atores.routes.js";
 import favoritoRoutes from "./routes/favorito.routes.js";
 import authRoutes from "./auth/auth.routes.js";
 import uploadRoutes from "./routes/upload.routes.js";
-import path from "path";
-import { fileURLToPath } from "url";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,6 +27,7 @@ import {
 dotenv.config();
 
 const app = express();
+app.disable("x-powered-by");
 
 const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || "0.0.0.0";
@@ -107,6 +108,6 @@ async function startServer() {
 }
 
 // Iniciar servidor
-startServer();
+await startServer();
 
 export default app;
