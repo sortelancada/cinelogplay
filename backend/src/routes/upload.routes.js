@@ -4,15 +4,9 @@
 
 import express from "express";
 import multer from "multer";
-<<<<<<< HEAD
 import path from "node:path";
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
-=======
-import path from "path";
-import fs from "fs";
-import { fileURLToPath } from "url";
->>>>>>> backup-minhas-alteracoes
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -52,19 +46,10 @@ const upload = multer({
 
 router.post("/", upload.single("imagem"), (req, res) => {
   if (!req.file) {
-<<<<<<< HEAD
     return res.status(400).json({
       success: false,
       message: "Nenhum arquivo enviado ou formato invalido.",
     });
-=======
-    return res
-      .status(400)
-      .json({
-        success: false,
-        message: "Nenhum arquivo enviado ou formato invalido.",
-      });
->>>>>>> backup-minhas-alteracoes
   }
   const host =
     process.env.API_URL || `http://localhost:${process.env.PORT || 3001}`;
