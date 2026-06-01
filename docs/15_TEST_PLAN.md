@@ -8,11 +8,12 @@ Este documento define como o sistema CinelogPlay será testado, garantindo que t
 
 ## Estratégia de Testes
 
-O projeto utiliza:
+O projeto utiliza uma estratégia combinada de testes para validar tanto o frontend quanto o backend da aplicação.
 
 - Testes End-to-End (E2E) com Cypress
-- Testes desacoplados do backend
-- Uso de mocks (fixtures)
+- Testes automatizados de backend com Jest
+- Testes desacoplados do backend utilizando mocks (fixtures)
+- Validação de funcionamento em modo offline e cenários de fallback
 
 ---
 
@@ -64,9 +65,21 @@ Validam:
 
 ---
 
+### 6. Testes de Backend
+
+Validam:
+
+- Serviços
+- Controladores
+- Regras de negócio da API
+
+Executados utilizando Jest.
+
+---
+
 ## Ambiente de Testes
 
-- URL base: `http://localhost:3000`
+- URL base: `http://localhost:5173`
 - Cypress configurado
 - Fixtures disponíveis
 
@@ -74,13 +87,36 @@ Validam:
 
 ## Estrutura de Testes
 
+### Frontend
+
+```text
+frontend/
+└── cypress/
+    ├── e2e/
+    │   ├── contato.cy.js
+    │   ├── diretores.cy.js
+    │   ├── home.cy.js
+    │   └── responsividade.cy.js
+    │
+    ├── fixtures/
+    │   ├── contato.json
+    │   ├── diretores.json
+    │   └── filmes.json
+    │
+    └── support/
+        ├── commands.js
+        └── e2e.js
+
+frontend/cypress.config.js
 ```
 
-cypress/
-e2e/
-fixtures/
-cypress.config.js
+### Backend
 
+```text
+backend/src/tests/
+├── contato.test.js
+├── diretores.test.js
+└── filmes.test.js
 ```
 
 ---
@@ -183,14 +219,22 @@ Resultado esperado:
 
 ## Execução dos Testes
 
-### Local
+Frontend:
 
 ```bash
+cd frontend
+
 pnpm run dev
 pnpm run cy:open
 ```
 
----
+Backend (quando necessário):
+
+```bash
+cd backend
+
+pnpm test
+```
 
 ### CI (Automático)
 

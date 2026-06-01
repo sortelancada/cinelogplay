@@ -19,8 +19,8 @@
   - [Hotfix](#hotfix)
     - [Regras:](#regras)
   - [Fluxo de uso da branch](#fluxo-de-uso-da-branch)
-      - [Criação da branch:](#criação-da-branch)
-    - [Atualizar branch com `dev`:](#atualizar-branch-com-dev)
+    - [Criação da branch:](#criação-da-branch)
+    - [Atualizar branch com `dev`](#atualizar-branch-com-dev)
     - [Depois do merge em `dev`:](#depois-do-merge-em-dev)
   - [Operações úteis do git](#operações-úteis-do-git)
     - [Listar branches:](#listar-branches)
@@ -87,12 +87,11 @@ dev (HOMOLOGAÇÃO)
 - **Público:** Produção
 
 **Características:**
+
 - Código sempre funcional
 - Versões ready-to-ship
 - Nenhum push direto permitido
 - Requer 1 aprovação + CI verde
-
-
 
 ### `dev` (HOMOLOGAÇÃO)
 
@@ -103,10 +102,11 @@ dev (HOMOLOGAÇÃO)
 - **Privado:** Teste e validação
 
 **Características:**
--  Integra todas as features
--  Base para todas as `feature/*`
--  Testada continuamente (CI)
--  Sempre atualizada com últimas mudanças
+
+- Integra todas as features
+- Base para todas as `feature/*`
+- Testada continuamente (CI)
+- Sempre atualizada com últimas mudanças
 
 ### `feature/*` (DESENVOLVIMENTO)
 
@@ -115,7 +115,6 @@ dev (HOMOLOGAÇÃO)
 - **Proteção:** Nenhuma
 - **Deploy:** Nenhum
 - **Público:** Privado (desenvolvedor)
-  
 
 #### Áreas válidas:
 
@@ -125,8 +124,8 @@ dev (HOMOLOGAÇÃO)
 - `devops` → CI/CD/infraestrutura (Henrique/Winley)
 - `docs` → Documentação (Todos)
 
-
 #### Exemplos CORRETOS:
+
 ```bash
 feature/frontend-home
 feature/frontend-navbar
@@ -154,6 +153,7 @@ feature/docs-atualizacao-workflow
 ```
 
 #### Exemplos ERRADOS:
+
 ```bash
  feature/home (sem área)
  Feature/Frontend (maiúscula)
@@ -183,7 +183,7 @@ Após correção:
 ### Features:
 
 ```id="naming-feature"
-feature/nome-da-feature
+feature/[area]-nome-da-feature
 ```
 
 ---
@@ -280,14 +280,16 @@ Abrir PR no GitHub (base: dev)
 
 ---
 
-### Atualizar branch com `dev`:
+### Atualizar branch com `dev`
 
-Se `dev` foi atualizada durante seu trabalho:
+Caso a branch `dev` receba novas alterações durante o desenvolvimento:
 
 ```bash
 git checkout dev
 git pull origin dev
+
 git checkout feature/seu-branch
+
 git merge dev
 # Resolver conflitos se houver
 ```
@@ -308,26 +310,31 @@ git push origin --delete feature/seu-branch
 ## Operações úteis do git
 
 ### Listar branches:
+
 ```bash
 git branch -a
 ```
 
 ### Ver qual branch está atual:
+
 ```bash
 git branch --show-current
 ```
 
 ### Deletar branch local:
+
 ```bash
 git branch -d feature/seu-branch
 ```
 
 ### Deletar branch remota:
+
 ```bash
 git push origin --delete feature/seu-branch
 ```
 
 ### Visualizar histórico:
+
 ```bash
 git log --oneline
 ```
@@ -338,20 +345,20 @@ git log --oneline
 
 ### SEMPRE:
 
--  Criar `feature/*` a partir de `dev` atualizada
--  Usar nomenclatura padrão: `feature/[area]-[nome]`
--  Manter branch atualizada com `dev`
--  Abrir PR antes de merge
--  Deletar branch após merge
+- Criar `feature/*` a partir de `dev` atualizada
+- Usar nomenclatura padrão: `feature/[area]-[nome]`
+- Manter branch atualizada com `dev`
+- Abrir PR antes de merge
+- Deletar branch após merge
 
 ### NUNCA:
 
--  Trabalhar direto em `main` (protegida)
--  Trabalhar direto em `dev` (protegida)
--  Criar branch de `main` (sempre de `dev`)
--  Ignorar conflitos
--  Deixar branch desatualizada dias
--  Fazer merge sem PR e aprovação
+- Trabalhar direto em `main` (protegida)
+- Trabalhar direto em `dev` (protegida)
+- Criar branch de `main` (sempre de `dev`)
+- Ignorar conflitos
+- Deixar branch desatualizada dias
+- Fazer merge sem PR e aprovação
 
 ---
 

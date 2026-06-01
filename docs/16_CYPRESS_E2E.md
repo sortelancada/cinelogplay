@@ -12,7 +12,8 @@
     - [Arquivo: `cypress/fixtures/filmes.json`](#arquivo-cypressfixturesfilmesjson)
   - [Teste inicial](#teste-inicial)
     - [Arquivo: `cypress/e2e/home.cy.js`](#arquivo-cypresse2ehomecyjs)
-  - [Scripts obrigatórios (package.json)](#scripts-obrigatórios-packagejson)
+  - [Scripts Utilizados](#scripts-utilizados)
+    - [Arquivo: `frontend/package.json`](#arquivo-frontendpackagejson)
   - [Execução local](#execução-local)
     - [Rodar aplicação:](#rodar-aplicação)
     - [Abrir Cypress:](#abrir-cypress)
@@ -46,12 +47,24 @@ pnpm add cypress start-server-and-test --save-dev
 ## Estrutura obrigatória
 
 ```
-cypress/
-  e2e/
-    home.cy.js
-  fixtures/
-    filmes.json
-cypress.config.js
+frontend/
+└── cypress/
+    ├── e2e/
+    │   ├── contato.cy.js
+    │   ├── diretores.cy.js
+    │   ├── home.cy.js
+    │   └── responsividade.cy.js
+    │
+    ├── fixtures/
+    │   ├── contato.json
+    │   ├── diretores.json
+    │   └── filmes.json
+    │
+    └── support/
+        ├── commands.js
+        └── e2e.js
+
+frontend/cypress.config.js
 ```
 
 ---
@@ -63,7 +76,7 @@ cypress.config.js
 ```js
 module.exports = {
   e2e: {
-    baseUrl: "http://localhost:3000",
+    baseUrl: "http://localhost:5173",
   },
 };
 ```
@@ -75,14 +88,17 @@ module.exports = {
 ### Arquivo: `cypress/fixtures/filmes.json`
 
 ```json
-[
-  {
-    "id": 1,
-    "titulo": "Filme Teste",
-    "ano": 2024,
-    "genero": "Ação"
-  }
-]
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "titulo": "Filme Teste",
+      "ano": 2024,
+      "genero": "Ação"
+    }
+  ]
+}
 ```
 
 ---
@@ -106,17 +122,20 @@ describe("Home", () => {
 
 ---
 
-## Scripts obrigatórios (package.json)
+## Scripts Utilizados
 
-```json
+Os scripts oficiais utilizados pelos testes Cypress devem ser mantidos no arquivo:
+
+### Arquivo: `frontend/package.json`
+
+```js
 {
   "scripts": {
-    "dev": "node server.js",
-    "start": "node server.js",
+    "dev": "vite",
     "build": "vite build",
-    "cy:open": "cypress open",
-    "cy:run": "cypress run",
-    "test:ci": "start-server-and-test dev http://localhost:3000 cy:run"
+    "preview": "vite preview",
+    "test:ci": "cypress run",
+    "cypress:open": "cypress open"
   }
 }
 ```
@@ -128,13 +147,17 @@ describe("Home", () => {
 ### Rodar aplicação:
 
 ```bash
+cd frontend
+
 pnpm run dev
 ```
 
 ### Abrir Cypress:
 
 ```bash
-pnpm run cy:open
+cd frontend
+
+pnpm run cypress:open
 ```
 
 ---
@@ -196,7 +219,7 @@ Os testes devem cobrir:
 - Cypress chamando API real
 - Não usar `cy.intercept`
 - Servidor não rodando no CI
-- Porta diferente de `3000`
+- Porta diferente de `5173`
 - Falta de fixtures
 - Testes dependentes de dados externos
 

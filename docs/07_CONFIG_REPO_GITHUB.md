@@ -26,15 +26,17 @@ Garantir que o projeto tenha:
 ```
 cinelogplay-web/
 ├── frontend/
+│   └── cypress/
 ├── backend/
-├── cypress/
 ├── docs/
 ├── .github/
 │   └── workflows/
 │       └── ci-cd.yml (será criado em 18_CI_CD.md)
 ├── .gitignore
 ├── README.md
-└── package.json (raiz)
+├── package.json (raiz)
+├── pnpm-workspace.yaml
+└── pnpm-lock.yaml
 ```
 
 ---
@@ -162,32 +164,36 @@ Enforcement: **Active**
 > **Regras obrigatórias:**
 
 #### Restrict updates
+
 - Impede push direto na branch main
 
 #### Restrict deletions
+
 - Impede deletar a branch
 
 #### Block force pushes
+
 - Impede uso de `git push --force`
 
 #### Pull Request (OBRIGATÓRIO)
+
 - Todo código deve passar por PR
 
 **Required approvals:** `1`
 
 **Motivo:**
+
 - Garante revisão mínima
 - Aprovação por qualquer membro da equipe
 - Evita travar fluxo
 
 #### Require conversation resolution
-- Obriga resolver comentários antes do merge
 
+- Obriga resolver comentários antes do merge
 
 #### Dismiss stale approvals
 
 - Remove aprovação quando novos commits são adicionados
-
 
 #### Require approval of most recent push
 
@@ -202,29 +208,33 @@ Enforcement: **Active**
 > **Regras obrigatórias:**
 
 #### Restrict deletions
+
 - Impede deletar a branch
 
 #### Pull Request (OBRIGATÓRIO)
+
 - Todo código deve passar por PR
 
 **Required approvals:** `1`
 
 **Motivo:**
+
 - Garante qualidade antes de integração
 - Evita merge de código quebrado
 - Permite fluxo contínuo
 
 #### Require conversation resolution
+
 - Obriga resolver comentários antes do merge
 
 **Diferença de `main`:**
+
 - `dev` é menos restritiva (permite rebase e force push para correções)
 - `main` é totalmente restritiva (apenas merges seguros)
 
 #### Dismiss stale approvals
 
 - Remove aprovação quando novos commits são adicionados
-
 
 #### Require approval of most recent push
 
@@ -249,9 +259,14 @@ Enforcement: **Active**
 
 - Garante que código quebrado não seja mergeado
 
+### Após validação completa da pipeline configurada em:
 
-### Quando CI estiver pronto:
-Ativar `Require status checks to pass`:
+`.github/workflows/ci-cd.yml`
+
+Ativar:
+
+Require status checks to pass:
+
 - [ ] GitHub Actions CI deve passar
 - [ ] Cypress deve ter sucesso
 
@@ -327,18 +342,19 @@ Situação atual:
 
 ---
 
-
 # FLUXO DE TRABALHO EM EQUIPE
 
 ### Processo padrão:
 
 1. Atualizar `dev`:
+
 ```bash
 git checkout dev
 git pull origin dev
 ```
 
 2. Criar branch feature a partir de `dev`:
+
 ```bash
 git checkout -b feature/<area>-nome-da-feature
 ```
@@ -363,7 +379,6 @@ git checkout -b feature/<area>-nome-da-feature
    - Criar PR de `dev` para `main`
    - Merge em `main` (entrega para produção)
 
-
 ---
 
 ## PROIBIDO
@@ -383,11 +398,13 @@ git checkout -b feature/<area>-nome-da-feature
 
 ---
 
-## PRÓXIMO PASSO
+## PRÓXIMOS PASSOS
 
-- Configurar GitHub Actions (CI/CD)
-- Adicionar testes automatizados
-- Integrar Cypress
+- Manter a pipeline CI/CD atualizada
+- Expandir cobertura de testes Cypress
+- Expandir cobertura de testes Jest
+- Integrar análise de qualidade (SonarQube)
+- Validar deploy automatizado conforme 18_CI_CD.md
 
 ---
 

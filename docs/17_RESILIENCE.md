@@ -1,6 +1,6 @@
 # Resiliência do Sistema — CinelogPlay
 
-## Porposta
+## Proposta
 
 Garantir que o sistema continue funcionando corretamente mesmo diante de falhas externas, principalmente:
 
@@ -98,7 +98,9 @@ async function getFilmes() {
 - Sempre exibe dados
 - Funciona offline
 
-### Garantir que a API continue respondendo mesmo sem banco de dados.
+## Resiliência no Backend
+
+Garantir que a API continue respondendo mesmo sem banco de dados.
 
 ---
 
@@ -131,7 +133,10 @@ const mockFilmes = require("./mock/filmes.json");
 
 app.get("/api/filmes", async (req, res) => {
   if (!dbConnected) {
-    return res.json(mockFilmes);
+    return res.json({
+      success: true,
+      data: mockFilmes,
+    });
   }
 
   // consulta real no banco
@@ -143,8 +148,8 @@ app.get("/api/filmes", async (req, res) => {
 ### Estrutura obrigatória
 
 ```
-/backend/mock/filmes.json
-/backend/mock/diretores.json
+/backend/src/mock/filmes.json
+/backend/src/mock/diretores.json
 ```
 
 ---
