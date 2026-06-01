@@ -4,26 +4,31 @@
 
 import express from "express";
 import Ator from "../models/atores.model.js";
+import { sendSuccess, sendError } from "../utils/response.js";
+import { validateAtorMiddleware } from "../middleware/validation.middleware.js";
+import { authMiddleware } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
+
+// ============================================
+// GET ROUTES (SEM AUTENTICAÇÃO)
+// ============================================
 
 // GET - Obter todos os atores
 router.get("/", async (req, res) => {
   try {
     const atores = await Ator.getAll();
 
-    res.json({
-      success: true,
-      data: atores,
-      total: atores.length,
-    });
+    return sendSuccess(res, atores, "Atores obtidos com sucesso", 200);
   } catch (error) {
     console.error("Erro ao obter atores:", error);
-    res.status(500).json({
-      success: false,
-      message: "Erro ao obter atores",
-      error: error.message,
-    });
+    return sendError(
+      res,
+      "Erro ao obter atores",
+      "INTERNAL_ERROR",
+      500,
+      error.message
+    );
   }
 });
 
@@ -34,118 +39,113 @@ router.get("/:id", async (req, res) => {
     const ator = await Ator.getById(id);
 
     if (!ator) {
-      return res.status(404).json({
-        success: false,
-        message: "Ator não encontrado",
-      });
+      return sendError(res, "Ator não encontrado", "NOT_FOUND", 404);
     }
 
     // Obter filmes do ator
     const filmes = await Ator.getFilmes(id);
 
-    res.json({
-      success: true,
-      data: {
+    return sendSuccess(
+      res,
+      {
         ...ator,
         filmes,
       },
-    });
+      "Ator obtido com sucesso",
+      200
+    );
   } catch (error) {
     console.error("Erro ao obter ator:", error);
-    res.status(500).json({
-      success: false,
-      message: "Erro ao obter ator",
-      error: error.message,
-    });
+    return sendError(
+      res,
+      "Erro ao obter ator",
+      "INTERNAL_ERROR",
+      500,
+      error.message
+    );
   }
 });
 
+// ============================================
+// POST ROUTE (COM AUTENTICAÇÃO)
+// ============================================
+
 // POST - Criar novo ator
-router.post("/", async (req, res) => {
+router.post("/", authMiddleware, validateAtorMiddleware, async (req, res) => {
   try {
     const atorData = req.body;
 
-    if (!atorData.nome) {
-      return res.status(400).json({
-        success: false,
-        message: "Nome é obrigatório",
-      });
-    }
-
     const novoAtor = await Ator.create(atorData);
 
-    res.status(201).json({
-      success: true,
-      message: "Ator criado com sucesso",
-      data: novoAtor,
-    });
+    return sendSuccess(res, novoAtor, "Ator criado com sucesso", 201);
   } catch (error) {
     console.error("Erro ao criar ator:", error);
-    res.status(500).json({
-      success: false,
-      message: "Erro ao criar ator",
-      error: error.message,
-    });
+    return sendError(
+      res,
+      "Erro ao criar ator",
+      "INTERNAL_ERROR",
+      500,
+      error.message
+    );
   }
 });
 
+// ============================================
+// PUT ROUTE (COM AUTENTICAÇÃO)
+// ============================================
+
 // PUT - Atualizar ator
-router.put("/:id", async (req, res) => {
+router.put("/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const atorData = req.body;
 
     const ator = await Ator.getById(id);
     if (!ator) {
-      return res.status(404).json({
-        success: false,
-        message: "Ator não encontrado",
-      });
+      return sendError(res, "Ator não encontrado", "NOT_FOUND", 404);
     }
 
     const atorAtualizado = await Ator.update(id, atorData);
 
-    res.json({
-      success: true,
-      message: "Ator atualizado com sucesso",
-      data: atorAtualizado,
-    });
+    return sendSuccess(res, atorAtualizado, "Ator atualizado com sucesso", 200);
   } catch (error) {
     console.error("Erro ao atualizar ator:", error);
-    res.status(500).json({
-      success: false,
-      message: "Erro ao atualizar ator",
-      error: error.message,
-    });
+    return sendError(
+      res,
+      "Erro ao atualizar ator",
+      "INTERNAL_ERROR",
+      500,
+      error.message
+    );
   }
 });
 
+// ============================================
+// DELETE ROUTE (COM AUTENTICAÇÃO)
+// ============================================
+
 // DELETE - Deletar ator
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
 
     const ator = await Ator.getById(id);
     if (!ator) {
-      return res.status(404).json({
-        success: false,
-        message: "Ator não encontrado",
-      });
+      return sendError(res, "Ator não encontrado", "NOT_FOUND", 404);
     }
 
     await Ator.delete(id);
 
-    res.json({
-      success: true,
-      message: "Ator deletado com sucesso",
-    });
+    return sendSuccess(res, null, "Ator deletado com sucesso", 200);
   } catch (error) {
     console.error("Erro ao deletar ator:", error);
-    res.status(500).json({
-      success: false,
-      message: "Erro ao deletar ator",
-      error: error.message,
-    });
+    return sendError(
+      res,
+      "Erro ao deletar ator",
+      "INTERNAL_ERROR",
+      500,
+      error.message
+    );
   }
 });
 

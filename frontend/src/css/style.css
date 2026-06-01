@@ -626,3 +626,13 @@ a:focus {
     transform: translateY(0);
   }
 }
+
+/* ADMIN - CORREÇÃO DE LEGIBILIDADE */
+
+#admin-panel .text-muted {
+  color: #bfc5cc !important;
+}
+
+#admin-panel .text-secondary {
+  color: #d5dbe1 !important;
+}

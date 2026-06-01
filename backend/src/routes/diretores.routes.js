@@ -12,8 +12,14 @@ import {
   deleteDiretor,
 } from "../services/diretores.service.js";
 import { sendSuccess, sendError } from "../utils/response.js";
+import { validateDiretorMiddleware } from "../middleware/validation.middleware.js";
+import { authMiddleware } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
+
+// ============================================
+// GET ROUTES (SEM AUTENTICAÇÃO)
+// ============================================
 
 // GET - Obter todos os diretores
 router.get("/", async (req, res) => {
@@ -72,41 +78,50 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// ============================================
+// POST ROUTE (COM AUTENTICAÇÃO)
+// ============================================
+
 // POST - Criar novo diretor
-router.post("/", async (req, res) => {
-  try {
-    const diretorData = req.body;
+router.post(
+  "/",
+  authMiddleware,
+  validateDiretorMiddleware,
+  async (req, res) => {
+    try {
+      const diretorData = req.body;
 
-    if (!diretorData.nome) {
-      return sendError(res, "Nome é obrigatório", "VALIDATION_ERROR", 400);
-    }
+      const resultado = await salvarDiretor(diretorData);
+      if (!resultado.success) {
+        return sendError(
+          res,
+          resultado.error,
+          resultado.code,
+          500,
+          resultado.details
+        );
+      }
 
-    const resultado = await salvarDiretor(diretorData);
-    if (!resultado.success) {
+      return sendSuccess(res, resultado.data, resultado.message, 201);
+    } catch (error) {
+      console.error("Erro ao criar diretor:", error);
       return sendError(
         res,
-        resultado.error,
-        resultado.code,
+        "Erro ao criar diretor",
+        "INTERNAL_ERROR",
         500,
-        resultado.details
+        error.message
       );
     }
-
-    return sendSuccess(res, resultado.data, resultado.message, 201);
-  } catch (error) {
-    console.error("Erro ao criar diretor:", error);
-    return sendError(
-      res,
-      "Erro ao criar diretor",
-      "INTERNAL_ERROR",
-      500,
-      error.message
-    );
   }
-});
+);
+
+// ============================================
+// PUT ROUTE (COM AUTENTICAÇÃO)
+// ============================================
 
 // PUT - Atualizar diretor
-router.put("/:id", async (req, res) => {
+router.put("/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const diretorData = req.body;
@@ -136,8 +151,12 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// ============================================
+// DELETE ROUTE (COM AUTENTICAÇÃO)
+// ============================================
+
 // DELETE - Deletar diretor
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
 

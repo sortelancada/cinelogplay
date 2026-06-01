@@ -9,8 +9,8 @@ const Ator = {
   async getAll() {
     try {
       const query = "SELECT * FROM atores ORDER BY nome ASC";
-      const [atores] = await db.query(query);
-      return atores;
+      const result = await db.query(query);
+      return result.rows;
     } catch (error) {
       console.error("Erro ao obter atores:", error);
       throw error;
@@ -21,8 +21,8 @@ const Ator = {
   async getById(id) {
     try {
       const query = "SELECT * FROM atores WHERE id = $1";
-      const [atores] = await db.query(query, [id]);
-      return atores[0];
+      const result = await db.query(query, [id]);
+      return result.rows[0];
     } catch (error) {
       console.error("Erro ao obter ator:", error);
       throw error;
@@ -37,7 +37,8 @@ const Ator = {
 
       const query = `
         INSERT INTO atores (nome, foto, nacionalidade, data_nascimento, biografia)
-        VALUES (?, ?, ?, ?, ?)
+        VALUES ($1, $2, $3, $4, $5)
+        RETURNING *
       `;
 
       const result = await db.query(query, [
@@ -48,7 +49,7 @@ const Ator = {
         biografia,
       ]);
 
-      return { id: result.insertId, ...atorData };
+      return result.rows[0];
     } catch (error) {
       console.error("Erro ao criar ator:", error);
       throw error;
@@ -61,7 +62,7 @@ const Ator = {
       const query = `
         SELECT f.* FROM filmes f
         JOIN filme_atores fa ON f.id = fa.filme_id
-        WHERE fa.ator_id = ?
+        WHERE fa.ator_id = $1
         ORDER BY f.ano DESC
       `;
       const result = await db.query(query, [atorId]);
@@ -80,11 +81,13 @@ const Ator = {
 
       const query = `
         UPDATE atores
-        SET nome = ?, foto = ?, nacionalidade = ?, data_nascimento = ?, biografia = ?
-        WHERE id = $13
+        SET nome = $1, foto = $2, nacionalidade = $3,
+            data_nascimento = $4, biografia = $5
+        WHERE id = $6
+        RETURNING *
       `;
 
-      await db.query(query, [
+      const result = await db.query(query, [
         nome,
         foto,
         nacionalidade,
@@ -93,7 +96,7 @@ const Ator = {
         id,
       ]);
 
-      return { id, ...atorData };
+      return result.rows[0];
     } catch (error) {
       console.error("Erro ao atualizar ator:", error);
       throw error;

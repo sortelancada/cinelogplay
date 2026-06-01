@@ -13,41 +13,39 @@ import {
 } from "../services/filmes.service.js";
 
 import { getMediaFilme } from "../services/avaliacao.service.js";
+import { sendSuccess, sendError } from "../utils/response.js";
+import { validateFilmeMiddleware } from "../middleware/validation.middleware.js";
+import { authMiddleware } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
+// ============================================
+// GET ROUTES (SEM AUTENTICAÇÃO)
+// ============================================
+
+// GET - Listar todos os filmes
 router.get("/", getFilmesController);
 
-// GET - Obter filme por ID
-router.get("/:id", async (req, res) => {
+// GET - Filmes com avaliação (DEVE VIR ANTES DE /:id)
+router.get("/com-avaliacao", async (req, res) => {
   try {
-    const { id } = req.params;
+    const filmes = await getFilmesComAvaliacao();
 
-    const filme = await getFilmeById(Number(id));
-
-    if (!filme) {
-      return res.status(404).json({
-        success: false,
-        message: "Filme não encontrado",
-      });
-    }
-
-    const media = await getMediaFilme(id);
-
-    return res.json({
-      success: true,
-      data: {
-        ...filme,
-        avaliacao: media?.data || null,
-      },
-    });
+    return sendSuccess(
+      res,
+      filmes,
+      "Filmes com avaliação obtidos com sucesso",
+      200
+    );
   } catch (error) {
-    console.error("Erro ao obter filme:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Erro ao obter filme",
-      error: error.message,
-    });
+    console.error("Erro ao obter filmes com avaliação:", error);
+    return sendError(
+      res,
+      "Erro ao obter filmes com avaliação",
+      "INTERNAL_ERROR",
+      500,
+      error.message
+    );
   }
 });
 
@@ -58,17 +56,15 @@ router.get("/search/:termo", async (req, res) => {
 
     const filmes = await searchFilmes(termo);
 
-    return res.json({
-      success: true,
-      data: filmes,
-      total: filmes.length,
-    });
+    return sendSuccess(res, filmes, "Pesquisa realizada com sucesso", 200);
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Erro ao pesquisar filmes",
-      error: error.message,
-    });
+    return sendError(
+      res,
+      "Erro ao pesquisar filmes",
+      "INTERNAL_ERROR",
+      500,
+      error.message
+    );
   }
 });
 
@@ -79,121 +75,153 @@ router.get("/genero/:genero", async (req, res) => {
 
     const filmes = await getFilmesByGenero(genero);
 
-    return res.json({
-      success: true,
-      data: filmes,
-      total: filmes.length,
-    });
+    return sendSuccess(
+      res,
+      filmes,
+      "Filmes obtidos por gênero com sucesso",
+      200
+    );
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Erro ao obter filmes por gênero",
-      error: error.message,
-    });
+    return sendError(
+      res,
+      "Erro ao obter filmes por gênero",
+      "INTERNAL_ERROR",
+      500,
+      error.message
+    );
   }
 });
 
+// GET - Obter filme por ID (DEVE VIR POR ÚLTIMO ENTRE GET)
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const filme = await getFilmeById(Number(id));
+
+    if (!filme) {
+      return sendError(res, "Filme não encontrado", "NOT_FOUND", 404);
+    }
+
+    const media = await getMediaFilme(id);
+
+    return sendSuccess(
+      res,
+      {
+        ...filme,
+        avaliacao: media?.data || null,
+      },
+      "Filme obtido com sucesso",
+      200
+    );
+  } catch (error) {
+    console.error("Erro ao obter filme:", error);
+    return sendError(
+      res,
+      "Erro ao obter filme",
+      "INTERNAL_ERROR",
+      500,
+      error.message
+    );
+  }
+});
+
+// ============================================
+// POST ROUTE (COM AUTENTICAÇÃO)
+// ============================================
+
 // POST - Criar novo filme
-router.post("/", async (req, res) => {
+router.post("/", authMiddleware, validateFilmeMiddleware, async (req, res) => {
   try {
     const filmData = req.body;
-
-    if (!filmData.titulo) {
-      return res.status(400).json({
-        success: false,
-        message: "Título é obrigatório",
-      });
-    }
 
     const resultado = await salvarFilme(filmData);
 
     if (!resultado.success) {
-      return res.status(500).json(resultado);
+      return sendError(
+        res,
+        resultado.error || "Erro ao criar filme",
+        "CREATION_ERROR",
+        500,
+        resultado.details
+      );
     }
 
     const novoFilme = resultado.data;
 
-    return res.status(201).json({
-      success: true,
-      message: "Filme criado com sucesso",
-      data: novoFilme,
-    });
+    return sendSuccess(res, novoFilme, "Filme criado com sucesso", 201);
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Erro ao criar filme",
-      error: error.message,
-    });
+    return sendError(
+      res,
+      "Erro ao criar filme",
+      "INTERNAL_ERROR",
+      500,
+      error.message
+    );
   }
 });
 
+// ============================================
+// PUT ROUTE (COM AUTENTICAÇÃO)
+// ============================================
+
 // PUT - Atualizar filme
-router.put("/:id", async (req, res) => {
+router.put("/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
 
     const filme = await getFilmeById(Number(id));
 
     if (!filme) {
-      return res.status(404).json({
-        success: false,
-        message: "Filme não encontrado",
-      });
+      return sendError(res, "Filme não encontrado", "NOT_FOUND", 404);
     }
 
     const filmeAtualizado = await updateFilme(Number(id), req.body);
 
-    return res.json({
-      success: true,
-      message: "Filme atualizado com sucesso",
-      data: filmeAtualizado,
-    });
+    return sendSuccess(
+      res,
+      filmeAtualizado,
+      "Filme atualizado com sucesso",
+      200
+    );
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Erro ao atualizar filme",
-      error: error.message,
-    });
+    return sendError(
+      res,
+      "Erro ao atualizar filme",
+      "INTERNAL_ERROR",
+      500,
+      error.message
+    );
   }
 });
 
+// ============================================
+// DELETE ROUTE (COM AUTENTICAÇÃO)
+// ============================================
+
 // DELETE - Deletar filme
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
 
     const filme = await getFilmeById(Number(id));
 
     if (!filme) {
-      return res.status(404).json({
-        success: false,
-        message: "Filme não encontrado",
-      });
+      return sendError(res, "Filme não encontrado", "NOT_FOUND", 404);
     }
 
     await deleteFilme(Number(id));
 
-    return res.json({
-      success: true,
-      message: "Filme deletado com sucesso",
-    });
+    return sendSuccess(res, null, "Filme deletado com sucesso", 200);
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Erro ao deletar filme",
-      error: error.message,
-    });
+    return sendError(
+      res,
+      "Erro ao deletar filme",
+      "INTERNAL_ERROR",
+      500,
+      error.message
+    );
   }
-});
-
-router.get("/com-avaliacao", async (req, res) => {
-  const filmes = await getFilmesComAvaliacao();
-
-  res.json({
-    success: true,
-    data: filmes,
-    total: filmes.length,
-  });
 });
 
 export default router;

@@ -1,18 +1,14 @@
 import pkg from "pg";
 import dotenv from "dotenv";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { seedUsuarios } from "../database/seeders/usuarios.seed.js";
 
 dotenv.config();
 
 const { Pool } = pkg;
 
-// Defaults seguros: se as variáveis não estiverem definidas, usamos os
-// padrões de desenvolvimento local (localhost + padrões do Postgres).
-// Quando o .env define DB_HOST (ex.: "postgres" no Docker), o valor é
-// respeitado — isto apenas evita um crash de DNS (ENOTFOUND) quando a
-// configuração está ausente. Funciona igual em Windows e Linux.
 const pool = new Pool({
   host: process.env.DB_HOST || "localhost",
   port: Number(process.env.DB_PORT) || 5432,
@@ -31,6 +27,7 @@ async function initializeDatabase() {
       __dirname,
       "../database/create_tables.sql"
     );
+
     const seedPath = path.join(__dirname, "../database/seed.sql");
 
     if (!fs.existsSync(createTablesPath)) {
@@ -43,9 +40,18 @@ async function initializeDatabase() {
     console.log("Criando tabelas...");
 
     const createTablesSQL = fs.readFileSync(createTablesPath, "utf-8");
+
     await pool.query(createTablesSQL);
 
     console.log("Tabelas criadas com sucesso!");
+
+    // 🔧 AJUSTE IMPORTANTE: seedUsuarios com proteção de erro
+    try {
+      await seedUsuarios();
+      console.log("Admin garantido no banco");
+    } catch (err) {
+      console.error("Seed usuarios falhou:", err.message);
+    }
 
     if (fs.existsSync(seedPath)) {
       console.log("Populando banco com dados iniciais via SQL...");
@@ -73,7 +79,5 @@ async function initializeDatabase() {
   }
 }
 
-// NÃO executar initializeDatabase automaticamente aqui.
-// Exportamos pool e a função initializeDatabase para execução manual.
 export { initializeDatabase };
 export default pool;

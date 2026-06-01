@@ -14,8 +14,8 @@ const Avaliacao = {
         JOIN filmes f ON av.filme_id = f.id
         ORDER BY av.data_criacao DESC
       `;
-      const [avaliacoes] = await db.query(query);
-      return avaliacoes;
+      const result = await db.query(query);
+      return result.rows;
     } catch (error) {
       console.error("Erro ao obter avaliações:", error);
       throw error;
@@ -48,7 +48,7 @@ const Avaliacao = {
           MIN(estrelas) as minima,
           MAX(estrelas) as maxima
         FROM avaliacoes
-        WHERE filme_id = ?
+        WHERE filme_id = $1
       `;
       const result = await db.query(query, [filmeId]);
       return result.rows[0];
@@ -66,6 +66,7 @@ const Avaliacao = {
       const query = `
         INSERT INTO avaliacoes (filme_id, usuario_id, estrelas, comentario)
         VALUES ($1, $2, $3, $4)
+        RETURNING id, filme_id, usuario_id, estrelas, comentario, data_criacao
       `;
 
       const result = await db.query(query, [
@@ -75,7 +76,7 @@ const Avaliacao = {
         comentario || null,
       ]);
 
-      return { id: result.insertId, ...avaliacaoData };
+      return result.rows[0];
     } catch (error) {
       console.error("Erro ao criar avaliação:", error);
       throw error;
@@ -91,11 +92,11 @@ const Avaliacao = {
         UPDATE avaliacoes
         SET estrelas = $1, comentario = $2
         WHERE id = $3
+        RETURNING id, filme_id, usuario_id, estrelas, comentario, data_criacao
       `;
 
-      await db.query(query, [estrelas, comentario || null, id]);
-
-      return { id, ...avaliacaoData };
+      const result = await db.query(query, [estrelas, comentario || null, id]);
+      return result.rows[0];
     } catch (error) {
       console.error("Erro ao atualizar avaliação:", error);
       throw error;
@@ -121,8 +122,8 @@ const Avaliacao = {
         SELECT * FROM avaliacoes
         WHERE usuario_id = $1 AND filme_id = $2
       `;
-      const [avaliacoes] = await db.query(query, [usuarioId, filmeId]);
-      return avaliacoes[0];
+      const result = await db.query(query, [usuarioId, filmeId]);
+      return result.rows[0];
     } catch (error) {
       console.error("Erro ao obter avaliação do usuário:", error);
       throw error;

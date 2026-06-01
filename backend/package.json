@@ -6,13 +6,20 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "node --watch src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "test": "bash test-api.sh",
+    "test:health": "curl -s http://localhost:3001/ | jq .",
+    "test:filmes": "curl -s http://localhost:3001/api/filmes | jq '.data | length'",
+    "test:diretores": "curl -s http://localhost:3001/api/diretores | jq '.data | length'",
+    "validate": "node --check src/server.js && node --check src/auth/jwt.js"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.3",
+    "multer": "^2.1.1",
     "pg": "^8.11.5"
   },
   "devDependencies": {

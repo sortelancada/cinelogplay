@@ -11,11 +11,11 @@ const Favorito = {
       const query = `
         SELECT f.* FROM filmes f
         JOIN favoritos fav ON f.id = fav.filme_id
-        WHERE fav.usuario_id = ?
-        ORDER BY fav.data_criacao DESC
+        WHERE fav.usuario_id = $1
+        ORDER BY fav.criado_em DESC
       `;
-      const [favoritos] = await db.query(query, [usuarioId]);
-      return favoritos;
+      const result = await db.query(query, [usuarioId]);
+      return result.rows;
     } catch (error) {
       console.error("Erro ao obter favoritos do usuário:", error);
       throw error;
@@ -26,11 +26,11 @@ const Favorito = {
   async isFavorito(usuarioId, filmeId) {
     try {
       const query = `
-        SELECT * FROM favoritos
+        SELECT id FROM favoritos
         WHERE usuario_id = $1 AND filme_id = $2
       `;
-      const [resultado] = await db.query(query, [usuarioId, filmeId]);
-      return resultado.length > 0;
+      const result = await db.query(query, [usuarioId, filmeId]);
+      return result.rows.length > 0;
     } catch (error) {
       console.error("Erro ao verificar favorito:", error);
       throw error;
@@ -42,12 +42,11 @@ const Favorito = {
     try {
       const query = `
         INSERT INTO favoritos (usuario_id, filme_id)
-        VALUES (?, ?)
+        VALUES ($1, $2)
+        RETURNING *
       `;
-
       const result = await db.query(query, [usuarioId, filmeId]);
-
-      return { id: result.insertId, usuario_id: usuarioId, filme_id: filmeId };
+      return result.rows[0];
     } catch (error) {
       console.error("Erro ao adicionar favorito:", error);
       throw error;
@@ -61,9 +60,7 @@ const Favorito = {
         DELETE FROM favoritos
         WHERE usuario_id = $1 AND filme_id = $2
       `;
-
       await db.query(query, [usuarioId, filmeId]);
-
       return { message: "Favorito removido com sucesso" };
     } catch (error) {
       console.error("Erro ao remover favorito:", error);
@@ -75,11 +72,11 @@ const Favorito = {
   async countByFilme(filmeId) {
     try {
       const query = `
-        SELECT COUNT(*) as total FROM favoritos
-        WHERE filme_id = ?
+        SELECT COUNT(*) AS total FROM favoritos
+        WHERE filme_id = $1
       `;
-      const [resultado] = await db.query(query, [filmeId]);
-      return resultado[0].total;
+      const result = await db.query(query, [filmeId]);
+      return result.rows[0].total;
     } catch (error) {
       console.error("Erro ao contar favoritos:", error);
       throw error;

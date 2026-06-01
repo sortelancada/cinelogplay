@@ -1,7 +1,22 @@
 -- ============================================
 -- CINELOGPLAY DATABASE SCHEMA
--- Version: 1.1.0
+-- Version: 1.2.0
 -- ============================================
+
+-- ============================================
+-- TABLE: USUARIOS
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS usuarios (
+  id            SERIAL PRIMARY KEY,
+  nome          VARCHAR(255) NOT NULL,
+  email         VARCHAR(255) UNIQUE NOT NULL,
+  senha         VARCHAR(255) NOT NULL,
+  criado_em     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_usuarios_email ON usuarios(email);
 
 -- ============================================
 -- TABLE: DIRETORES
@@ -76,7 +91,7 @@ CREATE INDEX IF NOT EXISTS idx_filmes_genero ON filmes(genero);
 
 CREATE TABLE IF NOT EXISTS filme_atores (
   filme_id INTEGER NOT NULL REFERENCES filmes(id) ON DELETE CASCADE,
-  ator_id INTEGER NOT NULL REFERENCES atores(id) ON DELETE CASCADE,
+  ator_id  INTEGER NOT NULL REFERENCES atores(id) ON DELETE CASCADE,
   PRIMARY KEY (filme_id, ator_id)
 );
 
@@ -85,12 +100,12 @@ CREATE TABLE IF NOT EXISTS filme_atores (
 -- ============================================
 
 CREATE TABLE IF NOT EXISTS avaliacoes (
-  id SERIAL PRIMARY KEY,
-  filme_id INTEGER NOT NULL REFERENCES filmes(id) ON DELETE CASCADE,
-  usuario_id VARCHAR(255) NOT NULL,
-  estrelas INTEGER NOT NULL,
+  id         SERIAL PRIMARY KEY,
+  filme_id   INTEGER NOT NULL REFERENCES filmes(id) ON DELETE CASCADE,
+  usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+  estrelas   INTEGER NOT NULL,
   comentario TEXT,
-  criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  criado_em  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT valid_estrelas CHECK (estrelas BETWEEN 1 AND 5),
   CONSTRAINT unique_avaliacao_usuario_filme UNIQUE (usuario_id, filme_id)
@@ -104,10 +119,10 @@ CREATE INDEX IF NOT EXISTS idx_avaliacoes_usuario_id ON avaliacoes(usuario_id);
 -- ============================================
 
 CREATE TABLE IF NOT EXISTS favoritos (
-  id SERIAL PRIMARY KEY,
-  usuario_id VARCHAR(255) NOT NULL,
-  filme_id INTEGER NOT NULL REFERENCES filmes(id) ON DELETE CASCADE,
-  criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  id         SERIAL PRIMARY KEY,
+  usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+  filme_id   INTEGER NOT NULL REFERENCES filmes(id) ON DELETE CASCADE,
+  criado_em  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT unique_favorito_usuario_filme UNIQUE (usuario_id, filme_id)
 );
 
@@ -119,18 +134,18 @@ CREATE INDEX IF NOT EXISTS idx_favoritos_filme_id ON favoritos(filme_id);
 -- ============================================
 
 CREATE TABLE IF NOT EXISTS contatos (
-  id SERIAL PRIMARY KEY,
-  nome VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  assunto VARCHAR(255),
-  mensagem TEXT NOT NULL,
-  lido BOOLEAN DEFAULT false,
-  respondido BOOLEAN DEFAULT false,
-  resposta TEXT,
+  id           SERIAL PRIMARY KEY,
+  nome         VARCHAR(255) NOT NULL,
+  email        VARCHAR(255) NOT NULL,
+  assunto      VARCHAR(255),
+  mensagem     TEXT NOT NULL,
+  lido         BOOLEAN DEFAULT false,
+  respondido   BOOLEAN DEFAULT false,
+  resposta     TEXT,
   respondido_em TIMESTAMP,
-  ip_address VARCHAR(45),
-  user_agent VARCHAR(500),
-  criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  ip_address   VARCHAR(45),
+  user_agent   VARCHAR(500),
+  criado_em    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -183,6 +198,11 @@ $$ LANGUAGE plpgsql;
 -- ============================================
 -- TRIGGERS
 -- ============================================
+
+DROP TRIGGER IF EXISTS atualizar_timestamp_usuarios ON usuarios;
+CREATE TRIGGER atualizar_timestamp_usuarios
+BEFORE UPDATE ON usuarios
+FOR EACH ROW EXECUTE FUNCTION update_timestamp();
 
 DROP TRIGGER IF EXISTS atualizar_timestamp_filmes ON filmes;
 CREATE TRIGGER atualizar_timestamp_filmes

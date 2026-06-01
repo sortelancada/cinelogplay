@@ -59,12 +59,12 @@ Antes de começar qualquer coisa:
 
 ## Criação de Branch
 
-Sempre criar uma branch nova a partir da `main`:
+Sempre criar uma branch nova a partir da `dev`:
 
 ```bash id="create-branch"
-git checkout main
-git pull origin main
-git checkout -b feature/nome-da-feature
+git checkout dev
+git pull origin dev
+git checkout -b feature/[area]-nome-da-feature
 ```
 
 ---
@@ -81,11 +81,14 @@ Durante o desenvolvimento:
 
 ## Commits
 
-Realizar commits pequenos e organizados:
+Realizar commits pequenos e organizados, exemplo:
 
 ```bash id="commit-example"
 git add .
 git commit -m "feat: adiciona listagem de filmes"
+git commit -m "fix: corrige validação do formulário"
+git commit -m "test: adiciona testes Cypress da navbar"
+git commit -m "docs: atualiza ambiente Linux"
 ```
 
 ---
@@ -110,7 +113,7 @@ git push origin feature/nome-da-feature
 
 Criar PR no GitHub:
 
-- Base: `main`
+- Base: `dev`
 - Explicar o que foi feito
 - Descrever mudanças
 
@@ -123,6 +126,9 @@ Antes do merge:
 - Outro membro deve revisar
 - Validar funcionamento
 - Verificar padrões
+- O Pull Request deve receber pelo menos 1 aprovação
+- Comentários pendentes devem ser resolvidos antes do merge
+- Caso novos commits sejam enviados, a revisão poderá ser solicitada novamente
 
 ---
 
@@ -130,8 +136,9 @@ Antes do merge:
 
 Após aprovação:
 
-- Realizar merge na `dev`
+- Realizar merge na `dev` (via Pull Request)
 - Garantir que CI passou
+- A `main` recebe apenas merges de `dev` quando pronto para produção
 
 ---
 
@@ -140,8 +147,8 @@ Após aprovação:
 Após merge:
 
 ```bash id="update-main"
-git checkout main
-git pull origin main
+git checkout dev
+git pull origin dev
 ```
 
 ---
@@ -185,14 +192,16 @@ git pull origin main
 ## Fluxo resumido
 
 ```id="workflow-summary"
-1. Criar tarefa
-2. Criar branch
+1. Atualizar ambiente
+2. Criar branch feature/*
 3. Desenvolver
-4. Commit
+4. Commitar
 5. Push
 6. PR
-7. Review
-8. Merge
+7. Comunicar no grupo
+8. Revisão
+10. Merge
+11. Atualizar ambiente
 ```
 
 ---

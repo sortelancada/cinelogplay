@@ -26,7 +26,7 @@ Este passo a passo detalha o processo completo para configurar o ambiente de des
     - [Instalar fnm via script oficial](#instalar-fnm-via-script-oficial)
     - [Ativar fnm no shell](#ativar-fnm-no-shell)
     - [Persistir configuração](#persistir-configuração)
-    - [Instalar Node.js v24.16.0](#instalar-nodejs-v24160lts)
+    - [Instalar Node.js v24.16.0](#instalar-nodejs-v24160)
     - [Verificação](#verificação)
   - [Instalação do pnpm](#instalação-do-pnpm)
     - [Documentação](#documentação)
@@ -54,7 +54,7 @@ Este passo a passo detalha o processo completo para configurar o ambiente de des
     - [Documentação](#documentação-1)
     - [Instalação do Cypress](#instalação-do-cypress-1)
     - [Verificação](#verificação-3)
-  - [Instalação do Jest](#instalação-do-jest--)
+  - [Instalação do Jest](#instalação-do-jest)
     - [Jest](#jest)
     - [Instalar](#instalar)
     - [Verificação](#verificação-4)
@@ -145,7 +145,7 @@ source ~/.bashrc
 ### Instalar Node.js v24.16.0
 
 ```bash
-fnm install 24.16.0 (v1.39.0x)
+fnm install 24.16.0
 fnm use 24.16.0
 fnm default 24.16.0
 ```
@@ -169,7 +169,8 @@ node -v   # Deve mostrar v24.16.0
 ### Ativar Corepack e instalar pnpm
 
 ```bash
-RUN corepack enable && corepack prepare pnpm@10.12.4. --activate
+corepack enable
+corepack prepare pnpm@10.12.4 --activate
 ```
 
 ---
@@ -236,7 +237,7 @@ echo \
 
 ```bash
 sudo apt update
-sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin -y
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 ```
 
 ---
@@ -362,8 +363,8 @@ docker pull postgres:16-alpine
 ```bash
 docker run -d \
   --name postgres-cinelogplay \
-  -e POSTGRES_PASSWORD: postgres \
-  -e POSTGRES_DB: cinelogplay \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=cinelogplay \
   -p 5432:5432 \
   -v postgres_data:/var/lib/postgresql/data \
   postgres:16-alpine
@@ -402,20 +403,16 @@ pnpm add cypress --save-dev
 ### Verificação
 
 ```bash
-pnpm exec cypress -v   # Deve mostrar versão 13.x
+pnpm exec cypress -v   # Deve mostrar versão 14.x
 ```
 
 ---
 
-## Instalação do Jest +
+## Instalação do Jest
 
 ### Jest
 
 [https://jestjs.io/docs/getting-started](https://jestjs.io/docs/getting-started)
-
-###
-
-[https://github.com/ladjs/](https://github.com/ladjs/)
 
 ### Instalar
 
@@ -428,7 +425,7 @@ pnpm add jest  --save-dev
 ### Verificação
 
 ```bash
-pnpm exec jest --version   # Deve mostrar versão 29.x
+pnpm exec jest --version   # Deve mostrar versão 30.x
 ```
 
 ---
@@ -480,8 +477,8 @@ cd CinelogPlay
 ### Atualizar base
 
 ```bash
-git checkout main
-git pull origin main
+git checkout dev
+git pull origin dev
 ```
 
 ---
