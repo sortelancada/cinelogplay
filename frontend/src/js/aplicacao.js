@@ -1,13 +1,17 @@
 /**
  * aplicacao.js
- * Arquivo de inicialização global
- * Usado por páginas que carregam este script
+ * Módulo ES6 de inicialização
+ * Exporta função para inicializar menus e dropdowns
  */
 
-document.addEventListener("DOMContentLoaded", () => {
+export function initializeApplication() {
   initializeMenus();
   initializeDropdowns();
   initializePageLinks();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initializeApplication();
 });
 
 // ========================================

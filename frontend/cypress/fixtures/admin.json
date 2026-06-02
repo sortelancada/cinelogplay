@@ -1,0 +1,99 @@
+{
+  "usuario": {
+    "id": 1,
+    "email": "admin@test.com",
+    "nome": "Admin Teste",
+    "role": "ADMIN",
+    "data_criacao": "2024-01-15T10:00:00Z"
+  },
+  "stats": {
+    "total_filmes": 42,
+    "total_atores": 156,
+    "total_diretores": 28,
+    "total_avaliacoes": 1240
+  },
+  "filmes": [
+    {
+      "id": 1,
+      "titulo": "Inception",
+      "ano": 2010,
+      "duracao": "148 min",
+      "genero": "Ficção Científica",
+      "classificacao": "12",
+      "tipo": "filme",
+      "imagem": "https://via.placeholder.com/300x450?text=Inception",
+      "diretor_id": 1
+    },
+    {
+      "id": 2,
+      "titulo": "The Matrix",
+      "ano": 1999,
+      "duracao": "136 min",
+      "genero": "Ficção Científica",
+      "classificacao": "14",
+      "tipo": "filme",
+      "imagem": "https://via.placeholder.com/300x450?text=Matrix",
+      "diretor_id": 2
+    },
+    {
+      "id": 3,
+      "titulo": "Interstellar",
+      "ano": 2014,
+      "duracao": "169 min",
+      "genero": "Ficção Científica",
+      "classificacao": "12",
+      "tipo": "filme",
+      "imagem": "https://via.placeholder.com/300x450?text=Interstellar",
+      "diretor_id": 1
+    }
+  ],
+  "diretores": [
+    {
+      "id": 1,
+      "nome": "Christopher Nolan",
+      "nacionalidade": "Britânico",
+      "data_nascimento": "1970-07-30",
+      "principais_obras": "Inception, Interstellar, Tenet",
+      "foto": "https://via.placeholder.com/150x150?text=Nolan"
+    },
+    {
+      "id": 2,
+      "nome": "Lana Wachowski",
+      "nacionalidade": "Americana",
+      "data_nascimento": "1965-06-21",
+      "principais_obras": "The Matrix, V for Vendetta, Cloud Atlas",
+      "foto": "https://via.placeholder.com/150x150?text=Wachowski"
+    },
+    {
+      "id": 3,
+      "nome": "Steven Spielberg",
+      "nacionalidade": "Americana",
+      "data_nascimento": "1946-12-18",
+      "principais_obras": "Jaws, E.T., Jurassic Park",
+      "foto": "https://via.placeholder.com/150x150?text=Spielberg"
+    }
+  ],
+  "atores": [
+    {
+      "id": 1,
+      "nome": "Leonardo DiCaprio",
+      "nacionalidade": "Americana",
+      "data_nascimento": "1974-11-11",
+      "foto": "https://via.placeholder.com/150x150?text=DiCaprio"
+    },
+    {
+      "id": 2,
+      "nome": "Anne Hathaway",
+      "nacionalidade": "Americana",
+      "data_nascimento": "1982-11-12",
+      "foto": "https://via.placeholder.com/150x150?text=Hathaway"
+    },
+    {
+      "id": 3,
+      "nome": "Keanu Reeves",
+      "nacionalidade": "Canadense",
+      "data_nascimento": "1964-09-02",
+      "foto": "https://via.placeholder.com/150x150?text=Reeves"
+    }
+  ]
+}

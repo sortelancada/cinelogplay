@@ -1,10 +1,12 @@
 import { API_URL, USE_MOCK } from "./config.js";
 import { setupUI } from "./shared.js";
+import { initializeApplication } from "./aplicacao.js";
 import filmesMock from "../data/filmes.json";
 
 let filmesGlobal = [];
 
 document.addEventListener("DOMContentLoaded", () => {
+  initializeApplication();
   setupUI();
   carregarFilmes();
 });

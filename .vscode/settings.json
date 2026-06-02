@@ -30,6 +30,6 @@
     "projectKey": "lucasitdias_cinelogplay-web"
   },
   "sonarlint.pathToNodeExecutable": "/home/lucasitdevelop/.local/share/fnm/node-versions/v24.16.0/installation/bin/node",
-  "cSpell.words": ["avaliacao", "AVALIAÇÕES"],
+  "cSpell.words": ["avaliacao", "AVALIAÇÕES", "duracao", "gerar"],
   "livePreview.defaultPreviewPath": "/frontend/pages/admin/admin.html"
 }

@@ -1105,7 +1105,7 @@ openssl rand -hex 32
 
 ---
 
-## 🚀 Deploy
+## Deploy
 
 ### Deployment em Produção
 
@@ -1179,7 +1179,7 @@ curl -H "Authorization: Bearer seu_token" http://localhost:3001/api/filmes
 
 ---
 
-## 📞 Suporte
+## Suporte
 
 ### Contatos
 
@@ -1219,23 +1219,11 @@ curl -H "Authorization: Bearer seu_token" http://localhost:3001/api/filmes
 
 #### Segurança
 
-- ✅ Proteção contra SQL Injection
-- ✅ Proteção contra XSS
-- ✅ CORS configurado
-- ✅ Password hashing com bcrypt
-- ✅ JWT obrigatório para rotas protegidas
-
----
-
-## 📄 Licença
-
-MIT License - Veja LICENSE.md para detalhes
-
----
-
-## ✨ Agradecimentos
-
-Desenvolvido com ❤️ pela equipe CinelogPlay
+- Proteção contra SQL Injection
+- Proteção contra XSS
+- CORS configurado
+- Password hashing com bcrypt
+- JWT obrigatório para rotas protegidas
 
 ---
 

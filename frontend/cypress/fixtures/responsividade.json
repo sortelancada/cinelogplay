@@ -1,0 +1,27 @@
+{
+  "viewports": [
+    {
+      "name": "mobile",
+      "width": 375,
+      "height": 667,
+      "device": "iphone-x"
+    },
+    {
+      "name": "tablet",
+      "width": 768,
+      "height": 1024,
+      "device": "ipad-2"
+    },
+    {
+      "name": "desktop",
+      "width": 1920,
+      "height": 1080,
+      "device": "desktop"
+    }
+  ],
+  "breakpoints": {
+    "mobile": 576,
+    "tablet": 768,
+    "desktop": 992
+  }
+}

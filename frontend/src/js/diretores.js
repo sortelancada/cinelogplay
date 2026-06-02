@@ -3,9 +3,12 @@
 // ========================================
 
 import { config } from "./config.js";
+import { initializeApplication } from "./aplicacao.js";
+
 const API_URL = config.apiUrl;
 
 document.addEventListener("DOMContentLoaded", () => {
+  initializeApplication();
   console.log("Página de diretores carregada");
   carregarDiretores();
 });
