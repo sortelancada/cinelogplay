@@ -38,10 +38,24 @@ const HOST = process.env.HOST || "0.0.0.0";
 // ============================================
 // CONFIGURAÇÃO DO CORS
 // ============================================
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:4173",
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN?.split(",") || "*",
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin(origin, callback) {
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error(`Origem não permitida pelo CORS: ${origin}`));
+  },
   credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 };
 
 // ============================================
@@ -50,6 +64,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.options("*", cors(corsOptions));
 
 // ============================================
 // ROTA DE STATUS/HEALTH CHECK

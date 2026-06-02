@@ -1,0 +1,462 @@
+/* ============================================================
+   DESIGN SYSTEM — CINELOGPLAY
+   ============================================================ */
+
+:root {
+  /* Cores base */
+  --bg:           #0F172A;
+  --bg-card:      #1E293B;
+  --bg-hover:     #263548;
+  --border:       #2D3F55;
+
+  /* Accent */
+  --accent:       #F59E0B;
+  --accent-hover: #D97706;
+  --accent-glow:  rgba(245, 158, 11, 0.25);
+
+  /* Texto */
+  --text:         #F8FAFC;
+  --text-muted:   #94A3B8;
+  --text-dim:     #64748B;
+
+  /* Feedback */
+  --success:      #22C55E;
+  --error:        #EF4444;
+  --info:         #3B82F6;
+
+  /* Navbar */
+  --nav-height:   64px;
+
+  /* Raios */
+  --radius-sm:    6px;
+  --radius-md:    10px;
+  --radius-lg:    16px;
+
+  /* Sombras */
+  --shadow-card:  0 4px 24px rgba(0, 0, 0, 0.5);
+  --shadow-glow:  0 0 20px var(--accent-glow);
+}
+
+/* ============================================================
+   RESET
+   ============================================================ */
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+input, textarea, select {
+  font-family: inherit;
+}
+
+/* ============================================================
+   SCROLLBAR PERSONALIZADA
+   ============================================================ */
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+/* ============================================================
+   UTILITÁRIOS GLOBAIS
+   ============================================================ */
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+/* ============================================================
+   BOTÕES GLOBAIS
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #0F172A;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.btn-outline:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+}
+
+.btn-ghost:hover {
+  color: var(--text);
+  background: var(--bg-hover);
+}
+
+.btn-sm {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+}
+
+.btn-lg {
+  padding: 0.85rem 1.8rem;
+  font-size: 1rem;
+}
+
+/* ============================================================
+   INPUTS GLOBAIS
+   ============================================================ */
+
+.input {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.input::placeholder {
+  color: var(--text-dim);
+}
+
+/* ============================================================
+   SEÇÃO PADRÃO
+   ============================================================ */
+
+.section {
+  padding: 3rem 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.section-title::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 1.4rem;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* ============================================================
+   HORIZONTAL SCROLL STRIP
+   ============================================================ */
+
+.scroll-strip {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.75rem;
+  scrollbar-width: thin;
+  scroll-snap-type: x mandatory;
+}
+
+.scroll-strip::-webkit-scrollbar { height: 4px; }
+
+.scroll-strip > * {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+/* ============================================================
+   GRID DE CARDS
+   ============================================================ */
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.25rem;
+}
+
+/* ============================================================
+   BADGE
+   ============================================================ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--bg-hover);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.badge-accent {
+  background: var(--accent-glow);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.badge-livre  { color: #22C55E; background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.3); }
+.badge-10,
+.badge-12     { color: #22C55E; background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.3); }
+.badge-14,
+.badge-16     { color: #F59E0B; background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.3); }
+.badge-18     { color: #EF4444; background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.3); }
+
+/* ============================================================
+   ESTRELAS DE AVALIAÇÃO
+   ============================================================ */
+
+.star-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  color: var(--accent);
+  font-size: 0.85rem;
+}
+
+.star-rating .score {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-left: 0.3rem;
+}
+
+/* ============================================================
+   SKELETON LOADING
+   ============================================================ */
+
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-hover) 50%, var(--bg-card) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ============================================================
+   SPINNER
+   ============================================================ */
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-muted);
+}
+
+.empty-state svg {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1rem;
+  opacity: 0.4;
+}
+
+.empty-state h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+/* ============================================================
+   ERROR STATE
+   ============================================================ */
+
+.error-banner {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.5rem;
+  color: #FCA5A5;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+/* ============================================================
+   OVERLAY
+   ============================================================ */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 90;
+  backdrop-filter: blur(2px);
+}
+
+/* ============================================================
+   ANIMAÇÕES
+   ============================================================ */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in  { animation: fadeIn  0.4s ease both; }
+.animate-fade-up  { animation: fadeUp  0.5s ease both; }
+.animate-fade-down { animation: fadeDown 0.3s ease both; }
+
+/* ============================================================
+   FORMULÁRIOS
+   ============================================================ */
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+.form-error {
+  font-size: 0.8rem;
+  color: var(--error);
+  margin-top: 0.3rem;
+}
+
+/* ============================================================
+   ACESSIBILIDADE
+   ============================================================ */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   RESPONSIVIDADE
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .section { padding: 2rem 0; }
+  .section-title { font-size: 1.2rem; }
+  .cards-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.9rem; }
+}
+
+@media (max-width: 480px) {
+  .container { padding: 0 1rem; }
+  .cards-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+}

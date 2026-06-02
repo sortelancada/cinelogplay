@@ -10,16 +10,20 @@
     "cypress:open": "cypress open"
   },
   "dependencies": {
-    "bootstrap": "^5.3.0"
+    "bootstrap": "^5.3.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-router-dom": "^7.16.0"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^20.5.3",
+    "@vitejs/plugin-react": "^6.0.2",
     "cypress": "^14.5.4",
     "eslint": "^10.3.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-cypress": "^6.4.0",
     "jest": "^30.3.0",
     "prettier": "^3.8.3",
-    "vite": "^7.3.3"
+    "vite": "^8.0.16"
   }
 }

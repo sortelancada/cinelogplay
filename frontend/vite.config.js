@@ -1,43 +1,38 @@
-// Importa utilitário de resolução de caminhos
-import { resolve } from "path";
-
-// Importa defineConfig do Vite
 import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { resolve } from "node:path";
 
 const __dirname = import.meta.dirname;
 
-// Exporta configuração
 export default defineConfig({
-  // Configuração do servidor dev
+  plugins: [react()],
   server: {
     host: "0.0.0.0",
     port: 5173,
     open: false,
   },
-
-  // Configuração de preview
   preview: {
     host: "0.0.0.0",
     port: 4173,
   },
-
-  // Configuração de build
   build: {
     outDir: "dist",
-    sourcemap: true,
-
-    // Configura entradas HTML multipágina
+    sourcemap: false,
     rollupOptions: {
-      input: {
-        ntmain: resolve(__dirname, "index.html"),
-        home: resolve(__dirname, "pages/home.html"),
-        filmes: resolve(__dirname, "pages/filmes.html"),
-        diretores: resolve(__dirname, "pages/diretores.html"),
-        coato: resolve(__dirname, "pages/contato.html"),
-        login: resolve(__dirname, "pages/login.html"),
-        cadastro: resolve(__dirname, "pages/cadastro.html"),
-        admin: resolve(__dirname, "pages/admin.html"),
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (id.includes("react") || id.includes("react-dom") || id.includes("react-router")) {
+              return "vendor";
+            }
+          }
+        },
       },
+    },
+  },
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "src"),
     },
   },
 });
