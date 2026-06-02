@@ -1,13 +1,38 @@
 const MOCK_FILMES = [
-  { id: 1, titulo: "Inception", ano: 2010, genero: "Ficção Científica", imagem: "", media_avaliacao: "4.5" },
-  { id: 2, titulo: "Oppenheimer", ano: 2023, genero: "Drama", imagem: "", media_avaliacao: "4.8" },
-  { id: 3, titulo: "Dune", ano: 2021, genero: "Ficção Científica", imagem: "", media_avaliacao: "4.2" },
+  {
+    id: 1,
+    titulo: "Inception",
+    ano: 2010,
+    genero: "Ficção Científica",
+    imagem: "",
+    media_avaliacao: "4.5",
+  },
+  {
+    id: 2,
+    titulo: "Oppenheimer",
+    ano: 2023,
+    genero: "Drama",
+    imagem: "",
+    media_avaliacao: "4.8",
+  },
+  {
+    id: 3,
+    titulo: "Dune",
+    ano: 2021,
+    genero: "Ficção Científica",
+    imagem: "",
+    media_avaliacao: "4.2",
+  },
 ];
 
 describe("Página de Filmes", () => {
   beforeEach(() => {
-    cy.intercept("GET", "**/api/filmes", { body: { success: true, data: MOCK_FILMES } }).as("getFilmes");
-    cy.intercept("GET", "**/api/favoritos", { body: { success: true, data: [] } }).as("getFavoritos");
+    cy.intercept("GET", "**/api/filmes", {
+      body: { success: true, data: MOCK_FILMES },
+    }).as("getFilmes");
+    cy.intercept("GET", "**/api/favoritos", {
+      body: { success: true, data: [] },
+    }).as("getFavoritos");
     cy.visit("/filmes");
   });
 

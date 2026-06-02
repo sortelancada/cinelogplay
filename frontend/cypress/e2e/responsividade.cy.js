@@ -1,8 +1,12 @@
 describe("Responsividade", () => {
   beforeEach(() => {
     cy.intercept("GET", "**/api/filmes", { body: { success: true, data: [] } });
-    cy.intercept("GET", "**/api/diretores", { body: { success: true, data: [] } });
-    cy.intercept("GET", "**/api/favoritos", { body: { success: true, data: [] } });
+    cy.intercept("GET", "**/api/diretores", {
+      body: { success: true, data: [] },
+    });
+    cy.intercept("GET", "**/api/favoritos", {
+      body: { success: true, data: [] },
+    });
   });
 
   it("deve carregar a home em mobile (375x667)", () => {

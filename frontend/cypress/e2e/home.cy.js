@@ -1,6 +1,22 @@
 const MOCK_FILMES = [
-  { id: 1, titulo: "Inception", ano: 2010, genero: "Ficção Científica", imagem: "", media_avaliacao: "4.5", total_avaliacoes: 10 },
-  { id: 2, titulo: "Oppenheimer", ano: 2023, genero: "Drama", imagem: "", media_avaliacao: "4.8", total_avaliacoes: 20 },
+  {
+    id: 1,
+    titulo: "Inception",
+    ano: 2010,
+    genero: "Ficção Científica",
+    imagem: "",
+    media_avaliacao: "4.5",
+    total_avaliacoes: 10,
+  },
+  {
+    id: 2,
+    titulo: "Oppenheimer",
+    ano: 2023,
+    genero: "Drama",
+    imagem: "",
+    media_avaliacao: "4.8",
+    total_avaliacoes: 20,
+  },
 ];
 const MOCK_DIRETORES = [
   { id: 1, nome: "Christopher Nolan", nacionalidade: "Britânico", foto: "" },
@@ -8,9 +24,15 @@ const MOCK_DIRETORES = [
 
 describe("Home Page", () => {
   beforeEach(() => {
-    cy.intercept("GET", "**/api/filmes", { body: { success: true, data: MOCK_FILMES } }).as("getFilmes");
-    cy.intercept("GET", "**/api/diretores", { body: { success: true, data: MOCK_DIRETORES } }).as("getDiretores");
-    cy.intercept("GET", "**/api/favoritos", { body: { success: true, data: [] } }).as("getFavoritos");
+    cy.intercept("GET", "**/api/filmes", {
+      body: { success: true, data: MOCK_FILMES },
+    }).as("getFilmes");
+    cy.intercept("GET", "**/api/diretores", {
+      body: { success: true, data: MOCK_DIRETORES },
+    }).as("getDiretores");
+    cy.intercept("GET", "**/api/favoritos", {
+      body: { success: true, data: [] },
+    }).as("getFavoritos");
     cy.visit("/");
   });
 

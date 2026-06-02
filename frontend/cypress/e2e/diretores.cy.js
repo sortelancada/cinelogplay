@@ -5,7 +5,9 @@ const MOCK_DIRETORES = [
 
 describe("Página de Diretores", () => {
   beforeEach(() => {
-    cy.intercept("GET", "**/api/diretores", { body: { success: true, data: MOCK_DIRETORES } }).as("getDiretores");
+    cy.intercept("GET", "**/api/diretores", {
+      body: { success: true, data: MOCK_DIRETORES },
+    }).as("getDiretores");
     cy.visit("/diretores");
   });
 
