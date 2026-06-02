@@ -12,6 +12,11 @@ import { sendError } from "../utils/response.js";
 export function errorHandler(err, req, res, next) {
   console.error("ERRO:", err);
 
+  // Erro de CORS — origem não permitida
+  if (err.message?.startsWith("Origem não permitida pelo CORS")) {
+    return sendError(res, "Origem não permitida", "CORS_ERROR", 403);
+  }
+
   // Erro de validação (exemplo: JSON inválido)
   if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
     return sendError(

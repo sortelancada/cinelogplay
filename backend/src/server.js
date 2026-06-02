@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
 import filmesRoutes from "./routes/filmes.routes.js";
 import diretoresRoutes from "./routes/diretores.routes.js";
@@ -11,47 +12,46 @@ import authRoutes from "./auth/auth.routes.js";
 import uploadRoutes from "./routes/upload.routes.js";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 import { initializeDatabase } from "./config/db.js";
 import {
   errorHandler,
   notFoundHandler,
 } from "./middleware/errorHandler.middleware.js";
 
-// ============================================
-// CONFIGURAÇÃO DO ENVIRONMENT
-// ============================================
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
 app.set("trust proxy", 1);
-
 app.disable("x-powered-by");
 
 const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || "0.0.0.0";
 
 // ============================================
-// CONFIGURAÇÃO DO CORS
+// CORS
 // ============================================
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:4173",
-  process.env.FRONTEND_URL,
-].filter(Boolean);
+// CORS_ORIGIN aceita lista CSV: "https://a.com,https://b.com"
+const extraOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim()).filter(Boolean)
+  : [];
+
+const allowedOriginsSet = new Set(
+  [
+    "http://localhost:5173",
+    "http://localhost:4173",
+    process.env.FRONTEND_URL,
+    ...extraOrigins,
+  ].filter(Boolean)
+);
 
 const corsOptions = {
   origin(origin, callback) {
     if (!origin) return callback(null, true);
-
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-
+    if (allowedOriginsSet.has(origin)) return callback(null, true);
     return callback(new Error(`Origem não permitida pelo CORS: ${origin}`));
   },
   credentials: true,
@@ -59,15 +59,35 @@ const corsOptions = {
 };
 
 // ============================================
+// RATE LIMITING
+// ============================================
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: "Muitas requisições. Tente novamente em 15 minutos." },
+});
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: "Muitas tentativas de login. Tente novamente em 15 minutos." },
+});
+
+// ============================================
 // MIDDLEWARES GLOBAIS
 // ============================================
 app.use(cors(corsOptions));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.options("*", cors(corsOptions));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+app.use("/api/", apiLimiter);
 
 // ============================================
-// ROTA DE STATUS/HEALTH CHECK
+// HEALTH CHECK
 // ============================================
 app.get("/", (req, res) => {
   res.json({
@@ -95,39 +115,31 @@ app.use("/api/contato", contatoRoutes);
 app.use("/api/avaliacoes", avaliacaoRoutes);
 app.use("/api/atores", atoresRoutes);
 app.use("/api/favoritos", favoritoRoutes);
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authLimiter, authRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
 app.use("/api/upload", uploadRoutes);
 
 // ============================================
-// MIDDLEWARES DE TRATAMENTO DE ERRO
+// ERROR HANDLERS
 // ============================================
-// 404 handler (deve vir antes do error handler)
 app.use(notFoundHandler);
-
-// Global error handler (deve ser o último)
 app.use(errorHandler);
 
 // ============================================
-// INICIALIZAÇÃO DO SERVIDOR
+// INIT
 // ============================================
 async function startServer() {
   try {
-    // Inicializar banco de dados
-    if (process.env.RUN_MIGRATIONS === "false") {
+    // Roda migrations a não ser que RUN_MIGRATIONS=false explicitamente
+    if (process.env.RUN_MIGRATIONS !== "false") {
       await initializeDatabase();
     }
 
-    // Iniciar servidor
     app.listen(PORT, HOST, () => {
-      console.log(`\nCinelogPlay API iniciada com sucesso!`);
+      console.log(`\nCinelogPlay API iniciada!`);
       console.log(`URL: http://${HOST}:${PORT}`);
-      console.log(
-        `🗄️  Banco de dados: ${process.env.DB_NAME || "cinelogplay"}`
-      );
-      console.log(
-        `JWT_SECRET: ${process.env.JWT_SECRET ? "Configurado" : "NÃO CONFIGURADO"}\n`
-      );
+      console.log(`DB: ${process.env.DB_NAME || "cinelogplay"}`);
+      console.log(`JWT: ${process.env.JWT_SECRET ? "OK" : "NÃO CONFIGURADO"}\n`);
     });
   } catch (error) {
     console.error("Erro ao inicializar servidor:", error.message);
@@ -135,7 +147,6 @@ async function startServer() {
   }
 }
 
-// Iniciar servidor
 await startServer();
 
 export default app;

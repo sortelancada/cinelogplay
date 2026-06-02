@@ -13,47 +13,50 @@ import { isValidString } from "../utils/validation.js";
  * Middleware para validar dados de Filme
  */
 export function validateFilmeMiddleware(req, res, next) {
-  const { titulo, diretor_id, ano_lancamento, genero, sinopse, duracao } =
-    req.body;
+  // Aceita `ano` (frontend admin) ou `ano_lancamento` (padrão DB)
+  const {
+    titulo,
+    diretor_id,
+    ano_lancamento,
+    ano,
+    genero,
+    sinopse,
+    duracao,
+  } = req.body;
 
+  const anoEfetivo = ano_lancamento ?? ano;
   const errors = {};
 
-  // Validate titulo
   if (!titulo || typeof titulo !== "string" || titulo.trim().length === 0) {
     errors.titulo = "Título é obrigatório e deve ser texto";
   }
 
-  // Validate diretor_id
-  if (!diretor_id || Number.isNaN(Number(diretor_id))) {
-    errors.diretor_id = "Diretor ID é obrigatório e deve ser numérico";
+  // diretor_id é opcional (pode criar filme sem diretor)
+  if (diretor_id !== undefined && diretor_id !== null && diretor_id !== "" &&
+      Number.isNaN(Number(diretor_id))) {
+    errors.diretor_id = "Diretor ID deve ser numérico quando informado";
   }
 
-  // Validate ano_lancamento
-  if (!ano_lancamento || Number.isNaN(Number(ano_lancamento))) {
-    errors.ano_lancamento =
-      "Ano de lançamento é obrigatório e deve ser numérico";
+  // ano é opcional mas deve ser numérico quando informado
+  if (anoEfetivo !== undefined && anoEfetivo !== null && anoEfetivo !== "" &&
+      Number.isNaN(Number(anoEfetivo))) {
+    errors.ano_lancamento = "Ano de lançamento deve ser numérico quando informado";
   }
 
-  // Validate genero
   if (!genero || typeof genero !== "string" || genero.trim().length === 0) {
     errors.genero = "Gênero é obrigatório e deve ser texto";
   }
 
-  // Validate sinopse (opcional)
   if (sinopse && typeof sinopse !== "string") {
     errors.sinopse = "Sinopse deve ser texto";
   }
 
-  // Validate duracao (OBRIGATÓRIO)
-  if (
-    duracao === undefined ||
-    duracao === null ||
-    Number.isNaN(Number(duracao))
-  ) {
-    errors.duracao = "Duração é obrigatória e deve ser numérica";
+  // duracao é opcional — DB armazena como VARCHAR(20), aceita "120 min" ou número
+  if (duracao !== undefined && duracao !== null && duracao !== "" &&
+      typeof duracao !== "string" && typeof duracao !== "number") {
+    errors.duracao = "Duração deve ser texto ou número quando informada";
   }
 
-  // Se houver erros, retornar resposta de validação
   if (Object.keys(errors).length > 0) {
     return sendValidationError(res, errors);
   }

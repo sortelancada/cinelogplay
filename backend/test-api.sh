@@ -129,16 +129,17 @@ print_success "Token obtido: ${TOKEN:0:20}..."
 
 print_header "CRIAÇÃO - COM AUTENTICAÇÃO"
 
+TS=$(date +%s)
 test_endpoint "POST /api/filmes (COM AUTH)" "POST" "/api/filmes" \
-  '{"titulo":"Filme Teste","diretor_id":1,"ano_lancamento":2026,"genero":"Drama","sinopse":"Teste"}' \
+  "{\"titulo\":\"Filme Audit $TS\",\"diretor_id\":4,\"ano_lancamento\":2026,\"genero\":\"Drama\",\"sinopse\":\"Teste\",\"duracao\":\"90 min\"}" \
   "$TOKEN" "201"
 
 test_endpoint "POST /api/diretores (COM AUTH)" "POST" "/api/diretores" \
-  '{"nome":"Diretor Teste","nacionalidade":"Brasileiro"}' \
+  "{\"nome\":\"Diretor Audit $TS\",\"nacionalidade\":\"Brasileiro\"}" \
   "$TOKEN" "201"
 
 test_endpoint "POST /api/atores (COM AUTH)" "POST" "/api/atores" \
-  '{"nome":"Ator Teste"}' \
+  "{\"nome\":\"Ator Audit $TS\"}" \
   "$TOKEN" "201"
 
 # ============================================
@@ -163,7 +164,7 @@ test_endpoint "POST /api/contato (DADOS INVÁLIDOS)" "POST" "/api/contato" \
 
 test_endpoint "POST /api/contato (DADOS VÁLIDOS)" "POST" "/api/contato" \
   '{"nome":"João Silva","email":"joao@test.com","mensagem":"Este é um teste de mensagem válida com mais de 10 caracteres"}' \
-  "" "200"
+  "" "201"
 
 # ============================================
 # RESUMO

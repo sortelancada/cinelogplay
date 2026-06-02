@@ -101,7 +101,7 @@ export async function getFilmesByGenero(genre) {
 
     // Fallback to mock data
     return filmesMock.filter(
-      (f) => f.genero && f.genero.toLowerCase().includes(genre.toLowerCase())
+      (f) => f.genero?.toLowerCase().includes(genre.toLowerCase())
     );
   }
 }
@@ -196,7 +196,9 @@ export async function salvarFilme(filmeData) {
       titulo,
       descricao_curta,
       sinopse,
+      // aceita tanto `ano` (frontend admin) quanto `ano_lancamento` (padrão DB)
       ano_lancamento,
+      ano,
       genero,
       duracao,
       classificacao,
@@ -207,6 +209,11 @@ export async function salvarFilme(filmeData) {
       tipo = "filme",
     } = filmeData;
 
+    const anoFinal = ano_lancamento ?? ano ?? null;
+    // duracao: aceita "120 min", "120", 120 → converte para inteiro
+    const duracaoNum = duracao != null && duracao !== ""
+      ? (Number.parseInt(String(duracao).replace(/\D/g, ""), 10) || null)
+      : null;
     const slug = gerarSlug(titulo);
 
     const result = await pool.query(
@@ -241,9 +248,9 @@ export async function salvarFilme(filmeData) {
         slug,
         descricao_curta,
         sinopse,
-        ano,
+        anoFinal,
         genero,
-        duracao,
+        duracaoNum,
         classificacao,
         imagem,
         trailer_youtube,
@@ -285,6 +292,16 @@ export async function updateFilme(id, filmeData) {
     const values = [];
     let paramIndex = 1;
 
+    // Normaliza `ano` → `ano_lancamento` e parseia `duracao` para inteiro
+    const data = { ...filmeData };
+    if (Object.hasOwn(data, "ano") && !Object.hasOwn(data, "ano_lancamento")) {
+      data.ano_lancamento = data.ano;
+    }
+    delete data.ano;
+    if (Object.hasOwn(data, "duracao") && data.duracao != null && data.duracao !== "") {
+      data.duracao = parseInt(String(data.duracao).replace(/\D/g, ""), 10) || null;
+    }
+
     // Build dynamic update query
     const allowedFields = [
       "titulo",
@@ -303,9 +320,9 @@ export async function updateFilme(id, filmeData) {
     ];
 
     for (const field of allowedFields) {
-      if (Object.prototype.hasOwnProperty.call(filmeData, field)) {
+      if (Object.hasOwn(data, field)) {
         updates.push(`${field} = $${paramIndex}`);
-        values.push(filmeData[field]);
+        values.push(data[field]);
         paramIndex++;
       }
     }

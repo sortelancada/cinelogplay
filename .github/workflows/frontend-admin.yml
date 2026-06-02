@@ -1,0 +1,102 @@
+name: Admin React — CI
+
+on:
+  push:
+    branches: [main, dev]
+    paths:
+      - "frontend/src/pages/Admin/**"
+      - "frontend/src/components/admin/**"
+      - "frontend/src/services/admin.service.js"
+      - "frontend/src/routes/AdminRoute.jsx"
+      - "frontend/cypress/e2e/admin-react.cy.js"
+      - ".github/workflows/frontend-admin.yml"
+  pull_request:
+    branches: [main, dev]
+    paths:
+      - "frontend/src/pages/Admin/**"
+      - "frontend/src/components/admin/**"
+      - "frontend/src/services/admin.service.js"
+      - "frontend/src/routes/AdminRoute.jsx"
+      - "frontend/cypress/e2e/admin-react.cy.js"
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: "24"
+  PNPM_VERSION: "10.12.4"
+
+jobs:
+  admin-ci:
+    name: Admin React — install › build › test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Ativar pnpm via Corepack
+        run: |
+          corepack enable
+          corepack prepare pnpm@${{ env.PNPM_VERSION }} --activate
+
+      - name: Instalar dependências
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache binário Cypress
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/Cypress
+          key: ${{ runner.os }}-cypress-${{ hashFiles('frontend/package.json') }}
+          restore-keys: ${{ runner.os }}-cypress-
+
+      - name: Build frontend
+        working-directory: ./frontend
+        run: pnpm run build
+
+      - name: Instalar binário Cypress
+        working-directory: ./frontend
+        run: pnpm exec cypress install
+
+      - name: Iniciar servidor Vite
+        working-directory: ./frontend
+        run: |
+          nohup pnpm run dev > /tmp/vite-admin.log 2>&1 &
+          for i in $(seq 1 60); do
+            if curl -sf http://localhost:5173 > /dev/null 2>&1; then
+              echo "Servidor pronto"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Timeout aguardando servidor"
+          cat /tmp/vite-admin.log
+          exit 1
+
+      - name: Cypress — testes admin React
+        working-directory: ./frontend
+        run: pnpm exec cypress run --spec "cypress/e2e/admin-react.cy.js"
+        env:
+          CYPRESS_baseUrl: http://localhost:5173
+
+      - name: Upload screenshots (falha)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: admin-cypress-screenshots-${{ github.run_number }}
+          path: frontend/cypress/screenshots/
+          retention-days: 7
+
+      - name: Upload logs servidor (falha)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: admin-vite-log-${{ github.run_number }}
+          path: /tmp/vite-admin.log
+          retention-days: 3

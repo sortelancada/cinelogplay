@@ -133,10 +133,70 @@ export async function login(req, res) {
   }
 }
 
-// Mantido por compatibilidade com placeholder existente
-export function notImplementedAuth(req, res) {
-  res.status(501).json({
-    success: false,
-    message: "Endpoint placeholder.",
-  });
+/**
+ * POST /api/auth/change-password
+ * Requer autenticação (authMiddleware injeta req.user)
+ */
+export async function changePassword(req, res) {
+  try {
+    const { senhaAtual, novaSenha } = req.body;
+    const usuarioId = req.user?.id;
+
+    if (!senhaAtual || !novaSenha) {
+      return res.status(400).json({
+        success: false,
+        message: "senhaAtual e novaSenha são obrigatórios",
+        code: "VALIDATION_ERROR",
+      });
+    }
+
+    if (novaSenha.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "A nova senha deve ter ao menos 6 caracteres",
+        code: "VALIDATION_ERROR",
+      });
+    }
+
+    const result = await pool.query(
+      "SELECT senha FROM usuarios WHERE id = $1",
+      [usuarioId]
+    );
+    const usuario = result.rows[0];
+
+    if (!usuario) {
+      return res.status(404).json({
+        success: false,
+        message: "Usuário não encontrado",
+        code: "NOT_FOUND",
+      });
+    }
+
+    const senhaValida = await bcrypt.compare(senhaAtual, usuario.senha);
+    if (!senhaValida) {
+      return res.status(401).json({
+        success: false,
+        message: "Senha atual incorreta",
+        code: "INVALID_CREDENTIALS",
+      });
+    }
+
+    const novaSenhaHash = await bcrypt.hash(novaSenha, 10);
+    await pool.query(
+      "UPDATE usuarios SET senha = $1, atualizado_em = NOW() WHERE id = $2",
+      [novaSenhaHash, usuarioId]
+    );
+
+    return res.json({
+      success: true,
+      message: "Senha alterada com sucesso",
+    });
+  } catch (error) {
+    console.error("[AUTH] Erro no change-password:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Erro ao alterar senha",
+      code: "INTERNAL_ERROR",
+    });
+  }
 }

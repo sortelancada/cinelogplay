@@ -12,7 +12,8 @@ if (!JWT_SECRET) {
 }
 
 export function signToken(payload, options = {}) {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: "1h", ...options });
+  const expiresIn = process.env.JWT_EXPIRES_IN || "1h";
+  return jwt.sign(payload, JWT_SECRET, { expiresIn, ...options });
 }
 
 export function verifyToken(token) {
