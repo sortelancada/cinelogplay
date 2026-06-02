@@ -22,7 +22,12 @@ const EMPTY_FORM = {
 function Toast({ msg, type }) {
   if (!msg) return null;
   return (
-    <div style={{ ...toastStyle, background: type === "error" ? "#ef4444" : "#22c55e" }}>
+    <div
+      style={{
+        ...toastStyle,
+        background: type === "error" ? "#ef4444" : "#22c55e",
+      }}
+    >
       {msg}
     </div>
   );
@@ -31,19 +36,30 @@ function Toast({ msg, type }) {
 function DeleteModal({ item, onConfirm, onClose }) {
   if (!item) return null;
   return (
-    <div style={overlayStyle} onClick={(e) => e.target === e.currentTarget && onClose()}>
+    <div
+      style={overlayStyle}
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+    >
       <div style={smallDialog}>
         <div style={dHeader}>
           <span style={{ color: "#ef4444" }}>⚠ Confirmar Exclusão</span>
-          <button style={closeBtn} onClick={onClose}>✕</button>
+          <button style={closeBtn} onClick={onClose}>
+            ✕
+          </button>
         </div>
         <div style={{ padding: "16px 20px" }}>
           <p style={{ marginBottom: 6 }}>Excluir "{item.titulo}"?</p>
-          <small style={{ color: "#888" }}>Esta ação não pode ser desfeita.</small>
+          <small style={{ color: "#888" }}>
+            Esta ação não pode ser desfeita.
+          </small>
         </div>
         <div style={dFooter}>
-          <button style={btnSecondary} onClick={onClose}>Cancelar</button>
-          <button style={btnDanger} onClick={onConfirm}>Excluir</button>
+          <button style={btnSecondary} onClick={onClose}>
+            Cancelar
+          </button>
+          <button style={btnDanger} onClick={onConfirm}>
+            Excluir
+          </button>
         </div>
       </div>
     </div>
@@ -80,7 +96,9 @@ export default function FilmesAdmin() {
     }
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   function openCreate() {
     setForm(EMPTY_FORM);
@@ -178,7 +196,15 @@ export default function FilmesAdmin() {
             <tbody>
               {filmes.length === 0 ? (
                 <tr>
-                  <td colSpan={6} style={{ ...td, textAlign: "center", color: "#888", padding: 32 }}>
+                  <td
+                    colSpan={6}
+                    style={{
+                      ...td,
+                      textAlign: "center",
+                      color: "#888",
+                      padding: 32,
+                    }}
+                  >
                     Nenhum filme cadastrado.
                   </td>
                 </tr>
@@ -190,23 +216,53 @@ export default function FilmesAdmin() {
                         <img
                           src={f.imagem}
                           alt=""
-                          style={{ width: 36, height: 52, objectFit: "cover", borderRadius: 4, background: "#333" }}
-                          onError={(e) => { e.target.style.display = "none"; }}
+                          style={{
+                            width: 36,
+                            height: 52,
+                            objectFit: "cover",
+                            borderRadius: 4,
+                            background: "#333",
+                          }}
+                          onError={(e) => {
+                            e.target.style.display = "none";
+                          }}
                         />
-                      ) : "—"}
+                      ) : (
+                        "—"
+                      )}
                     </td>
                     <td style={td}>
-                      <div style={{ fontWeight: 600, fontSize: "0.9rem" }}>{f.titulo}</div>
-                      <small style={{ color: "#888" }}>{f.tipo || "filme"}</small>
+                      <div style={{ fontWeight: 600, fontSize: "0.9rem" }}>
+                        {f.titulo}
+                      </div>
+                      <small style={{ color: "#888" }}>
+                        {f.tipo || "filme"}
+                      </small>
                     </td>
-                    <td style={{ ...td, color: "#888", fontSize: "0.85rem" }}>{f.ano || "—"}</td>
-                    <td style={{ ...td, fontSize: "0.85rem" }}>{f.genero || "—"}</td>
+                    <td style={{ ...td, color: "#888", fontSize: "0.85rem" }}>
+                      {f.ano || "—"}
+                    </td>
+                    <td style={{ ...td, fontSize: "0.85rem" }}>
+                      {f.genero || "—"}
+                    </td>
                     <td style={td}>
                       <span style={classBadge}>{f.classificacao || "—"}</span>
                     </td>
                     <td style={{ ...td, width: 90 }}>
-                      <button style={btnIconLight} onClick={() => openEdit(f)} title="Editar">✏</button>
-                      <button style={btnIconRed} onClick={() => setDeleteTarget(f)} title="Excluir">🗑</button>
+                      <button
+                        style={btnIconLight}
+                        onClick={() => openEdit(f)}
+                        title="Editar"
+                      >
+                        ✏
+                      </button>
+                      <button
+                        style={btnIconRed}
+                        onClick={() => setDeleteTarget(f)}
+                        title="Excluir"
+                      >
+                        🗑
+                      </button>
                     </td>
                   </tr>
                 ))
@@ -218,11 +274,18 @@ export default function FilmesAdmin() {
 
       {/* Filme Modal */}
       {modal && (
-        <div style={overlayStyle} onClick={(e) => e.target === e.currentTarget && setModal(null)}>
+        <div
+          style={overlayStyle}
+          onClick={(e) => e.target === e.currentTarget && setModal(null)}
+        >
           <div style={largeDialog}>
             <div style={dHeader}>
-              <span>{modal.mode === "edit" ? "Editar Filme" : "Novo Filme"}</span>
-              <button style={closeBtn} onClick={() => setModal(null)}>✕</button>
+              <span>
+                {modal.mode === "edit" ? "Editar Filme" : "Novo Filme"}
+              </span>
+              <button style={closeBtn} onClick={() => setModal(null)}>
+                ✕
+              </button>
             </div>
             <div style={{ padding: "20px 24px", overflowY: "auto", flex: 1 }}>
               <div style={grid2}>
@@ -232,7 +295,12 @@ export default function FilmesAdmin() {
                 </div>
                 <div>
                   <label style={labelStyle}>ANO</label>
-                  <input {...field("ano")} type="number" min="1800" max="2030" />
+                  <input
+                    {...field("ano")}
+                    type="number"
+                    min="1800"
+                    max="2030"
+                  />
                 </div>
                 <div>
                   <label style={labelStyle}>DURAÇÃO</label>
@@ -241,8 +309,10 @@ export default function FilmesAdmin() {
                 <div>
                   <label style={labelStyle}>CLASSIFICAÇÃO</label>
                   <select {...field("classificacao")} style={inputStyle}>
-                    {["L","10","12","14","16","18"].map((v) => (
-                      <option key={v} value={v}>{v === "L" ? "Livre" : v}</option>
+                    {["L", "10", "12", "14", "16", "18"].map((v) => (
+                      <option key={v} value={v}>
+                        {v === "L" ? "Livre" : v}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -256,11 +326,18 @@ export default function FilmesAdmin() {
                 </div>
                 <div style={{ gridColumn: "1/-1" }}>
                   <label style={labelStyle}>GÊNERO</label>
-                  <input {...field("genero")} placeholder="ex: Ficção Científica / Ação" />
+                  <input
+                    {...field("genero")}
+                    placeholder="ex: Ficção Científica / Ação"
+                  />
                 </div>
                 <div style={{ gridColumn: "1/-1" }}>
                   <label style={labelStyle}>DESCRIÇÃO CURTA</label>
-                  <input {...field("descricao_curta")} maxLength={500} placeholder="Resumo curto..." />
+                  <input
+                    {...field("descricao_curta")}
+                    maxLength={500}
+                    placeholder="Resumo curto..."
+                  />
                 </div>
                 <div style={{ gridColumn: "1/-1" }}>
                   <label style={labelStyle}>SINOPSE</label>
@@ -274,32 +351,55 @@ export default function FilmesAdmin() {
                 <div style={{ gridColumn: "1/-1" }}>
                   <label style={labelStyle}>CAPA DO FILME</label>
                   <div style={{ display: "flex", gap: 8 }}>
-                    <input {...field("imagem")} placeholder="URL ou selecione →" style={{ ...inputStyle, flex: 1 }} />
-                    <button style={btnSecondary} type="button" onClick={() => setPickerField("imagem")}>
-                      📁
-                    </button>
+                    <input
+                      {...field("imagem")}
+                      placeholder="URL ou selecione →"
+                      style={{ ...inputStyle, flex: 1 }}
+                    />
+                    <button
+                      style={btnSecondary}
+                      type="button"
+                      onClick={() => setPickerField("imagem")}
+                    ></button>
                   </div>
                   {form.imagem && (
                     <img
                       src={form.imagem}
                       alt="preview"
-                      style={{ maxHeight: 64, marginTop: 6, borderRadius: 4, border: "1px solid #2a2a2a" }}
-                      onError={(e) => { e.target.style.display = "none"; }}
+                      style={{
+                        maxHeight: 64,
+                        marginTop: 6,
+                        borderRadius: 4,
+                        border: "1px solid #2a2a2a",
+                      }}
+                      onError={(e) => {
+                        e.target.style.display = "none";
+                      }}
                     />
                   )}
                 </div>
                 <div style={{ gridColumn: "1/-1" }}>
                   <label style={labelStyle}>TRAILER (YouTube embed URL)</label>
-                  <input {...field("trailer_youtube")} type="url" placeholder="https://www.youtube.com/embed/..." />
+                  <input
+                    {...field("trailer_youtube")}
+                    type="url"
+                    placeholder="https://www.youtube.com/embed/..."
+                  />
                 </div>
                 <div>
                   <label style={labelStyle}>ID DO DIRETOR</label>
-                  <input {...field("diretor_id")} type="number" placeholder="ex: 1" />
+                  <input
+                    {...field("diretor_id")}
+                    type="number"
+                    placeholder="ex: 1"
+                  />
                 </div>
               </div>
             </div>
             <div style={dFooter}>
-              <button style={btnSecondary} onClick={() => setModal(null)}>Cancelar</button>
+              <button style={btnSecondary} onClick={() => setModal(null)}>
+                Cancelar
+              </button>
               <button style={btnDanger} onClick={handleSave} disabled={saving}>
                 {saving ? "Salvando..." : "Salvar"}
               </button>

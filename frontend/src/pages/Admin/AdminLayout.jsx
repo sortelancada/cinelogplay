@@ -85,9 +85,7 @@ export default function AdminLayout() {
               marginBottom: 20,
               display: "block",
             }}
-          >
-            ☰
-          </button>
+          ></button>
         )}
 
         <Outlet />

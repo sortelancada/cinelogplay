@@ -1,38 +1,38 @@
 describe("Responsividade", () => {
-  it("deve ser responsivo em mobile (375x667)", () => {
-    cy.viewport(375, 667);
-    cy.visit("http://localhost:5173/pages/home.html");
-    cy.get(".navbar-custom").should("be.visible");
-    cy.get("#menuToggle").should("be.visible");
+  beforeEach(() => {
+    cy.intercept("GET", "**/api/filmes", { body: { success: true, data: [] } });
+    cy.intercept("GET", "**/api/diretores", { body: { success: true, data: [] } });
+    cy.intercept("GET", "**/api/favoritos", { body: { success: true, data: [] } });
   });
 
-  it("deve ser responsivo em tablet (768x1024)", () => {
+  it("deve carregar a home em mobile (375x667)", () => {
+    cy.viewport(375, 667);
+    cy.visit("/");
+    cy.get("nav").should("be.visible");
+  });
+
+  it("deve carregar a home em tablet (768x1024)", () => {
     cy.viewport(768, 1024);
-    cy.visit("http://localhost:5173/pages/home.html");
-    cy.get(".navbar-custom").should("be.visible");
+    cy.visit("/");
+    cy.get("nav").should("be.visible");
   });
 
-  it("deve ser responsivo em desktop (1920x1080)", () => {
+  it("deve carregar a home em desktop (1920x1080)", () => {
     cy.viewport(1920, 1080);
-    cy.visit("http://localhost:5173/pages/home.html");
-    cy.get(".navbar-custom").should("be.visible");
+    cy.visit("/");
+    cy.get("nav").should("be.visible");
   });
 
-  it("menu hambúrguer deve funcionar em mobile", () => {
+  it("deve exibir o conteúdo principal em mobile", () => {
     cy.viewport(375, 667);
-    cy.visit("http://localhost:5173/pages/home.html");
-    cy.get("#menuToggle").click();
-    cy.get("#sidebar").should("have.class", "active");
+    cy.visit("/");
+    cy.get("h1").should("be.visible");
   });
 
-  it("deve navegar entre páginas em mobile via sidebar", () => {
+  it("deve navegar para /filmes em mobile", () => {
     cy.viewport(375, 667);
-    cy.visit("http://localhost:5173/pages/home.html");
-    // Abrir menu
-    cy.get("#menuToggle").click();
-    // Clicar no primeiro link de filmes no sidebar (não no dropdown)
-    cy.get(".sidebar-nav a[href='/pages/filmes.html']").first().click();
-    // Verificar navegação
-    cy.url().should("include", "/pages/filmes.html");
+    cy.visit("/");
+    cy.contains("Ver Catálogo").click();
+    cy.url().should("include", "/filmes");
   });
 });

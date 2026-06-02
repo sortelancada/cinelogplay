@@ -30,29 +30,21 @@ export default function Dashboard() {
         }}
       >
         <StatsCard
-          icon="🎬"
           label="Filmes"
           value={loading ? "…" : stats?.filmes}
           color="rgba(229,9,20,0.1)"
         />
         <StatsCard
-          icon="🎭"
           label="Atores"
           value={loading ? "…" : stats?.atores}
           color="rgba(13,202,240,0.1)"
         />
         <StatsCard
-          icon="🎥"
           label="Diretores"
           value={loading ? "…" : stats?.diretores}
           color="rgba(25,135,84,0.1)"
         />
-        <StatsCard
-          icon="⭐"
-          label="Avaliações"
-          value="★"
-          color="rgba(255,193,7,0.1)"
-        />
+        <StatsCard label="Avaliações" value="★" color="rgba(255,193,7,0.1)" />
       </div>
 
       <p style={{ color: "#888", fontSize: "0.85rem" }}>

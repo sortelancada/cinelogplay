@@ -1,83 +1,64 @@
 describe("Página de Login", () => {
   beforeEach(() => {
-    // Limpar localStorage antes de cada teste
     cy.clearLocalStorage();
-    cy.visit("http://localhost:5173/pages/login.html");
+    cy.visit("/login");
   });
-
-  // ──────────────────────────────────────────────────────────────────
-  // CARREGAMENTO DA PÁGINA
-  // ──────────────────────────────────────────────────────────────────
 
   it("deve carregar a página de login", () => {
-    cy.get(".login-card").should("exist");
-    cy.get("#login-form").should("exist");
-    cy.get("#login-email").should("exist");
-    cy.get("#login-senha").should("exist");
+    cy.contains("Bem-vindo de volta").should("exist");
   });
 
-  it("deve exibir formulário com todos os campos", () => {
-    cy.get("#login-email").should("exist");
-    cy.get("#login-senha").should("exist");
-    cy.get("#login-btn").should("exist").and("contain", "Entrar");
-    cy.get("a[href='/pages/home.html']").should("exist");
+  it("deve exibir formulário com campos de email e senha", () => {
+    cy.get("input[type='email']").should("exist");
+    cy.get("input[type='password']").should("exist");
+    cy.contains("button", "Entrar").should("exist");
   });
 
-  it("deve ter logo ou texto de marca", () => {
-    // Verificar se existe logo ou texto de fallback
-    cy.get(".login-logo, #login-brand-text").should("exist");
+  it("deve exibir link para cadastro", () => {
+    cy.contains("Criar conta").should("exist");
   });
 
-  // ──────────────────────────────────────────────────────────────────
-  // VALIDAÇÃO DE CAMPOS
-  // ──────────────────────────────────────────────────────────────────
-
-  it("deve validar email vazio", () => {
-    cy.get("#login-email").should("have.attr", "required");
+  it("deve exibir erro ao enviar campos vazios", () => {
+    cy.contains("button", "Entrar").click();
+    cy.contains("Preencha email e senha").should("exist");
   });
 
-  it("deve validar senha vazia", () => {
-    cy.get("#login-senha").should("have.attr", "required");
+  it("deve exibir erro com credenciais inválidas", () => {
+    cy.intercept("POST", "**/api/auth/login", {
+      statusCode: 401,
+      body: { success: false, message: "Credenciais inválidas" },
+    }).as("loginFail");
+
+    cy.get("input[type='email']").type("errado@teste.com");
+    cy.get("input[type='password']").type("errado123");
+    cy.contains("button", "Entrar").click();
+    cy.wait("@loginFail");
+    cy.contains("Credenciais inválidas").should("exist");
   });
 
-  it("deve exibir erro ao tentar enviar vazio", () => {
-    cy.get("#login-btn").click();
-    cy.get("#login-error").should("not.have.class", "d-none");
-  });
-
-  // ──────────────────────────────────────────────────────────────────
-  // LOGIN COM SUCESSO
-  // ──────────────────────────────────────────────────────────────────
-
-  it("deve fazer login com credenciais válidas", () => {
+  it("deve fazer login com credenciais válidas e redirecionar", () => {
     cy.intercept("POST", "**/api/auth/login", {
       statusCode: 200,
       body: {
         success: true,
         data: {
           token: "mock-token-123",
-          usuario: {
-            id: 1,
-            email: "admin@test.com",
-            nome: "Admin Test",
-          },
+          usuario: { id: 1, email: "admin@test.com", nome: "Admin Test" },
         },
       },
     }).as("loginSuccess");
 
-    cy.get("#login-email").type("admin@test.com");
-    cy.get("#login-senha").type("password123");
-    cy.get("#login-btn").click();
+    cy.get("input[type='email']").type("admin@test.com");
+    cy.get("input[type='password']").type("password123");
+    cy.contains("button", "Entrar").click();
 
     cy.wait("@loginSuccess");
 
-    // Verificar se token foi salvo
     cy.window().then((win) => {
       expect(win.localStorage.getItem("clp_token")).to.equal("mock-token-123");
     });
 
-    // Verificar se redirecionou
-    cy.url().should("include", "/pages/home.html");
+    cy.url().should("not.include", "/login");
   });
 
   // ──────────────────────────────────────────────────────────────────

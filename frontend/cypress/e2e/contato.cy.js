@@ -1,40 +1,40 @@
-describe("Página de Contato", () => {
+describe("Página de Contato (Perfil)", () => {
+  const USER = { id: 1, nome: "Test User", email: "test@test.com" };
+
   beforeEach(() => {
-    cy.visit("http://localhost:5173/pages/contato.html");
-  });
-
-  it("deve carregar a página de contato", () => {
-    cy.get("h1").should("contain", "Entre em Contato");
-  });
-
-  it("deve exibir formulário com todos os campos", () => {
-    cy.get("#contato-nome").should("exist");
-    cy.get("#contato-email").should("exist");
-    cy.get("#contato-assunto").should("exist");
-    cy.get("#contato-mensagem").should("exist");
-    cy.get("button[type=submit]").should("exist");
-  });
-
-  it("deve validar email", () => {
-    cy.get("#contato-email").type("email-invalido");
-    cy.get("button[type=submit]").click();
-    cy.get("#contato-email").then(($input) => {
-      expect($input[0].validity.valid).to.be.false;
+    cy.intercept("GET", "**/api/favoritos", { body: { success: true, data: [] } }).as("getFavoritos");
+    cy.visit("/perfil", {
+      onBeforeLoad(win) {
+        win.localStorage.setItem("clp_token", "test-token");
+        win.localStorage.setItem("clp_user", JSON.stringify(USER));
+      },
     });
   });
 
-  it("deve enviar formulário válido", () => {
+  it("deve exibir seção de contato no perfil", () => {
+    cy.contains("Entre em Contato").should("exist");
+  });
+
+  it("deve exibir campos de nome, email e mensagem", () => {
+    cy.contains("Nome").should("exist");
+    cy.contains("Email").should("exist");
+    cy.contains("Mensagem").should("exist");
+  });
+
+  it("deve enviar formulário de contato válido", () => {
     cy.intercept("POST", "**/api/contato", {
       statusCode: 200,
-      body: { success: true },
+      body: { success: true, data: { id: 1 } },
     }).as("sendContato");
 
-    cy.get("#contato-nome").type("Test User");
-    cy.get("#contato-email").type("test@email.com");
-    cy.get("#contato-assunto").type("Test Subject");
-    cy.get("#contato-mensagem").type("Test message content");
-    cy.get("button[type=submit]").click();
+    cy.get("form").last().within(() => {
+      cy.get("input").first().type("Test User");
+      cy.get("input").last().type("test@email.com");
+      cy.get("textarea").type("Mensagem de teste E2E");
+      cy.get("button[type='submit']").click();
+    });
 
     cy.wait("@sendContato");
+    cy.contains("sucesso").should("exist");
   });
 });

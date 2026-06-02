@@ -1,42 +1,13 @@
-describe("Painel Administrativo", () => {
-  beforeEach(() => {
+// Este arquivo foi substituído por admin-react.cy.js
+// Mantido aqui apenas para compatibilidade de referência
+
+describe("Admin — Redirecionamento (legado)", () => {
+  it("deve redirecionar /admin para /login quando não autenticado", () => {
     cy.clearLocalStorage();
+    cy.visit("/admin");
+    cy.url().should("include", "/login");
   });
-
-  // ──────────────────────────────────────────────────────────────────
-  // FLUXO DE LOGIN
-  // ──────────────────────────────────────────────────────────────────
-
-  it("deve redirecionar para login se não estiver autenticado", () => {
-    cy.visit("http://localhost:5173/pages/admin.html");
-    // O admin.html com JS inline deve verificar token
-    // Se não tiver, mostra login-screen
-    cy.get("#login-screen").should("exist");
-  });
-
-  it("deve fazer login e acessar o painel", () => {
-    cy.visit("http://localhost:5173/pages/admin.html");
-
-    // Interceptar login
-    cy.intercept("POST", "**/api/auth/login", {
-      statusCode: 200,
-      body: {
-        success: true,
-        data: {
-          token: "admin-token-123",
-          usuario: {
-            id: 1,
-            email: "admin@test.com",
-            nome: "Admin Teste",
-          },
-        },
-      },
-    }).as("adminLogin");
-
-    // Preencher formulário de login
-    cy.get("#login-email").type("admin@test.com");
-    cy.get("#login-senha").type("password123");
-    cy.get("button:contains('Entrar')").first().click();
+});
 
     cy.wait("@adminLogin");
 
