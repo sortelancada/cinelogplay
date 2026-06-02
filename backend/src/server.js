@@ -27,6 +27,9 @@ import {
 dotenv.config();
 
 const app = express();
+
+app.set("trust proxy", 1);
+
 app.disable("x-powered-by");
 
 const PORT = process.env.PORT || 3001;
@@ -36,7 +39,7 @@ const HOST = process.env.HOST || "0.0.0.0";
 // CONFIGURAÇÃO DO CORS
 // ============================================
 const corsOptions = {
-  origin: ["http://localhost:5173", "http://localhost:5174"],
+  origin: process.env.CORS_ORIGIN?.split(",") || "*",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 };
@@ -56,6 +59,14 @@ app.get("/", (req, res) => {
     success: true,
     message: "CinelogPlay API — Servidor operacional",
     version: "1.0.0",
+    timestamp: new Date().toISOString(),
+  });
+});
+
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    uptime: process.uptime(),
     timestamp: new Date().toISOString(),
   });
 });
@@ -88,7 +99,9 @@ app.use(errorHandler);
 async function startServer() {
   try {
     // Inicializar banco de dados
-    await initializeDatabase();
+    if (process.env.RUN_MIGRATIONS === "false") {
+      await initializeDatabase();
+    }
 
     // Iniciar servidor
     app.listen(PORT, HOST, () => {

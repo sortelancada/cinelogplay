@@ -43,7 +43,7 @@ INSERT INTO diretores (nome, nacionalidade, data_nascimento, biografia, principa
 -- ============================================
 -- INSERT FILMS (FILMES)
 -- ============================================
-INSERT INTO filmes (titulo, descricao_curta, sinopse, ano, genero, duracao, classificacao, imagem, trailer_youtube, diretor_id, atores, tipo, ativo) VALUES
+INSERT INTO filmes (titulo, descricao_curta, sinopse, ano_lancamento, genero, duracao, classificacao, imagem, trailer_youtube, diretor_id, atores, tipo, ativo) VALUES
 
 ('Oppenheimer', 'A história do criador da bomba atômica',
   'Oppenheimer segue J. Robert Oppenheimer, físico teórico que presidiu o Projeto Manhattan durante a Segunda Guerra Mundial. O filme explora sua vida, ambições, conflitos morais e o impacto duradouro da criação da primeira arma nuclear.',

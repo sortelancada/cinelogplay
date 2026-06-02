@@ -174,7 +174,7 @@ export async function searchDiretores(query) {
 export async function getFilmesPorDiretor(directorId) {
   try {
     const result = await pool.query(
-      "SELECT * FROM filmes WHERE diretor_id = $1 AND ativo = true ORDER BY ano DESC, titulo ASC",
+      "SELECT * FROM filmes WHERE diretor_id = $1 AND ativo = true ORDER BY ano_lancamento DESC, titulo ASC",
       [directorId]
     );
 

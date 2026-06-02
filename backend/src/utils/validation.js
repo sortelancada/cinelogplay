@@ -152,9 +152,9 @@ export function validateFilme(data) {
     errors.titulo = "Título deve ter entre 3 e 500 caracteres";
   }
 
-  // Validate ano
-  if (data.ano && !isValidYear(data.ano)) {
-    errors.ano = "Ano deve estar entre 1800 e próximos 5 anos";
+  // Validate ano_lancamento
+  if (data.ano_lancamento && !isValidYear(data.ano_lancamento)) {
+    errors.ano_lancamento = "Ano deve estar entre 1800 e próximos 5 anos";
   }
 
   // Validate classificacao

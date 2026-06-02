@@ -7,7 +7,7 @@ import db from "../../config/db.js";
 const filmesData = [
   {
     titulo: "O Poderoso Chefão",
-    ano: 1972,
+    ano_lancamento: 1972,
     genero: "Crime",
     duracao: "175 min",
     classificacao: "14",
@@ -21,7 +21,7 @@ const filmesData = [
 
   {
     titulo: "Tempo de Violência",
-    ano: 1994,
+    ano_lancamento: 1994,
     genero: "Crime",
     duracao: "154 min",
     classificacao: "16",
@@ -36,7 +36,7 @@ const filmesData = [
 
   {
     titulo: "A Origem",
-    ano: 2010,
+    ano_lancamento: 2010,
     genero: "Ficção Científica",
     duracao: "148 min",
     classificacao: "12",
@@ -50,7 +50,7 @@ const filmesData = [
 
   {
     titulo: "Parasita",
-    ano: 2019,
+    ano_lancamento: 2019,
     genero: "Drama",
     duracao: "132 min",
     classificacao: "16",
@@ -64,7 +64,7 @@ const filmesData = [
 
   {
     titulo: "Interestelar",
-    ano: 2014,
+    ano_lancamento: 2014,
     genero: "Ficção Científica",
     duracao: "169 min",
     classificacao: "10",
@@ -78,7 +78,7 @@ const filmesData = [
 
   {
     titulo: "2001: Uma Odisseia no Espaço",
-    ano: 1968,
+    ano_lancamento: 1968,
     genero: "Ficção Científica",
     duracao: "149 min",
     classificacao: "12",
@@ -92,7 +92,7 @@ const filmesData = [
 
   {
     titulo: "Alice no País das Maravilhas",
-    ano: 2010,
+    ano_lancamento: 2010,
     genero: "Fantasia",
     duracao: "109 min",
     classificacao: "L",
@@ -106,7 +106,7 @@ const filmesData = [
 
   {
     titulo: "Avatar: O Caminho da Água",
-    ano: 2022,
+    ano_lancamento: 2022,
     genero: "Ficção Científica",
     duracao: "192 min",
     classificacao: "12",
@@ -120,7 +120,7 @@ const filmesData = [
 
   {
     titulo: "Dune",
-    ano: 2021,
+    ano_lancamento: 2021,
     genero: "Ficção Científica",
     duracao: "156 min",
     classificacao: "12",
@@ -134,7 +134,7 @@ const filmesData = [
 
   {
     titulo: "Dune: Parte Dois",
-    ano: 2024,
+    ano_lancamento: 2024,
     genero: "Ficção Científica",
     duracao: "166 min",
     classificacao: "12",
@@ -148,7 +148,7 @@ const filmesData = [
 
   {
     titulo: "O Invencível",
-    ano: 2021,
+    ano_lancamento: 2021,
     genero: "Animação",
     duracao: "60 min",
     classificacao: "14",
@@ -164,7 +164,7 @@ const filmesData = [
 const filmesDataParte2 = [
   {
     titulo: "Os Jogos Vorazes",
-    ano: 2012,
+    ano_lancamento: 2012,
     genero: "Ficção Científica",
     duracao: "142 min",
     classificacao: "12",
@@ -178,7 +178,7 @@ const filmesDataParte2 = [
 
   {
     titulo: "Malevola",
-    ano: 2014,
+    ano_lancamento: 2014,
     genero: "Fantasia",
     duracao: "97 min",
     classificacao: "12",
@@ -193,7 +193,7 @@ const filmesDataParte2 = [
 
   {
     titulo: "Panico 7",
-    ano: 2023,
+    ano_lancamento: 2023,
     genero: "Horror",
     duracao: "122 min",
     classificacao: "16",
@@ -206,7 +206,7 @@ const filmesDataParte2 = [
 
   {
     titulo: "Picaretas Não Vão Pro Céu",
-    ano: 2020,
+    ano_lancamento: 2020,
     genero: "Drama",
     duracao: "115 min",
     classificacao: "14",
@@ -220,7 +220,7 @@ const filmesDataParte2 = [
 
   {
     titulo: "Searching - Desaparecida",
-    ano: 2018,
+    ano_lancamento: 2018,
     genero: "Thriller",
     duracao: "102 min",
     classificacao: "12",
@@ -234,7 +234,7 @@ const filmesDataParte2 = [
 
   {
     titulo: "Street Fighter: A Lenda de Chun-Li",
-    ano: 2009,
+    ano_lancamento: 2009,
     genero: "Ação",
     duracao: "88 min",
     classificacao: "14",
@@ -248,7 +248,7 @@ const filmesDataParte2 = [
 
   {
     titulo: "Super Mario Galaxy",
-    ano: 2023,
+    ano_lancamento: 2023,
     genero: "Animação",
     duracao: "92 min",
     classificacao: "L",
@@ -262,7 +262,7 @@ const filmesDataParte2 = [
 
   {
     titulo: "Toy Story 5",
-    ano: 2024,
+    ano_lancamento: 2024,
     genero: "Animação",
     duracao: "96 min",
     classificacao: "L",
@@ -276,7 +276,7 @@ const filmesDataParte2 = [
 
   {
     titulo: "Homem de Aço",
-    ano: 2013,
+    ano_lancamento: 2013,
     genero: "Ação",
     duracao: "143 min",
     classificacao: "12",
@@ -290,7 +290,7 @@ const filmesDataParte2 = [
 
   {
     titulo: "Dune: Parte Três",
-    ano: 2026,
+    ano_lancamento: 2026,
     genero: "Ficção Científica",
     duracao: "170 min",
     classificacao: "12",
@@ -304,7 +304,7 @@ const filmesDataParte2 = [
 
   {
     titulo: "Dune: Parte Quatro",
-    ano: 2028,
+    ano_lancamento: 2028,
     genero: "Ficção Científica",
     duracao: "175 min",
     classificacao: "12",
@@ -331,7 +331,7 @@ async function seedFilmes() {
       const query = `
         INSERT INTO filmes (
           titulo,
-          ano,
+          ano_lancamento,
           genero,
           duracao,
           classificacao,
@@ -352,7 +352,7 @@ async function seedFilmes() {
 
       await db.query(query, [
         filme.titulo,
-        filme.ano,
+        filme.ano_lancamento,
         filme.genero,
         filme.duracao,
         filme.classificacao,

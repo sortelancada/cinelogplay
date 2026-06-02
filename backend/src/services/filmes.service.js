@@ -7,6 +7,7 @@
  */
 
 import pool from "../config/db.js";
+import { gerarSlug } from "../utils/slug.js";
 import filmesMock from "../mock/filmes.json" with { type: "json" };
 
 /**
@@ -113,7 +114,7 @@ export async function getFilmesByGenero(genre) {
 export async function getFilmesByAno(year) {
   try {
     const result = await pool.query(
-      "SELECT * FROM filmes WHERE ano = $1 AND ativo = true ORDER BY titulo ASC",
+      "SELECT * FROM filmes WHERE ano_lancamento = $1 AND ativo = true ORDER BY titulo ASC",
       [year]
     );
 
@@ -126,7 +127,7 @@ export async function getFilmesByAno(year) {
     });
 
     // Fallback to mock data
-    return filmesMock.filter((f) => f.ano === year);
+    return filmesMock.filter((f) => f.ano_lancamento === year);
   }
 }
 
@@ -195,7 +196,7 @@ export async function salvarFilme(filmeData) {
       titulo,
       descricao_curta,
       sinopse,
-      ano,
+      ano_lancamento,
       genero,
       duracao,
       classificacao,
@@ -206,14 +207,38 @@ export async function salvarFilme(filmeData) {
       tipo = "filme",
     } = filmeData;
 
+    const slug = gerarSlug(titulo);
+
     const result = await pool.query(
       `INSERT INTO filmes
-       (titulo, descricao_curta, sinopse, ano, genero, duracao, classificacao,
-        imagem, trailer_youtube, diretor_id, atores, tipo, ativo, criado_em)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, true, NOW())
-       RETURNING *`,
+  (
+    titulo,
+    slug,
+    descricao_curta,
+    sinopse,
+    ano_lancamento,
+    genero,
+    duracao,
+    classificacao,
+    imagem,
+    trailer_youtube,
+    diretor_id,
+    atores,
+    tipo,
+    ativo,
+    criado_em
+  )
+  VALUES (
+    $1, $2, $3, $4, $5,
+    $6, $7, $8, $9, $10,
+    $11, $12, $13,
+    true,
+    NOW()
+  )
+  RETURNING *`,
       [
         titulo,
+        slug,
         descricao_curta,
         sinopse,
         ano,
@@ -265,7 +290,7 @@ export async function updateFilme(id, filmeData) {
       "titulo",
       "descricao_curta",
       "sinopse",
-      "ano",
+      "ano_lancamento",
       "genero",
       "duracao",
       "classificacao",

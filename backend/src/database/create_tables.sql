@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
   nome          VARCHAR(255) NOT NULL,
   email         VARCHAR(255) UNIQUE NOT NULL,
   senha         VARCHAR(255) NOT NULL,
+  ativo         BOOLEAN DEFAULT true,
   criado_em     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -25,6 +26,7 @@ CREATE INDEX IF NOT EXISTS idx_usuarios_email ON usuarios(email);
 CREATE TABLE IF NOT EXISTS diretores (
   id SERIAL PRIMARY KEY,
   nome VARCHAR(255) NOT NULL UNIQUE,
+  slug VARCHAR(255) UNIQUE,
   nacionalidade VARCHAR(100),
   data_nascimento DATE,
   biografia TEXT,
@@ -37,6 +39,8 @@ CREATE TABLE IF NOT EXISTS diretores (
 
 CREATE INDEX IF NOT EXISTS idx_diretores_nome ON diretores(nome);
 CREATE INDEX IF NOT EXISTS idx_diretores_ativo ON diretores(ativo);
+CREATE INDEX IF NOT EXISTS idx_diretores_slug
+ON diretores(slug);
 
 -- ============================================
 -- TABLE: ATORES
@@ -44,7 +48,7 @@ CREATE INDEX IF NOT EXISTS idx_diretores_ativo ON diretores(ativo);
 
 CREATE TABLE IF NOT EXISTS atores (
   id SERIAL PRIMARY KEY,
-  nome VARCHAR(255) NOT NULL,
+  nome VARCHAR(255) NOT NULL UNIQUE,
   foto VARCHAR(500),
   nacionalidade VARCHAR(100),
   data_nascimento DATE,
@@ -63,9 +67,10 @@ CREATE INDEX IF NOT EXISTS idx_atores_nome ON atores(nome);
 CREATE TABLE IF NOT EXISTS filmes (
   id SERIAL PRIMARY KEY,
   titulo VARCHAR(500) NOT NULL UNIQUE,
+  slug VARCHAR(500) UNIQUE,
   descricao_curta VARCHAR(500),
   sinopse TEXT,
-  ano INTEGER,
+  ano_lancamento INTEGER,
   genero VARCHAR(100),
   duracao VARCHAR(20),
   classificacao VARCHAR(5),
@@ -82,8 +87,10 @@ CREATE TABLE IF NOT EXISTS filmes (
 CREATE INDEX IF NOT EXISTS idx_filmes_titulo ON filmes(titulo);
 CREATE INDEX IF NOT EXISTS idx_filmes_diretor_id ON filmes(diretor_id);
 CREATE INDEX IF NOT EXISTS idx_filmes_ativo ON filmes(ativo);
-CREATE INDEX IF NOT EXISTS idx_filmes_ano ON filmes(ano);
+CREATE INDEX IF NOT EXISTS idx_filmes_ano_lancamento ON filmes(ano_lancamento);
 CREATE INDEX IF NOT EXISTS idx_filmes_genero ON filmes(genero);
+CREATE INDEX IF NOT EXISTS idx_filmes_slug
+ON filmes(slug);
 
 -- ============================================
 -- TABLE: FILME_ATORES (join)
@@ -175,12 +182,12 @@ CHECK (
   )
 );
 
-ALTER TABLE filmes DROP CONSTRAINT IF EXISTS valid_ano;
+ALTER TABLE filmes DROP CONSTRAINT IF EXISTS valid_ano_lancamento;
 ALTER TABLE filmes
-ADD CONSTRAINT valid_ano
+ADD CONSTRAINT valid_ano_lancamento
 CHECK (
-  ano >= 1800
-  AND ano <= EXTRACT(YEAR FROM CURRENT_DATE) + 5
+  ano_lancamento >= 1800
+  AND ano_lancamento <= EXTRACT(YEAR FROM CURRENT_DATE) + 5
 );
 
 -- ============================================
@@ -214,6 +221,13 @@ CREATE TRIGGER atualizar_timestamp_diretores
 BEFORE UPDATE ON diretores
 FOR EACH ROW EXECUTE FUNCTION update_timestamp();
 
+DROP TRIGGER IF EXISTS atualizar_timestamp_atores ON atores;
+
+CREATE TRIGGER atualizar_timestamp_atores
+BEFORE UPDATE ON atores
+FOR EACH ROW
+EXECUTE FUNCTION update_timestamp();
+
 DROP TRIGGER IF EXISTS atualizar_timestamp_contatos ON contatos;
 CREATE TRIGGER atualizar_timestamp_contatos
 BEFORE UPDATE ON contatos
@@ -223,3 +237,26 @@ DROP TRIGGER IF EXISTS atualizar_timestamp_avaliacoes ON avaliacoes;
 CREATE TRIGGER atualizar_timestamp_avaliacoes
 BEFORE UPDATE ON avaliacoes
 FOR EACH ROW EXECUTE FUNCTION update_timestamp();
+
+CREATE TABLE IF NOT EXISTS refresh_tokens (
+  id SERIAL PRIMARY KEY,
+  usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+  token TEXT NOT NULL,
+  expira_em TIMESTAMP NOT NULL,
+  criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_refresh_usuario
+ON refresh_tokens(usuario_id);
+
+CREATE INDEX IF NOT EXISTS idx_refresh_token
+ON refresh_tokens(token);
+
+CREATE INDEX IF NOT EXISTS idx_filmes_busca
+ON filmes
+USING GIN (
+  to_tsvector(
+    'portuguese',
+    titulo || ' ' || COALESCE(sinopse,'')
+  )
+);

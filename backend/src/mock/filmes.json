@@ -2,7 +2,7 @@
   {
     "id": 1,
     "titulo": "O Poderoso Chefão",
-    "ano": 1972,
+    "ano_lancamento": 1972,
     "genero": "Crime",
     "diretor_id": 1,
     "tipo": "classico",
@@ -18,7 +18,7 @@
   {
     "id": 2,
     "titulo": "Tempo de Violência",
-    "ano": 1994,
+    "ano_lancamento": 1994,
     "genero": "Crime",
     "diretor_id": 2,
     "tipo": "classico",
@@ -34,7 +34,7 @@
   {
     "id": 3,
     "titulo": "A Origem",
-    "ano": 2010,
+    "ano_lancamento": 2010,
     "genero": "Ficção Científica",
     "diretor_id": 3,
     "tipo": "moderno",
@@ -50,7 +50,7 @@
   {
     "id": 4,
     "titulo": "Parasita",
-    "ano": 2019,
+    "ano_lancamento": 2019,
     "genero": "Drama",
     "diretor_id": 4,
     "tipo": "premiado",
@@ -66,7 +66,7 @@
   {
     "id": 5,
     "titulo": "Interestelar",
-    "ano": 2014,
+    "ano_lancamento": 2014,
     "genero": "Ficção Científica",
     "diretor_id": 3,
     "tipo": "moderno",
@@ -82,7 +82,7 @@
   {
     "id": 6,
     "titulo": "A Odisseia",
-    "ano": 1968,
+    "ano_lancamento": 1968,
     "genero": "Ficção Científica",
     "diretor_id": 3,
     "tipo": "classico",
@@ -98,7 +98,7 @@
   {
     "id": 7,
     "titulo": "Alice no País das Maravilhas",
-    "ano": 2010,
+    "ano_lancamento": 2010,
     "genero": "Fantasia",
     "diretor_id": 1,
     "tipo": "moderno",
@@ -114,7 +114,7 @@
   {
     "id": 8,
     "titulo": "Avatar: Fogo e Cinzas",
-    "ano": 2025,
+    "ano_lancamento": 2025,
     "genero": "Ficção Científica",
     "diretor_id": 1,
     "tipo": "lancamento",
@@ -130,7 +130,7 @@
   {
     "id": 9,
     "titulo": "Invencível",
-    "ano": 2021,
+    "ano_lancamento": 2021,
     "genero": "Ação",
     "diretor_id": 1,
     "tipo": "lancamento",
@@ -146,7 +146,7 @@
   {
     "id": 10,
     "titulo": "Jogos Vorazes",
-    "ano": 2012,
+    "ano_lancamento": 2012,
     "genero": "Ação",
     "diretor_id": 1,
     "tipo": "moderno",

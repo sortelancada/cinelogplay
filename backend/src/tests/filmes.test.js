@@ -40,7 +40,7 @@ describe("Filmes API", () => {
     // Verifica se primeiro filme tem as propriedades obrigatórias
     expect(data[0]).toHaveProperty("id");
     expect(data[0]).toHaveProperty("titulo");
-    expect(data[0]).toHaveProperty("ano");
+    expect(data[0]).toHaveProperty("ano_lancamento");
     expect(data[0]).toHaveProperty("genero");
   });
 
@@ -54,7 +54,7 @@ describe("Filmes API", () => {
       expect(filme).toHaveProperty("id");
       expect(filme).toHaveProperty("titulo");
       expect(typeof filme.titulo).toBe("string");
-      expect(typeof filme.ano).toBe("number");
+      expect(typeof filme.ano_lancamento).toBe("number");
       expect(typeof filme.genero).toBe("string");
     });
   });
